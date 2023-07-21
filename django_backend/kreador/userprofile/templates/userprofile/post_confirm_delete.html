@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Confirm deletion</title>
+
+	<!--Additional elements for browsers and robots go here goes here-->
+
+</head>
+<body>
+<h1>Delete Post</h1>
+
+<p>Are you sure you want to delete the Post?</p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="Yes, delete.">
+</form>
+</body>
