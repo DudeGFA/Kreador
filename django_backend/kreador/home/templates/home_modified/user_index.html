@@ -1934,7 +1934,7 @@ Header END -->
                         class="h-100"
                         href='{{ post.postimage_set.all|index:0 }}'
                         data-glightbox
-                        data-gallery="image-popup"
+                        data-gallery="{{ post.id }}"
                       >
                         <img
                           class="rounded img-fluid"
@@ -1948,7 +1948,7 @@ Header END -->
                       <a
                         href='{{ post.postimage_set.all|index:1 }}'
                         data-glightbox
-                        data-gallery="image-popup"
+                        data-gallery="{{ post.id }}"
                       >
                         <img
                           class="rounded img-fluid"
@@ -1969,7 +1969,7 @@ Header END -->
                         <a
                           href='{{ post.postimage_set.all|index:2 }}'
                           data-glightbox
-                          data-gallery="image-popup"
+                          data-gallery="{{ post.id }}"
                         >
                           <img
                             class="img-fluid opacity-50 rounded"
@@ -4772,7 +4772,7 @@ Header END -->
                   class="form-control pe-4 fs-3 lh-1 border-0"
                   rows="2"
                   placeholder="Share your thoughts..."
-                  form="picuploadform"
+                  id="postuploadtext1"
                   name="text"
                 ></textarea>
               </div>
@@ -4788,9 +4788,10 @@ Header END -->
                 method="post"
                 id="picuploadform"
                 action="/dudegfa/"
-                data-dropzone='{"maxFiles":2,"url":"/{{user.username}}/"}'
+                data-dropzone='{"url":"/{{user.username}}/", "acceptedFiles":"image/*"}'
               >
                 {% csrf_token %}
+                <input type="hidden" name="text" value="" id="postuploadtext2">
                 <input type="hidden" name="next" value="{{ request.path }}">
                 <div class="dz-message">
                   <i class="bi bi-images display-3"></i>
@@ -4812,7 +4813,8 @@ Header END -->
             >
               Cancel
             </button>
-            <button type="submit" form="picuploadform" id="picsubmitbtn" class="btn btn-success-soft">Post</button>
+            <button id="picpresubmitbtn" class="btn btn-success-soft" onclick="postSubmit()">Post</button>
+            <button type="hidden" id="picsubmitbtn"></button>
           </div>
           <!-- Modal feed footer -->
         </div>
@@ -4862,6 +4864,7 @@ Header END -->
                   class="form-control pe-4 fs-3 lh-1 border-0"
                   rows="2"
                   placeholder="Share your thoughts..."
+                  id="postuploadtextvid1"
                 ></textarea>
               </form>
             </div>
@@ -4869,16 +4872,22 @@ Header END -->
             <!-- Dropzone photo START -->
             <div>
               <label class="form-label">Upload attachment</label>
-              <div
+              <form
                 class="dropzone dropzone-default card shadow-none"
-                data-dropzone='{"maxFiles":2}'
+                data-dropzone='{"maxFiles":1, "url":"/{{user.username}}/", "acceptedFiles":"video/*", "paramName":"video", "uploadMultiple": false}'
+                method="post"
+                id="viduploadform"
+                action="/dudegfa/"
               >
+                {% csrf_token %}
+                <input type="hidden" name="text" value="" id="postuploadtextvid2">
+                <input type="hidden" name="next" value="{{ request.path }}">
                 <div class="dz-message">
                   <i class="bi bi-camera-reels display-3"></i>
                   <p>Drag here or click to upload video.</p>
                 </div>
                 <!-- <input type="file" id="upload_video" name="video" accept="video/*"> -->
-              </div>
+              </form>
             </div>
             <!-- Dropzone photo END -->
           </div>
@@ -4890,7 +4899,8 @@ Header END -->
             <button type="button" class="btn btn-danger-soft me-2">
               <i class="bi bi-camera-video-fill pe-1"></i> Live video
             </button>
-            <button type="button" class="btn btn-success-soft">Post</button>
+            <button id="vidpresubmitbtn" class="btn btn-success-soft" onclick="vidSubmit()">Post</button>
+            <button type="hidden" id="vidsubmitbtn"></button>
           </div>
           <!-- Modal feed footer -->
         </div>
@@ -5181,6 +5191,21 @@ JS libraries, plugins and custom scripts -->
         }
         return false;
        }
+      </script>
+      <script>
+        function postSubmit() {
+          posttext = document.getElementById("postuploadtext1").value;
+          document.getElementById("postuploadtext2").value = posttext;
+          document.getElementById("picsubmitbtn").click();
+          location.reload()
+        }
+
+        function vidSubmit() {
+          posttext = document.getElementById("postuploadtextvid1").value;
+          document.getElementById("postuploadtextvid2").value = posttext;
+          document.getElementById("vidsubmitbtn").click();
+          //location.reload()
+        }
       </script>
       <!-- <script>
         Dropzone.options.picuploadform = { // The camelized version of the ID of the form element

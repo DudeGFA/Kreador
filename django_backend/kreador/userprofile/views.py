@@ -39,7 +39,7 @@ class ProfileView(View):
         month_joined = user.date_joined.strftime('%b, %Y')
         post_list = Post.objects.filter(owner=user).order_by('-updated_at')
         album = PostImage.objects.filter(post__owner=user)[:5]
-        print('album:', album)
+        #print('album:', album)
         ctx = {'month_joined': month_joined, 'post_list': post_list, 'profile_owner': user, 'album': album}
         #print(post_list[1].comment_set.all())
         return render(request, 'home_modified/user_profile.html', ctx)
@@ -61,8 +61,14 @@ class ProfileView(View):
         print(request.FILES)
         new_post = Post.objects.create(text=request.POST.get('text'), owner=user)
         new_post.save()
-        for pic in request.FILES.getlist('picture'):
-            new_post_image = PostImage.objects.create(image=pic, post=new_post)
+        #print(request.FILES.getlist('picture'))
+        for key in request.FILES.keys():
+            #print(pic)
+            print(key)
+            if key.startswith('picture'):
+                continue
+            value=request.FILES.getlist(key)[0]
+            new_post_image = PostImage.objects.create(image=value, post=new_post)
             new_post_image.save()
         if request.FILES.getlist('video'):
             # saves video file    

@@ -549,13 +549,22 @@ var e = {
 							paramName: 'picture',
 							init: function() {
 								var myDropzone = this;
-								console.log("presubmit event triggered")
-								console.log(this)
+								//console.log("presubmit event triggered")
+								//console.log(this)
 								// First change the button to actually tell Dropzone to process the queue.
 								let el = document.getElementById("picsubmitbtn")
 								el.addEventListener("click", function(e) {
 								// Make sure that the form isn't actually being sent.
-									console.log("submit event triggered")
+									//console.log("submit event triggered")
+									e.preventDefault();
+									e.stopPropagation();
+									console.log(myDropzone);
+									myDropzone.processQueue();
+								});
+								let em = document.getElementById("vidsubmitbtn")
+								em.addEventListener("click", function(e) {
+								// Make sure that the form isn't actually being sent.
+									//console.log("submit event triggered")
 									e.preventDefault();
 									e.stopPropagation();
 									console.log(myDropzone);
