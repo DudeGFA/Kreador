@@ -17508,3 +17508,48 @@ span.flatpickr-weekday,
 #dropzonesubmit {    
   visibility: hidden;
 }
+
+#postoptions>ul {
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+#postoptions {
+  display: flex;
+  flex-direction: column;
+}
+
+.hiddenbtn {
+  display: none;
+}
+
+.hidden-poll-option {
+  display: none !important;
+}
+
+.reply-img {
+  height: 30px;
+  width: 30px;
+}
+.reply {
+  padding: 5px 10px 0 10px !important;
+  min-height: 30px;
+  font-size: 13px;
+  background-clip: padding-box;
+  border: 1px solid #e1e4e6;
+  appearance: none;
+  border-radius: 0.3rem;
+  width: 100%;
+}
+.reply-btn {
+  height: 30px !important;
+  padding: 2px 5px !important;
+}
+
+.hiddencommentsection {
+  display: none !important;
+}
+
+.pymk {
+  height: 40px;
+}

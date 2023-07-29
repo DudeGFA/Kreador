@@ -1000,7 +1000,7 @@ Header END -->
               <div class="d-flex mb-3">
                 <!-- Avatar -->
                 <div class="avatar avatar-xs me-2">
-                  <a href='{% static "#" %}'>
+                  <a href='/{{ user.username }}/'>
                     <img
                       class="avatar-img rounded-circle"
                       src='{{ user.profile.image.url }}'
@@ -1009,105 +1009,302 @@ Header END -->
                   </a>
                 </div>
                 <!-- Post input -->
-                <form class="w-100">
+                <form class="w-100" id="posttextform" action="/{{ user.username }}/" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
                   <textarea
                     class="form-control pe-4 border-0"
                     rows="2"
+                    id="posttextmain"
                     data-autoresize
                     placeholder="Share your thoughts..."
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalCreateFeed"
+                    name="text"
                   ></textarea>
                 </form>
               </div>
               <!-- Share feed toolbar START -->
-              <ul class="nav nav-pills nav-stack small fw-normal">
-                <li class="nav-item">
-                  <a
-                    class="nav-link bg-light py-1 px-2 mb-0"
-                    href='{% static "#!" %}'
-                    data-bs-toggle="modal"
-                    data-bs-target="#feedActionPhoto"
-                  >
-                    <i class="bi bi-image-fill text-success pe-2"></i>Photo</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link bg-light py-1 px-2 mb-0"
-                    href='{% static "#!" %}'
-                    data-bs-toggle="modal"
-                    data-bs-target="#feedActionVideo"
-                  >
-                    <i class="bi bi-camera-reels-fill text-info pe-2"></i
-                    >Video</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    href='{% static "#" %}'
-                    class="nav-link bg-light py-1 px-2 mb-0"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalCreateEvents"
-                  >
-                    <i class="bi bi-calendar2-event-fill text-danger pe-2"></i
-                    >Event
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link bg-light py-1 px-2 mb-0"
-                    href='{% static "#!" %}'
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalCreateFeed"
-                  >
-                    <i class="bi bi-emoji-smile-fill text-warning pe-2"></i
-                    >Feeling /Activity</a
-                  >
-                </li>
-                <li class="nav-item dropdown ms-lg-auto">
-                  <a
-                    class="nav-link bg-light py-1 px-2 mb-0"
-                    href='{% static "#" %}'
-                    id="feedActionShare"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="bi bi-three-dots"></i>
-                  </a>
-                  <!-- Dropdown menu -->
-                  <ul
-                    class="dropdown-menu dropdown-menu-end"
-                    aria-labelledby="feedActionShare"
-                  >
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-envelope fa-fw pe-2"></i>Create a
-                        poll</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-bookmark-check fa-fw pe-2"></i>Ask a
-                        question
-                      </a>
-                    </li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-pencil-square fa-fw pe-2"></i>Help</a
-                      >
-                    </li>
-                  </ul>
-                </li>
-              </ul>
+              <div id="postoptions">
+                <ul class="nav nav-pills nav-stack small fw-normal">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link bg-light py-1 px-2 mb-0"
+                      href='{% static "#!" %}'
+                      data-bs-toggle="modal"
+                      data-bs-target="#feedActionPhoto"
+                      onclick="updatePhotoUploadText()"
+                    >
+                      <i class="bi bi-image-fill text-success pe-2"></i>Photo</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link bg-light py-1 px-2 mb-0"
+                      href='{% static "#!" %}'
+                      data-bs-toggle="modal"
+                      data-bs-target="#feedActionVideo"
+                      onclick="updateVidUploadText()"
+                    >
+                      <i class="bi bi-camera-reels-fill text-info pe-2"></i
+                      >Video</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      href='{% static "#" %}'
+                      class="nav-link bg-light py-1 px-2 mb-0"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalCreateEvents"
+                    >
+                      <i class="bi bi-calendar2-event-fill text-danger pe-2"></i
+                      >Event
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link bg-light py-1 px-2 mb-0"
+                      href='{% static "#!" %}'
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalCreatePoll"
+                    >
+                      <i class="fa-solid fa-square-poll-vertical"></i>
+                      Create a Poll</a
+                    >
+                  </li>
+                </ul>
+                <button id="textsubmitbtn" class="btn btn-success-soft" form="posttextform">Post</button>
+              </div>
               <!-- Share feed toolbar END -->
             </div>
             <!-- Share feed END -->
             
             <!-- Card feed item START -->
             {% for post in feed %}
-            {% if post.video %}
+            {% if post.question %}
+            <!-- Card feed item START -->
+            <div class="card">
+              <!-- Card header START -->
+              <div class="card-header border-0 pb-0">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center">
+                    <!-- Avatar -->
+                    <div class="avatar me-2">
+                      <a href='/{{ post.owner.username}}/'>
+                        <img
+                          class="avatar-img rounded-circle"
+                          src='{{ post.owner.profile.image.url }}'
+                          alt=""
+                        />
+                      </a>
+                    </div>
+                    <!-- Title -->
+                    <div>
+                      <h6 class="card-title mb-0">
+                        <a href='{% static "#!" %}'> {{ post.owner.get_full_name }} </a>
+                      </h6>
+                      <p class="mb-0 small">{{ post.created_at }}</p>
+                    </div>
+                  </div>
+                  <!-- Card share action menu -->
+                  <a
+                    href='{% static "#" %}'
+                    class="text-secondary btn btn-secondary-soft-hover py-1 px-2"
+                    id="cardShareAction7"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i class="bi bi-three-dots"></i>
+                  </a>
+                  <!-- Card share action dropdown menu -->
+                  <ul
+                    class="dropdown-menu dropdown-menu-end"
+                    aria-labelledby="cardShareAction7"
+                  >
+                    <li>
+                      <a class="dropdown-item" href='{% static "#" %}'>
+                        <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href='{% static "#" %}'>
+                        <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori
+                        ferguson
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href='{% static "#" %}'>
+                        <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href='{% static "#" %}'>
+                        <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a
+                      >
+                    </li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                      <a class="dropdown-item" href='{% static "#" %}'>
+                        <i class="bi bi-flag fa-fw pe-2"></i>Report post</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+                <!-- Card share action END -->
+              </div>
+              <!-- Card header START -->
+
+              <!-- Card body START -->
+              <div class="card-body pb-0">
+                <p>{{ post.question }}</p>
+                <div class="vstack gap-2" id="{{post.id}}-options">
+                  <!-- Feed poll item -->
+                  {% for option in post.polloption_set.all %}
+                  <div>
+                    <input
+                      type="radio"
+                      class="btn-check"
+                      name="poll"
+                      id="{{option.id}}"
+                    />
+                    <label class="btn btn-outline-primary w-100" for="{{option.id}}"
+                      onclick="submitVote('{{post.id}}','{{option.id}}')">{{option.text}}</label
+                    >
+                  </div>
+                  {% endfor %}
+                </div>
+                <!-- Results -->
+                <div id="{{post.id}}-results" class="vstack gap-4 gap-sm-3 mt-3 hidden-poll-option">
+                  {% for option in post.polloption_set.all %}
+                  <!-- Option 1 result START -->
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
+                    <!-- Progress bar -->
+                    <div class="overflow-hidden w-100 me-3">
+                      <div
+                        class="progress bg-primary bg-opacity-10 position-relative"
+                        style="height: 30px"
+                      >
+                        <div
+                          id="{{option.id}}-resultbar"
+                          class="progress-bar bg-primary bg-opacity-25"
+                          role="progressbar"
+                          style="width: 0%"
+                          aria-valuenow="0"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                        <span
+                          class="position-absolute pt-1 ps-3 fs-6 fw-normal text-truncate w-100"
+                          >{{ option.text }}
+                        </span>
+                      </div>
+                    </div>
+                    <div id="{{option.id}}-result" class="flex-shrink-0">0%</div>
+                  </div>
+                  <!-- Option 1 result END -->
+                  {% endfor %}
+                </div>
+                <!-- Feed poll votes START -->
+                <ul class="nav nav-divider mt-2 mb-0">
+                  <li class="nav-item">
+                    <a id="{{post.id}}-totalvotes" class="nav-link" href='{% static "#" %}'>{{ post|calc_total_votes }} votes</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href='{% static "#" %}'>2d left</a>
+                  </li>
+                </ul>
+                <!-- Feed poll votes ED -->
+
+                <!-- Feed react START -->
+                <ul class="nav nav-stack pb-2 small mt-4">
+                  <li class="nav-item">
+                    <a class="nav-link active text-secondary" href='{% static "#!" %}'>
+                      <i
+                        class="bi bi-heart-fill me-1 icon-xs bg-danger text-white rounded-circle"
+                      ></i>
+                      Solomon, Elo and 126 others
+                    </a>
+                  </li>
+                  <li class="nav-item ms-sm-auto">
+                    <a class="nav-link" href='{% static "#!" %}'>
+                      <i class="bi bi-chat-fill pe-1"></i>Comments (12)</a
+                    >
+                  </li>
+                </ul>
+                <!-- Feed react END -->
+              </div>
+              <!-- Card body END -->
+              <!-- Card Footer START -->
+              <div class="card-footer py-3">
+                <!-- Feed react START -->
+                <ul class="nav nav-fill nav-stack small">
+                  <li class="nav-item">
+                    <a class="nav-link mb-0 active" href='{% static "#!" %}'>
+                      <i class="bi bi-heart pe-1"></i>Liked (56)</a
+                    >
+                  </li>
+                  <!-- Card share action dropdown START -->
+                  <li class="nav-item dropdown">
+                    <a
+                      href='{% static "#" %}'
+                      class="nav-link mb-0"
+                      id="feedActionShare6"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i class="bi bi-reply-fill flip-horizontal ps-1"></i>Share
+                      (3)
+                    </a>
+                    <!-- Card share action dropdown menu -->
+                    <ul
+                      class="dropdown-menu dropdown-menu-end"
+                      aria-labelledby="feedActionShare6"
+                    >
+                      <li>
+                        <a class="dropdown-item" href='{% static "#" %}'>
+                          <i class="bi bi-envelope fa-fw pe-2"></i>Send via
+                          Direct Message</a
+                        >
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href='{% static "#" %}'>
+                          <i class="bi bi-bookmark-check fa-fw pe-2"></i
+                          >Bookmark
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href='{% static "#" %}'>
+                          <i class="bi bi-link fa-fw pe-2"></i>Copy link to
+                          post</a
+                        >
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href='{% static "#" %}'>
+                          <i class="bi bi-share fa-fw pe-2"></i>Share post via
+                          …</a
+                        >
+                      </li>
+                      <li><hr class="dropdown-divider" /></li>
+                      <li>
+                        <a class="dropdown-item" href='{% static "#" %}'>
+                          <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to
+                          News Feed</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- Card share action dropdown END -->
+                  <li class="nav-item">
+                    <a class="nav-link mb-0" href='{% static "#!" %}'>
+                      <i class="bi bi-send-fill pe-1"></i>Send</a
+                    >
+                  </li>
+                </ul>
+                <!-- Feed react END -->
+              </div>
+              <!-- Card Footer END -->
+            </div>
+            <!-- Card feed item END -->
+            {% elif post.video %}
             <!-- Card feed item START -->
             <div class="card">
               <!-- Card header START -->
@@ -1116,7 +1313,7 @@ Header END -->
                   <div class="d-flex align-items-center">
                     <!-- Avatar -->
                     <div class="avatar avatar-story me-2">
-                      <a href='{% static "#!" %}'>
+                      <a href='/{{ post.owner.username }}'>
                         <img
                           class="avatar-img rounded-circle"
                           src='{{ post.owner.profile.image.url }}'
@@ -1213,14 +1410,18 @@ Header END -->
               <div class="card-body pt-0">
                 <ul class="nav nav-stack py-3 small">
                   <li class="nav-item">
-                    <a class="nav-link active" href='{% static "#!" %}'>
-                      <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked
-                      (56)</a
+                    <a class="nav-link mb-0 active" href='javascript:;' onclick="likePost('{{post.id}}');return false;">
+                    {% if user in post.likes.all %}
+                      <i class="bi bi-heart-fill pe-1" id="{{post.id}}likebtn"></i>Liked (<span id="{{post.id}}likecnt">{{ post.likes.count }}</span>)</a
                     >
+                    {% else %}
+                      <i class="bi bi-heart pe-1" id="{{post.id}}likebtn"></i>Liked (<span id="{{post.id}}likecnt">{{ post.likes.count }}</span>)</a
+                    >
+                    {% endif %}
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href='{% static "#!" %}'>
-                      <i class="bi bi-chat-fill pe-1"></i>Comments (12)</a
+                    <a class="nav-link" href='javascript:;' onclick="displayComments('{{post.id}}')">
+                      <i class="bi bi-chat-fill pe-1"></i>Comments ({{ post.comment_set.count }})</a
                     >
                   </li>
                   <!-- Card share action START -->
@@ -1278,7 +1479,7 @@ Header END -->
                 <!-- Feed react END -->
 
                 <!-- Add comment -->
-                <div class="d-flex mb-3">
+                <div id="{{post.id}}-postcomment" class="d-flex mb-3 hiddencommentsection">
                   <!-- Avatar -->
                   <div class="avatar avatar-xs me-2">
                     <a href='{% static "#!" %}'>
@@ -1290,28 +1491,31 @@ Header END -->
                     </a>
                   </div>
                   <!-- Comment box  -->
-                  <!-- Comment box  -->
-                  <form class="position-relative w-100">
+                  <form class="w-100" action="/{{user.username }}/comment/post/{{ post.id }}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
                     <textarea
                       data-autoresize
                       class="form-control pe-4 bg-light"
                       rows="1"
                       placeholder="Add a comment..."
+                      name="text"
                     ></textarea>
-                    <!-- Emoji button -->
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <button type="submit" class="btn btn-success-soft mt-2">Post comment</button>
                   </form>
                 </div>
                 <!-- Comment wrap START -->
-                <ul class="comment-wrap list-unstyled mb-0">
+                <ul id="{{post.id}}-comments" class="comment-wrap list-unstyled hiddencommentsection">
                   <!-- Comment item START -->
+                  {% for comment in post.comment_set.all %}
                   <li class="comment-item">
-                    <div class="d-flex">
+                    <div class="d-flex position-relative">
                       <!-- Avatar -->
                       <div class="avatar avatar-xs">
                         <a href='{% static "#!" %}'
                           ><img
                             class="avatar-img rounded-circle"
-                            src='{% static "assets/images/avatar/05.jpg" %}'
+                            src='{{ comment.owner.profile.image.url }}'
                             alt=""
                         /></a>
                       </div>
@@ -1320,24 +1524,24 @@ Header END -->
                         <div class="bg-light rounded-start-top-0 p-3 rounded">
                           <div class="d-flex justify-content-between">
                             <h6 class="mb-1">
-                              <a href='{% static "#!" %}'> Onu Brooks </a>
+                              <a href='{% static "#!" %}'> {{ comment.owner.get_full_name }} </a>
                             </h6>
-                            <small class="ms-2">5hr</small>
+                            <small class="ms-2">{{ comment.created_at }}</small>
                           </div>
                           <p class="small mb-0">
-                            Preference any astonished unreserved Mrs.
+                            {{ comment.text }}
                           </p>
                         </div>
                         <!-- Comment react -->
                         <ul class="nav nav-divider py-2 small">
                           <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'> Like (3)</a>
+                            <a class="nav-link" href='{% static "#!" %}'> Like ({{comment.commentlike_set.count}})</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'> Reply</a>
+                            <a class="nav-link" href='javascript:;' onclick="displayReplybox('{{comment.id}}')"> Reply</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'> View 5 replies</a>
+                            <a class="nav-link" href='javascript:;' onclick="displayReplies('{{comment.id}}')"> View {{comment.reply_set.count }} replies</a>
                           </li>
                         </ul>
                       </div>
@@ -1345,48 +1549,92 @@ Header END -->
                     <!-- Comment item nested START -->
                     <ul class="comment-item-nested list-unstyled">
                       <!-- Comment item START -->
-                      <li class="comment-item">
-                        <div class="d-flex">
-                          <!-- Avatar -->
-                          <div class="avatar avatar-xs">
-                            <a href='{% static "#!" %}'
-                              ><img
-                                class="avatar-img rounded-circle"
-                                src='{% static "assets/images/avatar/06.jpg" %}'
-                                alt=""
-                            /></a>
-                          </div>
-                          <!-- Comment by -->
-                          <div class="ms-2">
-                            <div class="bg-light p-3 rounded">
-                              <div class="d-flex justify-content-between">
-                                <h6 class="mb-1">
-                                  <a href='{% static "#!" %}'> Tolulope Fakunle </a>
-                                </h6>
-                                <small class="ms-2">2hr</small>
-                              </div>
-                              <p class="small mb-0">
-                                Dependent on so extremely delivered by. Yet ﻿no
-                                jokes worse her why.
-                              </p>
+                      <div id="{{comment.id}}-replies" class="hiddencommentsection">
+                        {% for reply in comment.reply_set.all %}
+                        <li class="comment-item">
+                          <div class="d-flex">
+                            <!-- Avatar -->
+                            <div class="avatar avatar-xs">
+                              <a href='{% static "#!" %}'
+                                ><img
+                                  class="avatar-img rounded-circle"
+                                  src='{{ reply.owner.profile.image.url }}'
+                                  alt=""
+                              /></a>
                             </div>
-                            <!-- Comment react -->
-                            <ul class="nav nav-divider py-2 small">
-                              <li class="nav-item">
-                                <a class="nav-link" href='{% static "#!" %}'> Like (5)</a>
-                              </li>
-                              <li class="nav-item">
-                                <a class="nav-link" href='{% static "#!" %}'> Reply</a>
-                              </li>
-                            </ul>
+                            <!-- Comment by -->
+                            <div class="ms-2">
+                              <div class="bg-light p-3 rounded">
+                                <div class="d-flex justify-content-between">
+                                  <h6 class="mb-1">
+                                    <a href='{% static "#!" %}'> {{ reply.owner.get_full_name }} </a>
+                                  </h6>
+                                  <small class="ms-2">2hr</small>
+                                </div>
+                                <p class="small mb-0">
+                                  {{ reply.text }}
+                                </p>
+                              </div>
+                              <!-- Comment react -->
+                              <ul class="nav nav-divider py-2 small">
+                                <li class="nav-item">
+                                  <a class="nav-link" href='{% static "#!" %}'> Like ({{ reply.replylike_set.count }})</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" href='javascript:;' onclick="displayReplybox('{{comment.id}}')"> Reply</a>
+                                </li>
+                              </ul>
+                            </div>
                           </div>
+                        </li>
+                        {% endfor %}
+                      </div>
+                      <!-- Add reply -->
+                      <div id="{{comment.id}}-replybox" class="d-flex mb-3 hiddencommentsection">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xs me-2 reply-img">
+                          <a href='{% static "#!" %}'>
+                            <img
+                              class="avatar-img rounded-circle"
+                              src='{{ user.profile.image.url }}'
+                              alt=""
+                            />
+                          </a>
                         </div>
-                      </li>
-                      <!-- Comment item END -->
+                        <!-- Comment box  -->
+                        <form class="w-100" action="/{{ user.username }}/reply/post/{{ comment.id }}" method="post" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <textarea
+                            data-autoresize
+                            class="pe-4 bg-light reply"
+                            rows="1"
+                            placeholder="Reply a comment..."
+                            name="text"
+                          ></textarea>
+                          <input type="hidden" name="next" value="{{ request.path }}">
+                          <button type="submit" class="btn btn-success-soft mt-1 reply-btn">Reply</button>
+                        </form>
+                      </div>
                     </ul>
+                    <!-- Load more replies -->
+                    <a
+                      href='{% static "#!" %}'
+                      role="button"
+                      class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center mb-3 ms-5"
+                      data-bs-toggle="button"
+                      aria-pressed="true"
+                    >
+                      <div class="spinner-dots me-2">
+                        <span class="spinner-dot"></span>
+                        <span class="spinner-dot"></span>
+                        <span class="spinner-dot"></span>
+                      </div>
+                      Load more replies
+                    </a>
                     <!-- Comment item nested END -->
                   </li>
                   <!-- Comment item END -->
+                  {% endfor %}
                 </ul>
                 <!-- Comment wrap END -->
               </div>
@@ -1434,7 +1682,7 @@ Header END -->
                         <h6 class="nav-item card-title mb-0">
                           <a href='/{{ post.owner.username}}'> {{ post.owner.get_full_name }} </a>
                         </h6>
-                        <span class="nav-item small"> 2hr</span>
+                        <span class="nav-item small"> {{ post.created_at }} </span>
                       </div>
                       <p class="mb-0 small">{{ post.owner.profile.occupation }}</p>
                     </div>
@@ -1516,7 +1764,7 @@ Header END -->
                     {% endif %}
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href='{% static "#!" %}'>
+                    <a class="nav-link" href='javascript:;' onclick="displayComments('{{post.id}}')">
                       <i class="bi bi-chat-fill pe-1"></i>Comments ({{ post.comment_set.count }})</a
                     >
                   </li>
@@ -1575,7 +1823,7 @@ Header END -->
                 <!-- Feed react END -->
 
                 <!-- Add comment -->
-                <div class="d-flex mb-3">
+                <div id="{{post.id}}-postcomment" class="d-flex mb-3 hiddencommentsection">
                   <!-- Avatar -->
                   <div class="avatar avatar-xs me-2">
                     <a href='{% static "#!" %}'>
@@ -1587,7 +1835,7 @@ Header END -->
                     </a>
                   </div>
                   <!-- Comment box  -->
-                  <form class="w-100" action="/{{post.owner.username }}/comment/post/{{ post.id }}" method="post" enctype="multipart/form-data">
+                  <form class="w-100" action="/{{user.username }}/comment/post/{{ post.id }}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <textarea
                       data-autoresize
@@ -1597,11 +1845,11 @@ Header END -->
                       name="text"
                     ></textarea>
                     <input type="hidden" name="next" value="{{ request.path }}">
-                    <input type="submit" class="btn btn-success-soft" value="Post comment">
+                    <button type="submit" class="btn btn-success-soft mt-2">Post comment</button>
                   </form>
                 </div>
                 <!-- Comment wrap START -->
-                <ul class="comment-wrap list-unstyled">
+                <ul id="{{post.id}}-comments" class="comment-wrap list-unstyled hiddencommentsection">
                   <!-- Comment item START -->
                   {% for comment in post.comment_set.all %}
                   <li class="comment-item">
@@ -1622,7 +1870,7 @@ Header END -->
                             <h6 class="mb-1">
                               <a href='{% static "#!" %}'> {{ comment.owner.get_full_name }} </a>
                             </h6>
-                            <small class="ms-2">5hr</small>
+                            <small class="ms-2">{{ comment.created_at }}</small>
                           </div>
                           <p class="small mb-0">
                             {{ comment.text }}
@@ -1631,13 +1879,13 @@ Header END -->
                         <!-- Comment react -->
                         <ul class="nav nav-divider py-2 small">
                           <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'> Like (3)</a>
+                            <a class="nav-link" href='{% static "#!" %}'> Like ({{comment.commentlike_set.count}})</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'> Reply</a>
+                            <a class="nav-link" href='javascript:;' onclick="displayReplybox('{{comment.id}}')"> Reply</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'> View 5 replies</a>
+                            <a class="nav-link" href='javascript:;' onclick="displayReplies('{{comment.id}}')"> View {{comment.reply_set.count}} replies</a>
                           </li>
                         </ul>
                       </div>
@@ -1645,45 +1893,72 @@ Header END -->
                     <!-- Comment item nested START -->
                     <ul class="comment-item-nested list-unstyled">
                       <!-- Comment item START -->
-                      {% for reply in comment.reply_set.all %}
-                      <li class="comment-item">
-                        <div class="d-flex">
-                          <!-- Avatar -->
-                          <div class="avatar avatar-xs">
-                            <a href='{% static "#!" %}'
-                              ><img
-                                class="avatar-img rounded-circle"
-                                src='{{ reply.owner.profile.image.url }}'
-                                alt=""
-                            /></a>
-                          </div>
-                          <!-- Comment by -->
-                          <div class="ms-2">
-                            <div class="bg-light p-3 rounded">
-                              <div class="d-flex justify-content-between">
-                                <h6 class="mb-1">
-                                  <a href='{% static "#!" %}'> {{ reply.owner.get_full_name }} </a>
-                                </h6>
-                                <small class="ms-2">2hr</small>
-                              </div>
-                              <p class="small mb-0">
-                                {{ reply.text }}
-                              </p>
+                      <div id="{{comment.id}}-replies" class="hiddencommentsection">
+                        {% for reply in comment.reply_set.all %}
+                        <li class="comment-item">
+                          <div class="d-flex">
+                            <!-- Avatar -->
+                            <div class="avatar avatar-xs">
+                              <a href='{% static "#!" %}'
+                                ><img
+                                  class="avatar-img rounded-circle"
+                                  src='{{ reply.owner.profile.image.url }}'
+                                  alt=""
+                              /></a>
                             </div>
-                            <!-- Comment react -->
-                            <ul class="nav nav-divider py-2 small">
-                              <li class="nav-item">
-                                <a class="nav-link" href='{% static "#!" %}'> Like (5)</a>
-                              </li>
-                              <li class="nav-item">
-                                <a class="nav-link" href='{% static "#!" %}'> Reply</a>
-                              </li>
-                            </ul>
+                            <!-- Comment by -->
+                            <div class="ms-2">
+                              <div class="bg-light p-3 rounded">
+                                <div class="d-flex justify-content-between">
+                                  <h6 class="mb-1">
+                                    <a href='{% static "#!" %}'> {{ reply.owner.get_full_name }} </a>
+                                  </h6>
+                                  <small class="ms-2">2hr</small>
+                                </div>
+                                <p class="small mb-0">
+                                  {{ reply.text }}
+                                </p>
+                              </div>
+                              <!-- Comment react -->
+                              <ul class="nav nav-divider py-2 small">
+                                <li class="nav-item">
+                                  <a class="nav-link" href='{% static "#!" %}'> Like (5)</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" href='javascript:;' onclick="displayReplybox('{{comment.id}}')"> Reply</a>
+                                </li>
+                              </ul>
+                            </div>
                           </div>
+                        </li>
+                        {% endfor %}
+                      </div>
+                      <!-- Add reply -->
+                      <div id="{{comment.id}}-replybox" class="d-flex mb-3 hiddencommentsection">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xs me-2 reply-img">
+                          <a href='{% static "#!" %}'>
+                            <img
+                              class="avatar-img rounded-circle"
+                              src='{{ user.profile.image.url }}'
+                              alt=""
+                            />
+                          </a>
                         </div>
-                      </li>
-                      {% endfor %}
-                      <!-- Comment item END -->
+                        <!-- Comment box  -->
+                        <form class="w-100" action="/{{ user.username }}/reply/post/{{ comment.id }}" method="post" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <textarea
+                            data-autoresize
+                            class="pe-4 bg-light reply"
+                            rows="1"
+                            placeholder="Reply a comment..."
+                            name="text"
+                          ></textarea>
+                          <input type="hidden" name="next" value="{{ request.path }}">
+                          <button type="submit" class="btn btn-success-soft mt-1 reply-btn">Reply</button>
+                        </form>
+                      </div>
                     </ul>
                     <!-- Load more replies -->
                     <a
@@ -1927,8 +2202,8 @@ Header END -->
                 </p>
                 <!-- Card feed grid START -->
                 <div class="d-flex justify-content-between">
-                  <div class="row g-3">
-                    <div class="col-6">
+                  <div class="row g-3 mt-2">
+                    <div class="col-6 my-auto">
                       <!-- Grid img -->
                       <a
                         class="h-100"
@@ -1943,7 +2218,7 @@ Header END -->
                         />
                       </a>
                     </div>
-                    <div class="col-6">
+                    <div class="col-6 my-auto">
                       <!-- Grid img -->
                       <a
                         href='{{ post.postimage_set.all|index:1 }}'
@@ -2049,15 +2324,40 @@ Header END -->
                   </li>
                   <!-- Card share action menu END -->
                   <li class="nav-item">
-                    <a class="nav-link mb-0" href='{% static "#!" %}'>
+                    <a class="nav-link mb-0" href='javascript:;' onclick="displayComments('{{post.id}}')">
                       <i class="bi bi-chat-fill pe-1"></i>Comments ({{post.comment_set.count}})</a
                     >
                   </li>
                 </ul>
                 <!-- Feed react START -->
-
+                <!-- Add comment -->
+                <div id="{{post.id}}-postcomment" class="d-flex mb-3 hiddencommentsection">
+                  <!-- Avatar -->
+                  <div class="avatar avatar-xs me-2">
+                    <a href='{% static "#!" %}'>
+                      <img
+                        class="avatar-img rounded-circle"
+                        src='{{ user.profile.image.url }}'
+                        alt=""
+                      />
+                    </a>
+                  </div>
+                  <!-- Comment box  -->
+                  <form class="w-100" action="/{{user.username }}/comment/post/{{ post.id }}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <textarea
+                      data-autoresize
+                      class="form-control pe-4 bg-light"
+                      rows="1"
+                      placeholder="Add a comment..."
+                      name="text"
+                    ></textarea>
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <button type="submit" class="btn btn-success-soft mt-2">Post comment</button>
+                  </form>
+                </div>
                 <!-- Comment wrap START -->
-                <ul class="comment-wrap list-unstyled">
+                <ul id="{{post.id}}-comments" class="comment-wrap list-unstyled hiddencommentsection">
                   <!-- Comment item START -->
                   {% for comment in post.comment_set.all %}
                   <li class="comment-item">
@@ -2079,7 +2379,7 @@ Header END -->
                             <h6 class="mb-1">
                               <a href='{% static "#!" %}'> {{ comment.owner.get_full_name }} </a>
                             </h6>
-                            <small class="ms-2">5hr</small>
+                            <small class="ms-2">{{ comment.created_at }}</small>
                           </div>
                           <p class="small mb-0">
                             {{ comment.text }}
@@ -2088,13 +2388,13 @@ Header END -->
                         <!-- Comment rect -->
                         <ul class="nav nav-divider py-2 small">
                           <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'> Like (3)</a>
+                            <a class="nav-link" href='{% static "#!" %}'> Like ({{comment.commentlike_set.count}})</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'> Reply</a>
+                            <a class="nav-link" href='javascript:;' onclick="displayReplybox('{{comment.id}}')"> Reply</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'> View 5 replies</a>
+                            <a class="nav-link" href='javascript:;' onclick="displayReplies('{{comment.id}}')"> View {{ comment.reply_set.count }} replies</a>
                           </li>
                         </ul>
                       </div>
@@ -2102,45 +2402,72 @@ Header END -->
                     <!-- Comment item nested START -->
                     <ul class="comment-item-nested list-unstyled">
                       <!-- Comment item START -->
-                      {% for reply in comment.reply_set.all %}
-                      <li class="comment-item">
-                        <div class="d-flex">
-                          <!-- Avatar -->
-                          <div class="avatar avatar-xs">
-                            <a href='{% static "#!" %}'
-                              ><img
-                                class="avatar-img rounded-circle"
-                                src='{{ reply.owner.profile.image.url }}'
-                                alt=""
-                            /></a>
-                          </div>
-                          <!-- Comment by -->
-                          <div class="ms-2">
-                            <div class="bg-light p-3 rounded">
-                              <div class="d-flex justify-content-between">
-                                <h6 class="mb-1">
-                                  <a href='{% static "#!" %}'> {{ reply.owner.get_full_name }} </a>
-                                </h6>
-                                <small class="ms-2">2hr</small>
-                              </div>
-                              <p class="small mb-0">
-                                {{ reply.text }}
-                              </p>
+                      <div id="{{comment.id}}-replies" class="hiddencommentsection">
+                        {% for reply in comment.reply_set.all %}
+                        <li class="comment-item">
+                          <div class="d-flex">
+                            <!-- Avatar -->
+                            <div class="avatar avatar-xs">
+                              <a href='{% static "#!" %}'
+                                ><img
+                                  class="avatar-img rounded-circle"
+                                  src='{{ reply.owner.profile.image.url }}'
+                                  alt=""
+                              /></a>
                             </div>
-                            <!-- Comment rect -->
-                            <ul class="nav nav-divider py-2 small">
-                              <li class="nav-item">
-                                <a class="nav-link" href='{% static "#!" %}'> Like (5)</a>
-                              </li>
-                              <li class="nav-item">
-                                <a class="nav-link" href='{% static "#!" %}'> Reply</a>
-                              </li>
-                            </ul>
+                            <!-- Comment by -->
+                            <div class="ms-2">
+                              <div class="bg-light p-3 rounded">
+                                <div class="d-flex justify-content-between">
+                                  <h6 class="mb-1">
+                                    <a href='{% static "#!" %}'> {{ reply.owner.get_full_name }} </a>
+                                  </h6>
+                                  <small class="ms-2">2hr</small>
+                                </div>
+                                <p class="small mb-0">
+                                  {{ reply.text }}
+                                </p>
+                              </div>
+                              <!-- Comment rect -->
+                              <ul class="nav nav-divider py-2 small">
+                                <li class="nav-item">
+                                  <a class="nav-link" href='{% static "#!" %}'> Like ({{ reply.replylike_set.count }})</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" href='javascript:;' onclick="displayReplybox('{{comment.id}}')"> Reply</a>
+                                </li>
+                              </ul>
+                            </div>
                           </div>
+                        </li>
+                        {% endfor %}
+                      </div>
+                      <!-- Add reply -->
+                      <div id="{{comment.id}}-replybox" class="d-flex mb-3 hiddencommentsection">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xs me-2 reply-img">
+                          <a href='{% static "#!" %}'>
+                            <img
+                              class="avatar-img rounded-circle"
+                              src='{{ user.profile.image.url }}'
+                              alt=""
+                            />
+                          </a>
                         </div>
-                      </li>
-                      {% endfor %}
-                      <!-- Comment item END -->
+                        <!-- Comment box  -->
+                        <form class="w-100" action="/{{ user.username }}/reply/post/{{ comment.id }}" method="post" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <textarea
+                            data-autoresize
+                            class="pe-4 bg-light reply"
+                            rows="1"
+                            placeholder="Reply a comment..."
+                            name="text"
+                          ></textarea>
+                          <input type="hidden" name="next" value="{{ request.path }}">
+                          <button type="submit" class="btn btn-success-soft mt-1 reply-btn">Reply</button>
+                        </form>
+                      </div>
                     </ul>
                     <!-- Load more replies -->
                     <a
@@ -2363,15 +2690,15 @@ Header END -->
                 class="card-header d-flex justify-content-between align-items-center border-0 pb-0"
               >
                 <h6 class="card-title mb-0">People you may know</h6>
-                <button class="btn btn-sm btn-primary-soft">See all</button>
               </div>
               <!-- Card header START -->
 
               <!-- Card body START -->
+              {% if mutualconnections %}
               <div class="card-body">
                 <div class="tiny-slider arrow-hover">
                   <div
-                    class="tiny-slider-inner ms-n4"
+                    class="tiny-slider-inner"
                     data-arrow="true"
                     data-dots="false"
                     data-items-xl="3"
@@ -2383,650 +2710,42 @@ Header END -->
                     data-edge="30"
                   >
                     <!-- Slider items -->
-                    <div>
+                    {% for connection in mutualconnections %}
+                    <div id="{{connection.id}}-pymk">
                       <!-- Card add friend item START -->
                       <div class="card shadow-none text-center">
                         <!-- Card body -->
                         <div class="card-body p-2 pb-0">
                           <div class="avatar avatar-xl">
-                            <a href='{% static "#!" %}'
+                            <a href='/{{connection.username}}'
                               ><img
                                 class="avatar-img rounded-circle"
-                                src='{% static "assets/images/avatar/09.jpg" %}'
+                                src='/media/{{connection.image_url}}'
                                 alt=""
                             /></a>
                           </div>
-                          <h6 class="card-title mb-1 mt-3">
-                            <a href='{% static "#!" %}'> Elo Idiodi </a>
+                          <h6 class="card-title mb-1 mt-3 pymk">
+                            <a href='{% static "#!" %}'> {{connection.first_name}} {{connection.last_name}}</a>
                           </h6>
-                          <p class="mb-0 small lh-sm">50 mutual connections</p>
+                          <p class="mb-0 small lh-sm"> {{connection.mccount}} mutual contacts</p>
                         </div>
                         <!-- Card footer -->
                         <div class="card-footer p-2 border-0">
-                          <button class="btn btn-sm btn-primary-soft w-100">
-                            Add friend
+                          <button class="btn btn-sm btn-primary-soft w-100" href='javascript:;' onclick="addToContacts('{{connection.id}}', '{{user.username}}');return false;">
+                            Add to contacts
                           </button>
                         </div>
                       </div>
                       <!-- Card add friend item END -->
                     </div>
-                    <div>
-                      <!-- Card add friend item START -->
-                      <div class="card shadow-none text-center">
-                        <!-- Card body -->
-                        <div class="card-body p-2 pb-0">
-                          <div class="avatar avatar-story avatar-xl">
-                            <a href='{% static "#!" %}'
-                              ><img
-                                class="avatar-img rounded-circle"
-                                src='{% static "assets/images/avatar/10.jpg" %}'
-                                alt=""
-                            /></a>
-                          </div>
-                          <h6 class="card-title mb-1 mt-3">
-                            <a href='{% static "#!" %}'> Philomina Lay </a>
-                          </h6>
-                          <p class="mb-0 small lh-sm">33 mutual connections</p>
-                        </div>
-                        <!-- Card footer -->
-                        <div class="card-footer p-2 border-0">
-                          <button class="btn btn-sm btn-primary-soft w-100">
-                            Add friend
-                          </button>
-                        </div>
-                      </div>
-                      <!-- Card add friend item END -->
-                    </div>
-                    <div>
-                      <!-- Card add friend item START -->
-                      <div class="card shadow-none text-center">
-                        <!-- Card body -->
-                        <div class="card-body p-2 pb-0">
-                          <div class="avatar avatar-xl">
-                            <a href='{% static "#!" %}'
-                              ><img
-                                class="avatar-img rounded-circle"
-                                src='{% static "assets/images/avatar/11.jpg" %}'
-                                alt=""
-                            /></a>
-                          </div>
-                          <h6 class="card-title mb-1 mt-3">
-                            <a href='{% static "#!" %}'> Solomon Amao </a>
-                          </h6>
-                          <p class="mb-0 small lh-sm">45 mutual connections</p>
-                        </div>
-                        <!-- Card footer -->
-                        <div class="card-footer p-2 border-0">
-                          <button class="btn btn-sm btn-primary-soft w-100">
-                            Add friend
-                          </button>
-                        </div>
-                      </div>
-                      <!-- Card add friend item END -->
-                    </div>
-                    <div>
-                      <!-- Card add friend item START -->
-                      <div class="card shadow-none text-center">
-                        <!-- Card body -->
-                        <div class="card-body p-2 pb-0">
-                          <div class="avatar avatar-xl">
-                            <a href='{% static "#!" %}'
-                              ><img
-                                class="avatar-img rounded-circle"
-                                src='{% static "assets/images/avatar/08.jpg" %}'
-                                alt=""
-                            /></a>
-                          </div>
-                          <h6 class="card-title mb-1 mt-3">
-                            <a href='{% static "#!" %}'> Nehe Kamolu </a>
-                          </h6>
-                          <p class="mb-0 small lh-sm">21 mutual connections</p>
-                        </div>
-                        <!-- Card footer -->
-                        <div class="card-footer p-2 border-0">
-                          <button class="btn btn-sm btn-primary-soft w-100">
-                            Add friend
-                          </button>
-                        </div>
-                      </div>
-                      <!-- Card add friend item END -->
-                    </div>
+                    {% endfor %}
                   </div>
                 </div>
               </div>
+              {% else %}
+              <div><p class="p-5 text-secondary btn-link">You have no mutual contacts. Add Contacts to gain suggestions<p></div>
+              {% endif %}
               <!-- Card body END -->
-            </div>
-            <!-- Card feed item END -->
-
-            <!-- Card feed item START -->
-            <div class="card">
-              <!-- Card header START -->
-              <div class="card-header border-0 pb-0">
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="d-flex align-items-center">
-                    <!-- Avatar -->
-                    <div class="avatar me-2">
-                      <a href='{% static "#" %}'>
-                        <img
-                          class="avatar-img rounded-circle"
-                          src='{% static "assets/images/avatar/05.jpg" %}'
-                          alt=""
-                        />
-                      </a>
-                    </div>
-                    <!-- Title -->
-                    <div>
-                      <h6 class="card-title mb-0">
-                        <a href='{% static "#!" %}'> Onu Brooks </a>
-                      </h6>
-                      <p class="mb-0 small">9 November at 23:29</p>
-                    </div>
-                  </div>
-                  <!-- Card share action menu -->
-                  <a
-                    href='{% static "#" %}'
-                    class="text-secondary btn btn-secondary-soft-hover py-1 px-2"
-                    id="cardShareAction7"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="bi bi-three-dots"></i>
-                  </a>
-                  <!-- Card share action dropdown menu -->
-                  <ul
-                    class="dropdown-menu dropdown-menu-end"
-                    aria-labelledby="cardShareAction7"
-                  >
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori
-                        ferguson
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a
-                      >
-                    </li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-flag fa-fw pe-2"></i>Report post</a
-                      >
-                    </li>
-                  </ul>
-                </div>
-                <!-- Card share action END -->
-              </div>
-              <!-- Card header START -->
-
-              <!-- Card body START -->
-              <div class="card-body pb-0">
-                <p>How do you protect your business against cyber-crime?</p>
-                <div class="vstack gap-2">
-                  <!-- Feed poll item -->
-                  <div>
-                    <input
-                      type="radio"
-                      class="btn-check"
-                      name="poll"
-                      id="option"
-                    />
-                    <label class="btn btn-outline-primary w-100" for="option"
-                      >We have cybersecurity insurance coverage</label
-                    >
-                  </div>
-                  <!-- Feed poll item -->
-                  <div>
-                    <input
-                      type="radio"
-                      class="btn-check"
-                      name="poll"
-                      id="option2"
-                    />
-                    <label class="btn btn-outline-primary w-100" for="option2"
-                      >Our dedicated staff will protect us</label
-                    >
-                  </div>
-                  <!-- Feed poll item -->
-                  <div>
-                    <input
-                      type="radio"
-                      class="btn-check"
-                      name="poll"
-                      id="option3"
-                    />
-                    <label class="btn btn-outline-primary w-100" for="option3"
-                      >We give regular training for best practices</label
-                    >
-                  </div>
-                  <!-- Feed poll item -->
-                  <div>
-                    <input
-                      type="radio"
-                      class="btn-check"
-                      name="poll"
-                      id="option4"
-                    />
-                    <label class="btn btn-outline-primary w-100" for="option4"
-                      >Third-party vendor protection</label
-                    >
-                  </div>
-                </div>
-
-                <!-- Feed poll votes START -->
-                <ul class="nav nav-divider mt-2 mb-0">
-                  <li class="nav-item">
-                    <a class="nav-link" href='{% static "#" %}'>263 votes</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href='{% static "#" %}'>2d left</a>
-                  </li>
-                </ul>
-                <!-- Feed poll votes ED -->
-
-                <!-- Feed react START -->
-                <ul class="nav nav-stack pb-2 small mt-4">
-                  <li class="nav-item">
-                    <a class="nav-link active text-secondary" href='{% static "#!" %}'>
-                      <i
-                        class="bi bi-heart-fill me-1 icon-xs bg-danger text-white rounded-circle"
-                      ></i>
-                      Solomon, Elo and 126 others
-                    </a>
-                  </li>
-                  <li class="nav-item ms-sm-auto">
-                    <a class="nav-link" href='{% static "#!" %}'>
-                      <i class="bi bi-chat-fill pe-1"></i>Comments (12)</a
-                    >
-                  </li>
-                </ul>
-                <!-- Feed react END -->
-              </div>
-              <!-- Card body END -->
-              <!-- Card Footer START -->
-              <div class="card-footer py-3">
-                <!-- Feed react START -->
-                <ul class="nav nav-fill nav-stack small">
-                  <li class="nav-item">
-                    <a class="nav-link mb-0 active" href='{% static "#!" %}'>
-                      <i class="bi bi-heart pe-1"></i>Liked (56)</a
-                    >
-                  </li>
-                  <!-- Card share action dropdown START -->
-                  <li class="nav-item dropdown">
-                    <a
-                      href='{% static "#" %}'
-                      class="nav-link mb-0"
-                      id="feedActionShare6"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-reply-fill flip-horizontal ps-1"></i>Share
-                      (3)
-                    </a>
-                    <!-- Card share action dropdown menu -->
-                    <ul
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="feedActionShare6"
-                    >
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-envelope fa-fw pe-2"></i>Send via
-                          Direct Message</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-bookmark-check fa-fw pe-2"></i
-                          >Bookmark
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-link fa-fw pe-2"></i>Copy link to
-                          post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-share fa-fw pe-2"></i>Share post via
-                          …</a
-                        >
-                      </li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to
-                          News Feed</a
-                        >
-                      </li>
-                    </ul>
-                  </li>
-                  <!-- Card share action dropdown END -->
-                  <li class="nav-item">
-                    <a class="nav-link mb-0" href='{% static "#!" %}'>
-                      <i class="bi bi-send-fill pe-1"></i>Send</a
-                    >
-                  </li>
-                </ul>
-                <!-- Feed react END -->
-              </div>
-              <!-- Card Footer END -->
-            </div>
-            <!-- Card feed item END -->
-
-            <!-- Card feed item START -->
-            <div class="card">
-              <!-- Card header START -->
-              <div class="card-header border-0 pb-0">
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="d-flex align-items-center">
-                    <!-- Avatar -->
-                    <div class="avatar me-2">
-                      <a href='{% static "#" %}'>
-                        <img
-                          class="avatar-img rounded-circle"
-                          src='{% static "assets/images/avatar/01.jpg" %}'
-                          alt=""
-                        />
-                      </a>
-                    </div>
-                    <!-- Title -->
-                    <div>
-                      <h6 class="card-title mb-0">
-                        <a href='{% static "#!" %}'> Josiah Emmy </a>
-                      </h6>
-                      <p class="mb-0 small">9 November at 23:29</p>
-                    </div>
-                  </div>
-                  <!-- Card share action menu -->
-                  <a
-                    href='{% static "#" %}'
-                    class="text-secondary btn btn-secondary-soft-hover py-1 px-2"
-                    id="cardShareAction10"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="bi bi-three-dots"></i>
-                  </a>
-                  <!-- Card share action dropdown menu -->
-                  <ul
-                    class="dropdown-menu dropdown-menu-end"
-                    aria-labelledby="cardShareAction10"
-                  >
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori
-                        ferguson
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a
-                      >
-                    </li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-flag fa-fw pe-2"></i>Report post</a
-                      >
-                    </li>
-                  </ul>
-                </div>
-                <!-- Card share action END -->
-              </div>
-              <!-- Card header START -->
-
-              <!-- Card body START -->
-              <div class="card-body pb-0">
-                <p>How do you protect your business against cyber-crime?</p>
-                <div class="card card-body mt-4">
-                  <!-- Title -->
-                  <div
-                    class="d-sm-flex justify-content-sm-between align-items-center"
-                  >
-                    <span class="small">16/20 responded</span>
-                    <span class="small"
-                      >Results not visible to participants</span
-                    >
-                  </div>
-
-                  <!-- Results -->
-                  <div class="vstack gap-4 gap-sm-3 mt-3">
-                    <!-- Option 1 result START -->
-                    <div
-                      class="d-flex align-items-center justify-content-between"
-                    >
-                      <!-- Progress bar -->
-                      <div class="overflow-hidden w-100 me-3">
-                        <div
-                          class="progress bg-primary bg-opacity-10 position-relative"
-                          style="height: 30px"
-                        >
-                          <div
-                            class="progress-bar bg-primary bg-opacity-25"
-                            role="progressbar"
-                            style="width: 25%"
-                            aria-valuenow="25"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                          <span
-                            class="position-absolute pt-1 ps-3 fs-6 fw-normal text-truncate w-100"
-                            >We have cybersecurity insurance coverage
-                          </span>
-                        </div>
-                      </div>
-                      <div class="flex-shrink-0">25%</div>
-                    </div>
-                    <!-- Option 1 result END -->
-
-                    <!-- Option 2 result START -->
-                    <div
-                      class="d-flex align-items-center justify-content-between"
-                    >
-                      <!-- Progress bar -->
-                      <div class="overflow-hidden w-100 me-3">
-                        <div
-                          class="progress bg-primary bg-opacity-10 position-relative"
-                          style="height: 30px"
-                        >
-                          <div
-                            class="progress-bar bg-primary bg-opacity-25"
-                            role="progressbar"
-                            style="width: 15%"
-                            aria-valuenow="15"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                          <span
-                            class="position-absolute pt-1 ps-3 fs-6 fw-normal text-truncate w-100"
-                            >Our dedicated staff will protect us</span
-                          >
-                        </div>
-                      </div>
-                      <div class="flex-shrink-0">15%</div>
-                    </div>
-                    <!-- Option 2 result END -->
-
-                    <!-- Option 3 result START -->
-                    <div
-                      class="d-flex align-items-center justify-content-between"
-                    >
-                      <!-- Progress bar -->
-                      <div class="overflow-hidden w-100 me-3">
-                        <div
-                          class="progress bg-primary bg-opacity-10 position-relative"
-                          style="height: 30px"
-                        >
-                          <div
-                            class="progress-bar bg-primary bg-opacity-25"
-                            role="progressbar"
-                            style="width: 10%"
-                            aria-valuenow="10"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                          <span
-                            class="position-absolute pt-1 ps-3 fs-6 fw-normal text-truncate w-100"
-                            >We give regular training for best practices</span
-                          >
-                        </div>
-                      </div>
-                      <div class="flex-shrink-0">10%</div>
-                    </div>
-                    <!-- Option 3 result END -->
-
-                    <!-- Option 4 result START -->
-                    <div
-                      class="d-flex align-items-center justify-content-between"
-                    >
-                      <!-- Progress bar -->
-                      <div class="overflow-hidden w-100 me-3">
-                        <div
-                          class="progress bg-primary bg-opacity-10 position-relative"
-                          style="height: 30px"
-                        >
-                          <div
-                            class="progress-bar bg-primary bg-opacity-25"
-                            role="progressbar"
-                            style="width: 55%"
-                            aria-valuenow="55"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                          <span
-                            class="position-absolute pt-1 ps-3 fs-6 fw-normal text-truncate w-100"
-                            >Third-party vendor protection</span
-                          >
-                        </div>
-                      </div>
-                      <div class="flex-shrink-0">55%</div>
-                    </div>
-                    <!-- Option 4 result END -->
-                  </div>
-                </div>
-
-                <!-- Feed poll votes START -->
-                <ul class="nav nav-divider mt-2 mb-0">
-                  <li class="nav-item">
-                    <a class="nav-link" href='{% static "#" %}'>263 votes</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href='{% static "#" %}'>2d left</a>
-                  </li>
-                </ul>
-                <!-- Feed poll votes ED -->
-
-                <!-- Feed react START -->
-                <ul class="nav nav-stack pb-2 small mt-4">
-                  <li class="nav-item">
-                    <a class="nav-link active text-secondary" href='{% static "#!" %}'>
-                      <i
-                        class="bi bi-heart-fill me-1 icon-xs bg-danger text-white rounded-circle"
-                      ></i>
-                      Solomon, Elo and 126 others
-                    </a>
-                  </li>
-                  <li class="nav-item ms-sm-auto">
-                    <a class="nav-link" href='{% static "#!" %}'>
-                      <i class="bi bi-chat-fill pe-1"></i>Comments (12)</a
-                    >
-                  </li>
-                </ul>
-                <!-- Feed react END -->
-              </div>
-              <!-- Card body END -->
-              <!-- Card Footer START -->
-              <div class="card-footer py-3">
-                <!-- Feed react START -->
-                <ul class="nav nav-fill nav-stack small">
-                  <li class="nav-item">
-                    <a class="nav-link mb-0 active" href='{% static "#!" %}'>
-                      <i class="bi bi-heart pe-1"></i>Liked (56)</a
-                    >
-                  </li>
-                  <!-- Card share action dropdown START -->
-                  <li class="nav-item dropdown">
-                    <a
-                      href='{% static "#" %}'
-                      class="nav-link mb-0"
-                      id="feedActionShare8"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-reply-fill flip-horizontal ps-1"></i>Share
-                      (3)
-                    </a>
-                    <!-- Card share action dropdown menu -->
-                    <ul
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="feedActionShare8"
-                    >
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-envelope fa-fw pe-2"></i>Send via
-                          Direct Message</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-bookmark-check fa-fw pe-2"></i
-                          >Bookmark
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-link fa-fw pe-2"></i>Copy link to
-                          post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-share fa-fw pe-2"></i>Share post via
-                          …</a
-                        >
-                      </li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to
-                          News Feed</a
-                        >
-                      </li>
-                    </ul>
-                  </li>
-                  <!-- Card share action dropdown END -->
-                  <li class="nav-item">
-                    <a class="nav-link mb-0" href='{% static "#!" %}'>
-                      <i class="bi bi-send-fill pe-1"></i>Send</a
-                    >
-                  </li>
-                </ul>
-                <!-- Feed react END -->
-              </div>
-              <!-- Card Footer END -->
             </div>
             <!-- Card feed item END -->
 
@@ -3209,313 +2928,6 @@ Header END -->
               <!-- Card Footer END -->
             </div>
             <!-- Card feed item END -->
-
-            <!-- Card feed item START -->
-            <div class="card">
-              <!-- Card header START -->
-              <div class="card-header border-0 pb-0">
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="d-flex align-items-center">
-                    <!-- Avatar -->
-                    <div class="avatar avatar-story me-2">
-                      <a href='{% static "#!" %}'>
-                        <img
-                          class="avatar-img rounded-circle"
-                          src='{% static "assets/images/avatar/02.jpg" %}'
-                          alt=""
-                        />
-                      </a>
-                    </div>
-                    <!-- Info -->
-                    <div>
-                      <div class="nav nav-divider">
-                        <h6 class="nav-item card-title mb-0">
-                          <a href='{% static "#!" %}'> DudeGFA </a>
-                        </h6>
-                        <span class="nav-item small"> 1day</span>
-                      </div>
-                      <p class="mb-0 small">02 January at 12:00</p>
-                    </div>
-                  </div>
-                  <!-- Card feed action dropdown START -->
-                  <div class="dropdown">
-                    <a
-                      href='{% static "#" %}'
-                      class="text-secondary btn btn-secondary-soft-hover py-1 px-2"
-                      id="cardFeedAction2"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-three-dots"></i>
-                    </a>
-                    <!-- Card feed action dropdown menu -->
-                    <ul
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="cardFeedAction2"
-                    >
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori
-                          ferguson
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a
-                        >
-                      </li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-flag fa-fw pe-2"></i>Report post</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- Card feed action dropdown END -->
-                </div>
-              </div>
-              <!-- Card header END -->
-              <!-- Card body START -->
-              <div class="card-body pb-0">
-                <p>
-                  {{ post.text }}
-                </p>
-              </div>
-              <!-- Card img -->
-              <div class="overflow-hidden fullscreen-video w-100">
-                <!-- HTML video START -->
-                <div class="player-wrapper overflow-hidden">
-                  <video
-                    class="player-html"
-                    controls
-                    crossorigin="anonymous"
-                    poster='{% static "assets/images/videos/poster.jpg" %}'
-                  >
-                    <source
-                      src='{% static "assets/images/videos/video-feed.mp4" %}'
-                      type="video/mp4"
-                    />
-                  </video>
-                </div>
-                <!-- HTML video END -->
-
-                <!-- Plyr resources and browser polyfills are specified in the pen settings -->
-              </div>
-              <!-- Feed react START -->
-              <div class="card-body pt-0">
-                <ul class="nav nav-stack py-3 small">
-                  <li class="nav-item">
-                    <a class="nav-link active" href='{% static "#!" %}'>
-                      <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked
-                      (56)</a
-                    >
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href='{% static "#!" %}'>
-                      <i class="bi bi-chat-fill pe-1"></i>Comments (12)</a
-                    >
-                  </li>
-                  <!-- Card share action START -->
-                  <li class="nav-item dropdown ms-sm-auto">
-                    <a
-                      class="nav-link mb-0"
-                      href='{% static "#" %}'
-                      id="cardShareAction9"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-reply-fill flip-horizontal ps-1"></i>Share
-                      (3)
-                    </a>
-                    <!-- Card share action dropdown menu -->
-                    <ul
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="cardShareAction9"
-                    >
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-envelope fa-fw pe-2"></i>Send via
-                          Direct Message</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-bookmark-check fa-fw pe-2"></i
-                          >Bookmark
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-link fa-fw pe-2"></i>Copy link to
-                          post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-share fa-fw pe-2"></i>Share post via
-                          …</a
-                        >
-                      </li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to
-                          News Feed</a
-                        >
-                      </li>
-                    </ul>
-                  </li>
-                  <!-- Card share action END -->
-                </ul>
-                <!-- Feed react END -->
-
-                <!-- Add comment -->
-                <div class="d-flex mb-3">
-                  <!-- Avatar -->
-                  <div class="avatar avatar-xs me-2">
-                    <a href='{% static "#!" %}'>
-                      <img
-                        class="avatar-img rounded-circle"
-                        src='{{ user.profile.image.url }}'
-                        alt=""
-                      />
-                    </a>
-                  </div>
-                  <!-- Comment box  -->
-                  <!-- Comment box  -->
-                  <form class="position-relative w-100">
-                    <textarea
-                      data-autoresize
-                      class="form-control pe-4 bg-light"
-                      rows="1"
-                      placeholder="Add a comment..."
-                    ></textarea>
-                    <!-- Emoji button -->
-                  </form>
-                </div>
-                <!-- Comment wrap START -->
-                <ul class="comment-wrap list-unstyled mb-0">
-                  <!-- Comment item START -->
-                  <li class="comment-item">
-                    <div class="d-flex">
-                      <!-- Avatar -->
-                      <div class="avatar avatar-xs">
-                        <a href='{% static "#!" %}'
-                          ><img
-                            class="avatar-img rounded-circle"
-                            src='{% static "assets/images/avatar/05.jpg" %}'
-                            alt=""
-                        /></a>
-                      </div>
-                      <div class="ms-2">
-                        <!-- Comment by -->
-                        <div class="bg-light rounded-start-top-0 p-3 rounded">
-                          <div class="d-flex justify-content-between">
-                            <h6 class="mb-1">
-                              <a href='{% static "#!" %}'> Onu Brooks </a>
-                            </h6>
-                            <small class="ms-2">5hr</small>
-                          </div>
-                          <p class="small mb-0">
-                            Preference any astonished unreserved Mrs.
-                          </p>
-                        </div>
-                        <!-- Comment react -->
-                        <ul class="nav nav-divider py-2 small">
-                          <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'> Like (3)</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'> Reply</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'> View 5 replies</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <!-- Comment item nested START -->
-                    <ul class="comment-item-nested list-unstyled">
-                      <!-- Comment item START -->
-                      <li class="comment-item">
-                        <div class="d-flex">
-                          <!-- Avatar -->
-                          <div class="avatar avatar-xs">
-                            <a href='{% static "#!" %}'
-                              ><img
-                                class="avatar-img rounded-circle"
-                                src='{% static "assets/images/avatar/06.jpg" %}'
-                                alt=""
-                            /></a>
-                          </div>
-                          <!-- Comment by -->
-                          <div class="ms-2">
-                            <div class="bg-light p-3 rounded">
-                              <div class="d-flex justify-content-between">
-                                <h6 class="mb-1">
-                                  <a href='{% static "#!" %}'> Tolulope Fakunle </a>
-                                </h6>
-                                <small class="ms-2">2hr</small>
-                              </div>
-                              <p class="small mb-0">
-                                Dependent on so extremely delivered by. Yet ﻿no
-                                jokes worse her why.
-                              </p>
-                            </div>
-                            <!-- Comment react -->
-                            <ul class="nav nav-divider py-2 small">
-                              <li class="nav-item">
-                                <a class="nav-link" href='{% static "#!" %}'> Like (5)</a>
-                              </li>
-                              <li class="nav-item">
-                                <a class="nav-link" href='{% static "#!" %}'> Reply</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
-                      <!-- Comment item END -->
-                    </ul>
-                    <!-- Comment item nested END -->
-                  </li>
-                  <!-- Comment item END -->
-                </ul>
-                <!-- Comment wrap END -->
-              </div>
-              <!-- Card body END -->
-              <!-- Card footer START -->
-              <div class="card-footer border-0 pt-0">
-                <!-- Load more comments -->
-                <a
-                  href='{% static "#!" %}'
-                  role="button"
-                  class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center"
-                  data-bs-toggle="button"
-                  aria-pressed="true"
-                >
-                  <div class="spinner-dots me-2">
-                    <span class="spinner-dot"></span>
-                    <span class="spinner-dot"></span>
-                    <span class="spinner-dot"></span>
-                  </div>
-                  Load more comments
-                </a>
-              </div>
-              <!-- Card footer END -->
-            </div>
-            <!-- Card feed item END -->
-
             <!-- Load more button START -->
             <a
               href='{% static "#!" %}'
@@ -4590,146 +4002,6 @@ Header END -->
       <!-- Chat END -->
     </div>
     <!-- Main Chat END -->
-
-    <!-- Modal create Feed START -->
-    <div
-      class="modal fade"
-      id="modalCreateFeed"
-      tabindex="-1"
-      aria-labelledby="modalLabelCreateFeed"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-          <!-- Modal feed header START -->
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalLabelCreateFeed">Create post</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <!-- Modal feed header END -->
-
-          <!-- Modal feed body START -->
-          <div class="modal-body">
-            <!-- Add Feed -->
-            <div class="d-flex mb-3">
-              <!-- Avatar -->
-              <div class="avatar avatar-xs me-2">
-                <img
-                  class="avatar-img rounded-circle"
-                  src='{{ user.profile.image.url }}'
-                  alt=""
-                />
-              </div>
-              <!-- Feed box  -->
-              <form class="w-100 custom__form" action="/{{ user.username }}/" method="post" id="upload_form" enctype="multipart/form-data">
-                {% csrf_token %}
-                <textarea
-                  class="form-control pe-4 fs-3 lh-1 border-0"
-                  name='text'
-                  rows="4"
-                  placeholder="Share your thoughts..."
-                  autofocus
-                ></textarea>
-                <input type="hidden" name="next" value="{{ request.path }}">
-                <input type="file" id="upload_img" name="picture" accept="image/*" multiple>
-                <input type="file" id="upload_vid" name="video" accept="video/*">
-              </form>
-            </div>
-            <!-- Feed rect START -->
-            <div class="hstack gap-2">
-              <label
-                class="icon-md bg-success bg-opacity-10 text-success rounded-circle"
-                for="upload_img"
-                data-bs-toggle="tooltip"
-                data-bs-placement="top"
-                title="Photo"
-              >
-                <i class="bi bi-image-fill"></i>
-              </label>
-              <label
-                class="icon-md bg-info bg-opacity-10 text-info rounded-circle"
-                for="upload_vid"
-                data-bs-toggle="tooltip"
-                data-bs-placement="top"
-                title="Video"
-              >
-                <i class="bi bi-camera-reels-fill"></i>
-              </label>
-              <a
-                class="icon-md bg-danger bg-opacity-10 text-danger rounded-circle"
-                href='{% static "#" %}'
-                data-bs-toggle="tooltip"
-                data-bs-placement="top"
-                title="Events"
-              >
-                <i class="bi bi-calendar2-event-fill"></i>
-              </a>
-              <a
-                class="icon-md bg-warning bg-opacity-10 text-warning rounded-circle"
-                href='{% static "#" %}'
-                data-bs-toggle="tooltip"
-                data-bs-placement="top"
-                title="Feeling/Activity"
-              >
-                <i class="bi bi-emoji-smile-fill"></i>
-              </a>
-              <a
-                class="icon-md bg-light text-secondary rounded-circle"
-                href='{% static "#" %}'
-                data-bs-toggle="tooltip"
-                data-bs-placement="top"
-                title="Check in"
-              >
-                <i class="bi bi-geo-alt-fill"></i>
-              </a>
-              <a
-                class="icon-md bg-primary bg-opacity-10 text-primary rounded-circle"
-                href='{% static "#" %}'
-                data-bs-toggle="tooltip"
-                data-bs-placement="top"
-                title="Tag people on top"
-              >
-                <i class="bi bi-tag-fill"></i>
-              </a>
-            </div>
-            <!-- Feed rect END -->
-          </div>
-          <!-- Modal feed body END -->
-
-          <!-- Modal feed footer -->
-          <div class="modal-footer row justify-content-between">
-            <!-- Select -->
-            <div class="col-lg-3">
-              <select
-                class="form-select js-choice choice-select-text-none"
-                data-position="top"
-                data-search-enabled="false"
-              >
-                <option value="PB">Public</option>
-                <option value="PV">Friends</option>
-                <option value="PV">Only me</option>
-                <option value="PV">Custom</option>
-              </select>
-              <!-- Button -->
-            </div>
-            <div class="col-lg-8 text-sm-end">
-              <button type="button" class="btn btn-danger-soft me-2">
-                <i class="bi bi-camera-video-fill pe-1"></i> Live video
-              </button>
-              <button type="submit" class="btn btn-success-soft" form="upload_form">Post</button>
-            </div>
-          </div>
-          <!-- Modal feed footer -->
-        </div>
-      </div>
-    </div>
-    <!-- Modal create feed END -->
-
     <!-- Modal create Feed photo START -->
     <div
       class="modal fade"
@@ -4788,7 +4060,7 @@ Header END -->
                 method="post"
                 id="picuploadform"
                 action="/dudegfa/"
-                data-dropzone='{"url":"/{{user.username}}/", "acceptedFiles":"image/*"}'
+                data-dropzone='{"url":"/{{user.username}}/", "acceptedFiles":"image/*", "maxFiles":3}'
               >
                 {% csrf_token %}
                 <input type="hidden" name="text" value="" id="postuploadtext2">
@@ -4814,7 +4086,7 @@ Header END -->
               Cancel
             </button>
             <button id="picpresubmitbtn" class="btn btn-success-soft" onclick="postSubmit()">Post</button>
-            <button type="hidden" id="picsubmitbtn"></button>
+            <button class="hiddenbtn" type="hidden" id="picsubmitbtn"></button>
           </div>
           <!-- Modal feed footer -->
         </div>
@@ -4900,7 +4172,7 @@ Header END -->
               <i class="bi bi-camera-video-fill pe-1"></i> Live video
             </button>
             <button id="vidpresubmitbtn" class="btn btn-success-soft" onclick="vidSubmit()">Post</button>
-            <button type="hidden" id="vidsubmitbtn"></button>
+            <button class="hiddenbtn" type="hidden" id="vidsubmitbtn"></button>
           </div>
           <!-- Modal feed footer -->
         </div>
@@ -5096,6 +4368,107 @@ Header END -->
     </div>
     <!-- Modal create events END -->
 
+    <!-- Modal create poll START -->
+    <div
+      class="modal fade"
+      id="modalCreatePoll"
+      tabindex="-1"
+      aria-labelledby="modalLabelCreateAlbum"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal feed header START -->
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabelCreateAlbum">Create Poll</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <!-- Modal feed header END -->
+          <!-- Modal feed body START -->
+          <div class="modal-body">
+            <!-- Form START -->
+            <form class="row g-4" id="postpollform" action="/{{ user.username }}/polls/" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <!-- Title -->
+              <div class="col-12">
+                <label class="form-label">What would you like to ask?</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter the poll's question"
+                  name="pollquestion"
+                />
+              </div>
+              <!-- first option -->
+              <div class="col-12">
+                <label class="form-label">Choice 1</label>
+                <textarea
+                  class="form-control"
+                  rows="1"
+                  placeholder= "the first option"
+                  name="firstoption"
+                ></textarea>
+              </div>
+              <!-- second option -->
+              <div class="col-12">
+                <label class="form-label">Choice 2</label>
+                <textarea
+                  class="form-control"
+                  rows="1"
+                  placeholder= "the second option"
+                  name="secondoption"
+                ></textarea>
+              </div>
+              <!-- third option -->
+              <div class="col-12 hidden-poll-option">
+                <label class="form-label">Choice 3 (optional)</label>
+                <textarea
+                  class="form-control"
+                  rows="1"
+                  placeholder= "the third option"
+                  name="thirdoption"
+                ></textarea>
+              </div>
+              <!-- fourth option-->
+              <div class="col-12 hidden-poll-option">
+                <label class="form-label">Choice 4 (optional)</label>
+                <textarea
+                  class="form-control"
+                  rows="1"
+                  placeholder= "the fourth option"
+                  name="fourthoption"
+                ></textarea>
+              </div>
+              <input type="hidden" name="next" value="{{ request.path }}">
+              <button id="addoptionbtn" type="button" class="btn btn-link" onclick="unhideOption()"><span class="bi bi-plus fa-5x"></span></button>
+            </form>
+            <!-- Form END -->
+          </div>
+          <!-- Modal feed body END -->
+          <!-- Modal footer -->
+          <!-- Button -->
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger-soft me-2"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-success-soft" form="postpollform">
+              Create now
+            </button>
+            <iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal create poll END -->
     <!-- =======================
 JS libraries, plugins and custom scripts -->
 
@@ -5156,6 +4529,8 @@ JS libraries, plugins and custom scripts -->
           }
         })
       }
+    </script>
+    <script>
       function changeContacts(usname, id)
        {
         //usname = contact.username
@@ -5191,6 +4566,20 @@ JS libraries, plugins and custom scripts -->
         }
         return false;
        }
+       function addToContacts(contactid, username) {
+        url='/' + username + '/contacts/add/' + contactid
+        fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        }).then( response => { 
+          console.log(document.getElementById(contactid + '-pymk'))
+        })
+        console.log(document.getElementById(contactid + '-pymk').getElementsByTagName('button')[0].innerHTML)
+        document.getElementById(contactid + '-pymk').getElementsByTagName('button')[0].innerHTML='Contact Added';
+        return false;
+       }
       </script>
       <script>
         function postSubmit() {
@@ -5206,63 +4595,84 @@ JS libraries, plugins and custom scripts -->
           document.getElementById("vidsubmitbtn").click();
           //location.reload()
         }
+        function updatePhotoUploadText() {
+          posttext = document.getElementById("posttextmain").value;
+          document.getElementById("postuploadtext1").value = posttext;
+        }
+        function updateVidUploadText() {
+          posttext = document.getElementById("posttextmain").value;
+          document.getElementById("postuploadtextvid1").value = posttext;
+        }
       </script>
-      <!-- <script>
-        Dropzone.options.picuploadform = { // The camelized version of the ID of the form element
-          // The configuration we've talked about above
-          autoProcessQueue: false,
-          uploadMultiple: true,
-          parallelUploads: 100,
-          maxFiles: 100,
-          paramName: 'picture',
-          // The setting up of the dropzone
-          init: function() {
-            var myDropzone = this;
-            console.log("presubmit event triggered")
-            console.log(this)
-            // First change the button to actually tell Dropzone to process the queue.
-            let el = document.getElementById("picsubmitbtn")
-            this.element.querySelector("button[type=submit]").addEventListener("click", function(e) {
-              // Make sure that the form isn't actually being sent.
-              console.log("submit event triggered")
-              e.preventDefault();
-              e.stopPropagation();
-              console.log(myDropzone);
-              myDropzone.processQueue();
-            });
-            // Listen to the sendingmultiple event. In this case, it's the sendingmultiple event instead
-            // of the sending event because uploadMultiple is set to true.
-            this.on("sendingmultiple", function() {
-              // Gets triggered when the form is actually being sent.
-              // Hide the success button or the complete form.
-            });
-            this.on("successmultiple", function(files, response) {
-              // Gets triggered when the files have successfully been sent.
-              // Redirect user or notify of success.
-            });
-            this.on("errormultiple", function(files, response) {
-              // Gets triggered when there was an error sending the files.
-              // Maybe show form again, and notify user of error
-            });
+      <script>
+        let hiddenPollOptions = 2;
+        function unhideOption() {
+          optionToReveal = document.getElementsByClassName("hidden-poll-option")[0];
+          optionToReveal.classList.remove("hidden-poll-option");
+          hiddenPollOptions -= 1
+          if (hiddenPollOptions === 0) {
+            document.getElementById("addoptionbtn").classList.add("hiddenbtn");
           }
         }
-        //window.Dropzone.options.picuploadform.init();
-        console.log("we up!")
-      </script> -->
-      <!-- <script type="module">
-        import Dropzone from "./dropzone";
-        let picuploadform = Dropzone({
-          autoProcessQueue: false,
-          uploadMultiple: true,
-          parallelUploads: 100,
-          maxFiles: 100,
-        });
-        picuploadform.element.querySelector("button[type=submit]").addEventListener("click", function(e) {
-              // Make sure that the form isn't actually being sent.
-              e.preventDefault();
-              e.stopPropagation();
-              myDropzone.processQueue();
-            }); -->
+        function submitVote(pollid, optionid) {
+          console.log("received")
+          url = '/{{user.username}}/polls/vote/' + optionid
+          fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        }).then(response => response.json()).then( responseobj => {
+          for (const key in responseobj) {
+            if (key !== 'totalvotes') {
+              document.getElementById(key+'-resultbar').style.width = String(responseobj[key]) + '%'
+              document.getElementById(key+'-resultbar').style["aria-valuenow"] = String(responseobj[key]) + '%'
+              document.getElementById(key+'-result').innerHTML = String(responseobj[key]) + '%'
+              
+            } else {
+              document.getElementById(pollid+"-totalvotes").innerHTML = String(responseobj[key]) + ' votes'
+            }
+          }
+        })
+        document.getElementById(pollid + '-options').classList.add("hidden-poll-option");
+        document.getElementById(pollid + '-results').classList.remove("hidden-poll-option");
+      }  
+      </script>
+      <script>
+        function displayComments(postid) {
+          commentbox = document.getElementById(postid + '-postcomment')
+          postcomments = document.getElementById(postid + '-comments')
+          if (commentbox.classList.contains('hiddencommentsection')) {
+            commentbox.classList.remove('hiddencommentsection');
+          } else {
+            commentbox.classList.add('hiddencommentsection');
+          }
+          
+          if (postcomments.classList.contains('hiddencommentsection')) {
+            console.log('removing2')
+            postcomments.classList.remove('hiddencommentsection');
+          } else {
+            console.log('adding2')
+            postcomments.classList.add('hiddencommentsection');
+          }
+        }
+        function displayReplybox(commentid) {
+          replybox = document.getElementById(commentid + "-replybox");
+          if (replybox.classList.contains('hiddencommentsection')) {
+            replybox.classList.remove('hiddencommentsection');
+          } else {
+            replybox.classList.add('hiddencommentsection');
+          }
+        }
+        function displayReplies(commentid) {
+          replies = document.getElementById(commentid + '-replies');
+          if (replies.classList.contains('hiddencommentsection')) {
+            replies.classList.remove('hiddencommentsection');
+          } else {
+            replies.classList.add('hiddencommentsection');
+          }
+        }
       </script>
   </body>
 </html>

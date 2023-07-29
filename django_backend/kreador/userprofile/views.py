@@ -13,16 +13,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Post, Comment, UserContact, PostImage, PostLike
+from .models import Post, Comment, UserContact, PostImage, PostLike, Poll, PollOption, Voter
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, HttpResponseRedirect
-from .forms import PostForm, CommentForm
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from .forms import PostForm, CommentForm, ReplyForm
 from django.urls import reverse_lazy, reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.db.utils import IntegrityError
-
+import json
 # Create your views here.
 class ProfileView(View):
     def get(self, request, username):
@@ -47,8 +47,8 @@ class ProfileView(View):
     def post(self, request, username):
         """ Handles Creation of new post
             Args:
-                request: Post request object
-                username (str) : username of post sender
+                request: post request object
+                username (str) : username of post request sender
             Returns: Redirect url after saving the post
         """
         try:
@@ -57,20 +57,19 @@ class ProfileView(View):
             return HttpResponse('User does not exist')
         if request.user != user:
             return HttpResponse('User not authorized')
-        print(request.POST)
-        print(request.FILES)
+        #print(request.POST)
+        #print(request.FILES)
         new_post = Post.objects.create(text=request.POST.get('text'), owner=user)
         new_post.save()
-        #print(request.FILES.getlist('picture'))
-        for key in request.FILES.keys():
-            #print(pic)
-            print(key)
-            if key.startswith('picture'):
-                continue
-            value=request.FILES.getlist(key)[0]
-            new_post_image = PostImage.objects.create(image=value, post=new_post)
-            new_post_image.save()
-        if request.FILES.getlist('video'):
+        if request.FILES.getlist('picture[0]'):
+            # creates and saves post image
+            for key in request.FILES.keys():
+                #loops through each uploaded image file
+                if key.startswith('picture'):
+                    value=request.FILES.getlist(key)[0]
+                    new_post_image = PostImage.objects.create(image=value, post=new_post)
+                    new_post_image.save()
+        elif request.FILES.getlist('video'):
             # saves video file    
             new_post.video = request.FILES.getlist('video')[0]
             new_post.save()
@@ -85,10 +84,65 @@ class ProfileView(View):
         #saved_form.save()
         #post_form.save_m2m()
         next = request.POST.get('next', '/home')
+        #redirects to the value of next form attribute
         return HttpResponseRedirect(next)
 
+class PollView(View):
+    """Handles Poll creation"""
+    def post(self, request, username):
+        """Creates a new Poll object
+            Args:
+                request: post request object
+                username (str) : username of post request sender
+            Returns: Redirect url after saving the post
+        """
+        try:
+            user = User.objects.get(username=username)
+        except ObjectDoesNotExist:
+            return HttpResponse('User does not exist')
+        if request.user != user:
+            return HttpResponse('User not authorized')
+        polloptions = [request.POST.get('firstoption'), request.POST.get('secondoption'), request.POST.get('thirdoption'), request.POST.get('fourthoption')]
+        validpolloptions = []
+        for polloption in polloptions:
+            if polloption:
+                validpolloptions.append(polloption)
+        if len(validpolloptions) < 2:
+            return HttpResponse('Invalid Poll')
+        new_poll = Poll.objects.create(question=request.POST.get('pollquestion'), owner=user)
+        new_poll.save()
+        for i in range(len(validpolloptions)):
+            newpolloption = PollOption.objects.create(text=validpolloptions[i], poll=new_poll, index=i + 1)
+            newpolloption.save()
+        next = request.POST.get('next', '/home')
+        #redirects to the value of next form attribute
+        return HttpResponseRedirect(next)
 
-
+@method_decorator(csrf_exempt, name='dispatch')
+class PollVoteView(LoginRequiredMixin, View):
+    def post(self, request, username, optionid):
+        try:
+            user = User.objects.get(username=username)
+        except ObjectDoesNotExist:
+            return HttpResponse('User does not exist')
+        if request.user != user:
+            return HttpResponse('User not authorized')
+        try:
+            Choice = PollOption.objects.get(pk=optionid)
+        except PollOption.DoesNotExist:
+            return HttpResponse('Poll does not exist')
+        if not Voter.objects.filter(polloption__poll__id=Choice.poll.id, voter=user):
+            voter = Voter.objects.create(polloption=Choice, voter=user)
+            voter.save()
+        totalvotes = Voter.objects.filter(polloption__poll__id=Choice.poll.id).count()
+        response = {}
+        for option in Choice.poll.polloption_set.all():
+            votepercentage = (option.voters.count() / totalvotes) * 100
+            response[option.id] = str(votepercentage)
+        response['totalvotes'] = totalvotes
+        print(JsonResponse(response, safe=False))
+        return JsonResponse(response, safe=False)
+        
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     """
         Deletes a post
@@ -147,6 +201,7 @@ class PostCommentView(View):
             Creates a new Comment object
             Returns: a redirect to a next parameter
         """
+        print(request.POST)
         comment_form = CommentForm(request.POST)
     
         if not comment_form.is_valid():
@@ -159,6 +214,31 @@ class PostCommentView(View):
         saved_form.post = get_object_or_404(Post, id=pk)
         saved_form.save()
         comment_form.save_m2m()
+        next = request.POST.get('next', '/')
+        return HttpResponseRedirect(next)
+        #return redirect('/' + username)
+
+class PostReplyView(View):
+    """
+        Handles posting a reply
+    """
+    def post(self, request, username, pk):
+        """
+            Creates a new Reply object
+            Returns: a redirect to a next parameter
+        """
+        #print(request.POST)
+        reply_form = ReplyForm(request.POST)
+    
+        if not reply_form.is_valid():
+            return HttpResponse('Invalid reply form')
+
+        # Add owner to the model before saving
+        saved_form = reply_form.save(commit=False)
+        saved_form.owner = request.user
+        saved_form.comment = get_object_or_404(Comment, id=pk)
+        saved_form.save()
+        reply_form.save_m2m()
         next = request.POST.get('next', '/')
         return HttpResponseRedirect(next)
         #return redirect('/' + username)
@@ -214,6 +294,9 @@ class AddContactView(LoginRequiredMixin, View):
     def post(self, request, username, pk):
         """Creates a new UserContact Object
         """
+        if request.user.username != username:
+            return HttpResponse('403 FOrbidden')
+
         new_contact = get_object_or_404(User, id=pk)
         usercontact = UserContact(profile=request.user.profile, contact=new_contact)
         try:

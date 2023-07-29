@@ -9,11 +9,11 @@ from userprofile.models import (
     ReplyLike,
     UserContact,
     PostImage,
-    UserExperience)
+    UserExperience, Poll, PollOption, Voter)
 
 admin.site.register(Profile)
 
-
+#PostImage inline Post admin panel
 class PostImageAdmin(admin.StackedInline):
     model = PostImage
 
@@ -30,6 +30,27 @@ class PostAdmin(admin.ModelAdmin):
 class PostImageAdmin(admin.ModelAdmin):
     pass
 
+#PollOptions inline Poll admin panel
+class PollOptionAdmin(admin.StackedInline):
+    model = PollOption
+
+class VoterAdmin(admin.StackedInline):
+    model = Voter
+
+@admin.register(Poll)
+class PollAdmin(admin.ModelAdmin):
+    inlines = [PollOptionAdmin]
+
+    class Meta:
+        model = Poll
+
+@admin.register(PollOption)
+class PollOptionAdmin(admin.ModelAdmin):
+    inlines = [VoterAdmin]
+
+@admin.register(Voter)
+class VoterAdmin(admin.ModelAdmin):
+    pass
 
 admin.site.register(Comment)
 admin.site.register(Reply)

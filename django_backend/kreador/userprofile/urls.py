@@ -6,6 +6,8 @@ from django.shortcuts import render
 app_name = 'userprofile'
 urlpatterns = [
     path('', views.ProfileView.as_view(), name='user_detail'),
+    path('polls/', views.PollView.as_view()),
+    path('polls/vote/<int:optionid>', views.PollVoteView.as_view()),
     path('videos/', views.VideoView.as_view()),
     path('media/', views.MediaView.as_view()),
     path('about/', views.AboutView.as_view()),
@@ -20,6 +22,8 @@ urlpatterns = [
         views.PostUnLikeView.as_view(), name='post_unlike'),
     path('comment/post/<int:pk>',
         views.PostCommentView.as_view(), name='post_comment'),
+    path('reply/post/<int:pk>',
+        views.PostReplyView.as_view(), name='post_reply'),
     path('contacts/add/<int:pk>',
         views.AddContactView.as_view(), name='del_contact'),
     path('contacts/del/<int:pk>',

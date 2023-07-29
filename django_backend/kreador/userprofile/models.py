@@ -35,6 +35,29 @@ class Post(models.Model):
     def __str__(self):
         return f'{self.owner.username} Post({self.id})'
 
+class Poll(models.Model):
+    """ Poll object"""
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    question = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return f'{self.owner.username}-Poll'
+
+class PollOption(models.Model):
+    """Poll option Object"""
+    text = models.TextField()
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
+    index = models.PositiveIntegerField()
+    voters = models.ManyToManyField(User, blank=True, through='Voter', related_name="voted_option")
+
+class Voter(models.Model):
+    polloption = models.ForeignKey(PollOption,  on_delete=models.PROTECT)
+    voter = models.ForeignKey(User, on_delete=models.PROTECT)
+    voted_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        unique_together = ('polloption', 'voter')
+
 class PostImage(models.Model):
     image = models.ImageField(null=True,  upload_to='post_images')
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
