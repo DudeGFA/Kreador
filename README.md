@@ -9,7 +9,7 @@ Backend code for Kreador web application
  In this project, We are required to create a Social network web app for Nigerian software engineers where we have a profile that includes work experience, projects, education and more., We have research on how this project will be done and how it will be implemented.  We practiced using `Figma`, for the design  `HTML`, `CSS`, `JavaScript`, and `Python` methods for development. <br/>
  Responsive for all devices, build using HTML, CSS, and JavaScript.
 
-  <a href="https://youtu.be/ZyHqjTJoNNY"><strong>➥ Live Demo</strong></a>
+  <a href="https://youtu.be/ZyHqjTJoNNY"><strong>➥ Recorded Demo</strong></a>
 
 </div>
 
