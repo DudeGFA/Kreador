@@ -14,7 +14,7 @@ class CommentList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get(self, request, *args, **kwargs):
       if request.GET.get("postid"):
-        self.queryset = Comment.objects.filter(post__id=request.GET.get("postid"))
+        self.queryset = Comment.objects.filter(post__id=request.GET.get("postid")).order_by("-created_at")
       return self.list(request, *args, **kwargs)
     
     def post(self, request, format=None):
@@ -38,7 +38,7 @@ class ReplyList(generics.ListCreateAPIView):
     queryset = Reply.objects.all()
     def get(self, request, *args, **kwargs):
       if request.GET.get("commentid"):
-        self.queryset = Reply.objects.filter(comment__id=request.GET.get("commentid"))
+        self.queryset = Reply.objects.filter(comment__id=request.GET.get("commentid")).order_by("-created_at")
       return self.list(request, *args, **kwargs)
     
     def post(self, request, format=None):

@@ -1491,7 +1491,7 @@ Header END -->
                     </a>
                   </div>
                   <!-- Comment box  -->
-                  <form class="w-100" action="/{{user.username }}/comment/post/{{ post.id }}" method="post" enctype="multipart/form-data">
+                  <form onsubmit="submitComment(event, '{{post.id}}')" id="{{post.id}}-cmt-submitform" class="w-100" action="/{{user.username }}/comment/post/{{ post.id }}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <textarea
                       data-autoresize
@@ -4676,7 +4676,7 @@ JS libraries, plugins and custom scripts -->
           postcomments.classList.add('hiddencommentsection');
           postcomments.innerHTML= ""
         }
-        if (loadmorecomments.classList.contains('hiddencommentsection')) {
+        if (loadmorecomments.classList.contains('hiddencommentsection') && !postcomments.classList.contains('hiddencommentsection')) {
           loadmorecomments.classList.remove('hiddencommentsection');
         } else {
           loadmorecomments.classList.add('hiddencommentsection');
@@ -4760,6 +4760,33 @@ JS libraries, plugins and custom scripts -->
             displayReplies(cmtId)
           }).catch(err => { console.error(err) })
       }
+      function submitComment (event, postId) {
+        event.preventDefault()
+        //console.log(e);
+        form = event.target
+        formData = new FormData(form)
+        console.log(formData.get("text"))
+        console.log(formData.get("csrfmiddlewaretoken"))
+        //replytext = document.getElementById(rbcmtid + "-reply-formtext").value
+        url = '/api/comments/'
+        data = {"text":   formData.get("text"), "post": postId}
+        console.log(JSON.stringify(data))
+          fetch(url, {
+            method: "POST",
+            headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': formData.get("csrfmiddlewaretoken"),
+            },
+            body: JSON.stringify(data)
+          }).then(response => response.json()).then(response => {
+            postcomments = document.getElementById(postId + '-comments')
+            //postcomments.classList.remove("hiddencommentsection")
+            postcomments.innerHTML=""
+            loadMoreComments(postId, 1)
+          }).catch(err => { console.error(err) })
+      }
+    
     </script>
     <script>
       function loadMoreComments(postid, page) {
@@ -4824,16 +4851,17 @@ JS libraries, plugins and custom scripts -->
             }
             page = page + 1
             postitem = document.getElementById(postid + '-item')
-            if (page != 2) {
-              var old_element = document.getElementById(postid+"-lmc-a");
-              var new_element = old_element.cloneNode(true);
-              old_element.parentNode.replaceChild(new_element, old_element);
-            }
+            var old_element = document.getElementById(postid+"-lmc-a");
+            var new_element = old_element.cloneNode(true);
+            console.log(new_element)
+            old_element.parentNode.replaceChild(new_element, old_element);
+
             if (response.next != null) {
               //console.log(document.getElementById(postid+"-lmc-a"))
               document.getElementById(postid+"-lmc-a").addEventListener('click', function lmc () { return loadMoreComments(postid, page)})
+              document.getElementById(postid+"-lmc").classList.remove("hiddencommentsection")
             } else {
-              document.getElementById(postid+"-lmc-a").remove()
+              document.getElementById(postid+"-lmc").classList.add("hiddencommentsection")
             }
             //console.log(document.getElementById(postid+"-lmc-a"))
             //commentsection.getElementsByTagName('img')[0].src = response.results[0].owner.profile.image
@@ -4903,23 +4931,21 @@ JS libraries, plugins and custom scripts -->
             viewrepliesbtn.innerText = 'Hide '+response.count+' replies'
 
             page = page + 1
-            commentitem = document.getElementById(commentid + '-item')
-            if (page == 2 && response.next !== null) {
-              commentitem.appendChild(document.getElementById("comment-template-lmr"))
+            commentitem = document.getElementById(commentid + '-comment-item')
+            if (page == 2 && response.next != null) {
+              commentitem.appendChild(document.getElementById("comment-template-lmr").cloneNode(true))
               document.getElementById("comment-template-lmr").id = commentid + "-lmr"
             }
-            if (page != 2) {
-              var old_element = document.getElementById(commentid+"-lmr");
-              var new_element = old_element.cloneNode(true);
-              old_element.parentNode.replaceChild(new_element, old_element);
-            }
-            if (response.next !== null) {
-              //console.log(document.getElementById(postid+"-lmc-a"))
+            var old_element = document.getElementById(commentid+"-lmr");
+            var new_element = old_element.cloneNode(true);
+            old_element.parentNode.replaceChild(new_element, old_element);
+            if (response.next != null) {
               document.getElementById(commentid+"-lmr").addEventListener('click', function lmc () { return loadMoreReplies(commentid, page)})
+              document.getElementById(commentid+"-lmr").classList.remove("hiddencommentsection")
             } else if (page != 2) {
-              document.getElementById(commentid+"-lmr").remove()
+              document.getElementById(commentid+"-lmr").classList.add("hiddencommentsection")
             }
-            //console.log(document.getElementById(postid+"-lmc-a"))
+            
             //commentsection.getElementsByTagName('img')[0].src = response.results[0].owner.profile.image
           })
         }
