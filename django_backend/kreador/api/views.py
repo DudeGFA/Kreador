@@ -2,11 +2,12 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import generics
-from .serializers import CommentSerializer, ReplySerializer
-from userprofile.models import Comment, Reply
+from .serializers import CommentSerializer, ReplySerializer, CommentLikeSerializer
+from userprofile.models import Comment, Reply, CommentLike
 from django.db.models import F
 from rest_framework import permissions
 from .permissions import IsOwnerOrReadOnly
+from rest_framework.mixins import CreateModelMixin, DestroyModelMixin
 
 class CommentList(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
@@ -30,7 +31,18 @@ class CommentList(generics.ListCreateAPIView):
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+    serializer_class = CommentLikeSerializer
+
+class CommentLike(CreateModelMixin, DestroyModelMixin, generics.GenericAPIView):
+	queryset = CommentLike.objects.all()
+	permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+	serializer_class= CommentLikeSerializer
+
+	def delete(self, request, *args, **kwargs):
+		return self.destroy(request, *args, **kwargs)
+	
+	def post(self, request, *args, **kwargs):
+		return self.create(request, *args, **Kwargs)
 
 class ReplyList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]

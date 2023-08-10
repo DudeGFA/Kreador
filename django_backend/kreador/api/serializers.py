@@ -1,4 +1,4 @@
-from userprofile.models import Comment, Reply
+from userprofile.models import Comment, Reply, CommentLike
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from userprofile.models import Profile
@@ -31,6 +31,9 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ['id', 'text', 'post', 'owner', 'created_at', 'like_count', 'reply_count']
 
+class CommentLikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ['id', 'user', 'comment']
 
 class ReplySerializer(serializers.ModelSerializer):
     owner = UserSerializer(required=False)
