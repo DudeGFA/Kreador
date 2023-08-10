@@ -210,7 +210,6 @@ class PostCommentView(View):
         # Add owner to the model before saving
         saved_form = comment_form.save(commit=False)
         saved_form.owner = request.user
-        print('first')
         saved_form.post = get_object_or_404(Post, id=pk)
         saved_form.save()
         comment_form.save_m2m()

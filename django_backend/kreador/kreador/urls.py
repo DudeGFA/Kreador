@@ -25,8 +25,9 @@ urlpatterns = [
     path('', include('landing.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('messages/', include('message.urls')),
+    path('api/', include('api.urls')),
     path('<str:username>/', include('userprofile.urls')),
-    #path('post/<int:post_id>/', include('post.urls')),
+    path('api-auth/', include('rest_framework.urls')),
 ]
 
 if settings.DEBUG:

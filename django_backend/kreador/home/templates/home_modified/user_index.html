@@ -1482,7 +1482,7 @@ Header END -->
                 <div id="{{post.id}}-postcomment" class="d-flex mb-3 hiddencommentsection">
                   <!-- Avatar -->
                   <div class="avatar avatar-xs me-2">
-                    <a href='{% static "#!" %}'>
+                    <a href='/{{user.username}}'>
                       <img
                         class="avatar-img rounded-circle"
                         src='{{ user.profile.image.url }}'
@@ -1507,147 +1507,22 @@ Header END -->
                 <!-- Comment wrap START -->
                 <ul id="{{post.id}}-comments" class="comment-wrap list-unstyled hiddencommentsection">
                   <!-- Comment item START -->
-                  {% for comment in post.comment_set.all %}
-                  <li class="comment-item">
-                    <div class="d-flex position-relative">
-                      <!-- Avatar -->
-                      <div class="avatar avatar-xs">
-                        <a href='{% static "#!" %}'
-                          ><img
-                            class="avatar-img rounded-circle"
-                            src='{{ comment.owner.profile.image.url }}'
-                            alt=""
-                        /></a>
-                      </div>
-                      <div class="ms-2">
-                        <!-- Comment by -->
-                        <div class="bg-light rounded-start-top-0 p-3 rounded">
-                          <div class="d-flex justify-content-between">
-                            <h6 class="mb-1">
-                              <a href='{% static "#!" %}'> {{ comment.owner.get_full_name }} </a>
-                            </h6>
-                            <small class="ms-2">{{ comment.created_at }}</small>
-                          </div>
-                          <p class="small mb-0">
-                            {{ comment.text }}
-                          </p>
-                        </div>
-                        <!-- Comment react -->
-                        <ul class="nav nav-divider py-2 small">
-                          <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'> Like ({{comment.commentlike_set.count}})</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href='javascript:;' onclick="displayReplybox('{{comment.id}}')"> Reply</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href='javascript:;' onclick="displayReplies('{{comment.id}}')"> View {{comment.reply_set.count }} replies</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <!-- Comment item nested START -->
-                    <ul class="comment-item-nested list-unstyled">
-                      <!-- Comment item START -->
-                      <div id="{{comment.id}}-replies" class="hiddencommentsection">
-                        {% for reply in comment.reply_set.all %}
-                        <li class="comment-item">
-                          <div class="d-flex">
-                            <!-- Avatar -->
-                            <div class="avatar avatar-xs">
-                              <a href='{% static "#!" %}'
-                                ><img
-                                  class="avatar-img rounded-circle"
-                                  src='{{ reply.owner.profile.image.url }}'
-                                  alt=""
-                              /></a>
-                            </div>
-                            <!-- Comment by -->
-                            <div class="ms-2">
-                              <div class="bg-light p-3 rounded">
-                                <div class="d-flex justify-content-between">
-                                  <h6 class="mb-1">
-                                    <a href='{% static "#!" %}'> {{ reply.owner.get_full_name }} </a>
-                                  </h6>
-                                  <small class="ms-2">2hr</small>
-                                </div>
-                                <p class="small mb-0">
-                                  {{ reply.text }}
-                                </p>
-                              </div>
-                              <!-- Comment react -->
-                              <ul class="nav nav-divider py-2 small">
-                                <li class="nav-item">
-                                  <a class="nav-link" href='{% static "#!" %}'> Like ({{ reply.replylike_set.count }})</a>
-                                </li>
-                                <li class="nav-item">
-                                  <a class="nav-link" href='javascript:;' onclick="displayReplybox('{{comment.id}}')"> Reply</a>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </li>
-                        {% endfor %}
-                      </div>
-                      <!-- Add reply -->
-                      <div id="{{comment.id}}-replybox" class="d-flex mb-3 hiddencommentsection">
-                        <!-- Avatar -->
-                        <div class="avatar avatar-xs me-2 reply-img">
-                          <a href='{% static "#!" %}'>
-                            <img
-                              class="avatar-img rounded-circle"
-                              src='{{ user.profile.image.url }}'
-                              alt=""
-                            />
-                          </a>
-                        </div>
-                        <!-- Comment box  -->
-                        <form class="w-100" action="/{{ user.username }}/reply/post/{{ comment.id }}" method="post" enctype="multipart/form-data">
-                          {% csrf_token %}
-                          <textarea
-                            data-autoresize
-                            class="pe-4 bg-light reply"
-                            rows="1"
-                            placeholder="Reply a comment..."
-                            name="text"
-                          ></textarea>
-                          <input type="hidden" name="next" value="{{ request.path }}">
-                          <button type="submit" class="btn btn-success-soft mt-1 reply-btn">Reply</button>
-                        </form>
-                      </div>
-                    </ul>
-                    <!-- Load more replies -->
-                    <a
-                      href='{% static "#!" %}'
-                      role="button"
-                      class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center mb-3 ms-5"
-                      data-bs-toggle="button"
-                      aria-pressed="true"
-                    >
-                      <div class="spinner-dots me-2">
-                        <span class="spinner-dot"></span>
-                        <span class="spinner-dot"></span>
-                        <span class="spinner-dot"></span>
-                      </div>
-                      Load more replies
-                    </a>
-                    <!-- Comment item nested END -->
-                  </li>
                   <!-- Comment item END -->
-                  {% endfor %}
                 </ul>
                 <!-- Comment wrap END -->
               </div>
               <!-- Card body END -->
               <!-- Card footer START -->
-              <div class="card-footer border-0 pt-0">
+              {% if post.comment_set.count > 10 %}
+              <div id="{{post.id}}-lmc" class="card-footer border-0 pt-0 hiddencommentsection">
                 <!-- Load more comments -->
                 <a
-                  href='{% static "#!" %}'
+                  href='javascript:;'
                   role="button"
                   class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center"
                   data-bs-toggle="button"
                   aria-pressed="true"
+                  id="{{post.id}}-lmc-a"
                 >
                   <div class="spinner-dots me-2">
                     <span class="spinner-dot"></span>
@@ -1657,6 +1532,7 @@ Header END -->
                   Load more comments
                 </a>
               </div>
+              {% endif %}
               <!-- Card footer END -->
             </div>
             <!-- Card feed item END -->
@@ -1894,7 +1770,7 @@ Header END -->
                     <ul class="comment-item-nested list-unstyled">
                       <!-- Comment item START -->
                       <div id="{{comment.id}}-replies" class="hiddencommentsection">
-                        {% for reply in comment.reply_set.all %}
+                        {% for reply in comment.reply_set.all|reply_query_set_slice %}
                         <li class="comment-item">
                           <div class="d-flex">
                             <!-- Avatar -->
@@ -1961,12 +1837,14 @@ Header END -->
                       </div>
                     </ul>
                     <!-- Load more replies -->
+                    {% if comment.reply_set.count > 5 %}
                     <a
                       href='{% static "#!" %}'
                       role="button"
-                      class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center mb-3 ms-5"
+                      class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center mb-3 ms-5 hiddencommentsection"
                       data-bs-toggle="button"
                       aria-pressed="true"
+                      id="{{comment.id}}-lmr"
                     >
                       <div class="spinner-dots me-2">
                         <span class="spinner-dot"></span>
@@ -1975,6 +1853,7 @@ Header END -->
                       </div>
                       Load more replies
                     </a>
+                    {% endif %}
                     <!-- Comment item nested END -->
                   </li>
                   <!-- Comment item END -->
@@ -1984,7 +1863,8 @@ Header END -->
               </div>
               <!-- Card body END -->
               <!-- Card footer START -->
-              <div class="card-footer border-0 pt-0">
+              {% if post.comment_set.count > 10 %}
+              <div id="{{post.id}}-lmc" class="card-footer border-0 pt-0 hiddencommentsection">
                 <!-- Load more comments -->
                 <a
                   href='{% static "#!" %}'
@@ -2001,6 +1881,7 @@ Header END -->
                   Load more comments
                 </a>
               </div>
+              {% endif %}
               <!-- Card footer END -->
             </div>
             <!-- Card feed item END -->
@@ -2403,7 +2284,7 @@ Header END -->
                     <ul class="comment-item-nested list-unstyled">
                       <!-- Comment item START -->
                       <div id="{{comment.id}}-replies" class="hiddencommentsection">
-                        {% for reply in comment.reply_set.all %}
+                        {% for reply in comment.reply_set.all|reply_query_set_slice %}
                         <li class="comment-item">
                           <div class="d-flex">
                             <!-- Avatar -->
@@ -2470,12 +2351,14 @@ Header END -->
                       </div>
                     </ul>
                     <!-- Load more replies -->
+                    {% if comment.reply_set.count > 5 %}
                     <a
                       href='{% static "#!" %}'
                       role="button"
-                      class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center mb-3 ms-5"
+                      class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center mb-3 ms-5 hiddencommentsection"
                       data-bs-toggle="button"
                       aria-pressed="true"
+                      id="{{comment.id}}-lmr"
                     >
                       <div class="spinner-dots me-2">
                         <span class="spinner-dot"></span>
@@ -2484,6 +2367,7 @@ Header END -->
                       </div>
                       Load more replies
                     </a>
+                    {% endif %}
                   </li>
                   <!-- Comment item END -->
                   {% endfor %}
@@ -2492,7 +2376,8 @@ Header END -->
               </div>
               <!-- Card body END -->
               <!-- Card footer START -->
-              <div class="card-footer border-0 pt-0">
+              {% if post.comment_set.count > 10 %}
+              <div id="{{post.id}}-lmc" class="card-footer border-0 pt-0 hiddencommentsection">
                 <!-- Load more comments -->
                 <a
                   href='{% static "#!" %}'
@@ -2509,6 +2394,7 @@ Header END -->
                   Load more comments
                 </a>
               </div>
+              {% endif %}
               <!-- Card footer END -->
             </div>
             <!-- Card feed item END -->
@@ -4468,6 +4354,139 @@ Header END -->
         </div>
       </div>
     </div>
+    <!-- Comment item sample -->
+    <li id="comment-template" class="comment-item hiddencommentsection">
+      <div class="d-flex position-relative">
+        <!-- Avatar -->
+        <div class="avatar avatar-xs">
+          <a href='{% static "#!" %}'
+            ><img
+              class="avatar-img rounded-circle"
+              src=''
+              alt=""
+              id="comment-template-img"
+          /></a>
+        </div>
+        <div class="ms-2">
+          <!-- Comment by -->
+          <div class="bg-light rounded-start-top-0 p-3 rounded">
+            <div class="d-flex justify-content-between">
+              <h6 class="mb-1">
+                <a href='{% static "#!" %}' id="comment-template-ownername"> comment owner name </a>
+              </h6>
+              <small class="ms-2" id="comment-template-creationdate">comment creation date</small>
+            </div>
+            <p class="small mb-0" id="comment-template-text">
+              comment text
+            </p>
+          </div>
+          <!-- Comment react -->
+          <ul class="nav nav-divider py-2 small">
+            <li class="nav-item">
+              <a class="nav-link" href='{% static "#!" %}' id="comment-template-likes"> Likes () </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href='javascript:;' id="comment-template-reply"> Reply</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href='javascript:;' id="comment-template-viewreplies"> View replies</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- Comment item nested START -->
+      <ul id="comment-template-replysection" class="comment-item-nested list-unstyled">
+        <!-- Comment item START -->
+        <div id="comment-template-replies" class="hiddencommentsection">
+          <!-- reply items position-->
+        </div>
+        <!-- Add reply -->
+      </ul>
+      <!-- Load more replies position-->
+      <!-- Comment item nested END -->
+    </li>
+    <!-- reply item sample-->
+    <li id="reply-template" class="comment-item hiddencommentsection">
+      <div class="d-flex">
+        <!-- Avatar -->
+        <div class="avatar avatar-xs">
+          <a href='{% static "#!" %}'
+            ><img
+              class="avatar-img rounded-circle"
+              src=''
+              alt=""
+              id="reply-template-img"
+          /></a>
+        </div>
+        <!-- Comment by -->
+        <div class="ms-2">
+          <div class="bg-light p-3 rounded">
+            <div class="d-flex justify-content-between">
+              <h6 class="mb-1">
+                <a href='{% static "#!" %}' id="reply-template-ownername">  reply.owner.get_full_name  </a>
+              </h6>
+              <small class="ms-2" id="reply-template-creationdate"></small>
+            </div>
+            <p class="small mb-0" id="reply-template-text">
+               reply.text 
+            </p>
+          </div>
+          <!-- Comment react -->
+          <ul class="nav nav-divider py-2 small">
+            <li class="nav-item">
+              <a class="nav-link" href='{% static "#!" %}' id="reply-template-likes"> Like ( reply.replylike_set.count )</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href='javascript:;' id="reply-template-reply"> Reply</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </li>
+    <!-- reply box sample-->
+    <div id="replybox-template" class="d-flex mb-3 hiddencommentsection">
+      <!-- Avatar -->
+      <div class="avatar avatar-xs me-2 reply-img">
+        <a href='{% static "#!" %}'>
+          <img
+            class="avatar-img rounded-circle"
+            src=' {{ user.profile.image.url }}'
+            alt=""
+            id="comment-template-replybox-img"
+          />
+        </a>
+      </div>
+      <!-- Comment box  -->
+      <form class="w-100" action="/ user.username /reply/post/ comment.id " method="post" enctype="multipart/form-data" id="replybox-template-form">
+        {% csrf_token %}
+        <textarea
+          data-autoresize
+          class="pe-4 bg-light reply"
+          rows="1"
+          placeholder="Reply a comment..."
+          name="text"
+          id="replybox-template-formtext"
+        ></textarea>
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <button type="submit" class="btn btn-success-soft mt-1 reply-btn">Reply</button>
+      </form>
+    </div>
+    <a
+      href='{% static "#!" %}'
+      role="button"
+      class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center mb-3 ms-5 hiddencommentsection"
+      data-bs-toggle="button"
+      aria-pressed="true"
+      id="comment-template-lmr"
+    >
+      <div class="spinner-dots me-2">
+        <span class="spinner-dot"></span>
+        <span class="spinner-dot"></span>
+        <span class="spinner-dot"></span>
+      </div>
+      Load more replies
+    </a>
+    <!-- Comment item END -->
     <!-- Modal create poll END -->
     <!-- =======================
 JS libraries, plugins and custom scripts -->
@@ -4580,8 +4599,8 @@ JS libraries, plugins and custom scripts -->
         document.getElementById(contactid + '-pymk').getElementsByTagName('button')[0].innerHTML='Contact Added';
         return false;
        }
-      </script>
-      <script>
+    </script>
+    <script>
         function postSubmit() {
           posttext = document.getElementById("postuploadtext1").value;
           document.getElementById("postuploadtext2").value = posttext;
@@ -4638,41 +4657,273 @@ JS libraries, plugins and custom scripts -->
         document.getElementById(pollid + '-options').classList.add("hidden-poll-option");
         document.getElementById(pollid + '-results').classList.remove("hidden-poll-option");
       }  
-      </script>
-      <script>
-        function displayComments(postid) {
-          commentbox = document.getElementById(postid + '-postcomment')
-          postcomments = document.getElementById(postid + '-comments')
-          if (commentbox.classList.contains('hiddencommentsection')) {
-            commentbox.classList.remove('hiddencommentsection');
-          } else {
-            commentbox.classList.add('hiddencommentsection');
-          }
+    </script>
+    <script>
+      function displayComments(postid) {
+        commentbox = document.getElementById(postid + '-postcomment')
+        postcomments = document.getElementById(postid + '-comments')
+        loadmorecomments = document.getElementById(postid + '-lmc')
+        if (commentbox.classList.contains('hiddencommentsection')) {
+          commentbox.classList.remove('hiddencommentsection');
+        } else {
+          commentbox.classList.add('hiddencommentsection');
+        }
+        
+        if (postcomments.classList.contains('hiddencommentsection')) {
+          postcomments.classList.remove('hiddencommentsection');
+          loadMoreComments(postid, 1)
+        } else {
+          postcomments.classList.add('hiddencommentsection');
+          postcomments.innerHTML= ""
+        }
+        if (loadmorecomments.classList.contains('hiddencommentsection')) {
+          loadmorecomments.classList.remove('hiddencommentsection');
+        } else {
+          loadmorecomments.classList.add('hiddencommentsection');
+        }
+      }
+      function displayReplybox(rbcmtid, ownerUsername) {
+        //console.log('called' + rbcmtid)
+        if (document.getElementById(rbcmtid + "-comment-replybox") == null) {
+          let replyboxtemplate = document.getElementById("replybox-template")
+          //commentitem = document.getElementById(commentid + "comment-item")
+          let replysection = document.getElementById(rbcmtid + "-comment-replysection")
+          console.log(replysection)
+          replysection.appendChild(replyboxtemplate.cloneNode(true))
+          //console.log(replysection)
+          replybox = document.getElementById("replybox-template")
+          replyform = document.getElementById("replybox-template-form")
+          replyformtext = document.getElementById("replybox-template-formtext")
+          replyform.id = rbcmtid + "-reply-formn"
+          replybox.id = rbcmtid + "-comment-replybox"
+          replyformtext.id = rbcmtid + "-reply-formtext"
+          let cmtId = rbcmtid
+          replyform.addEventListener("submit", function submitreplywrapper (e) { e.preventDefault()
+            return submitReply(e, this, cmtId)})
+          replybox.href = "/" + ownerUsername
           
-          if (postcomments.classList.contains('hiddencommentsection')) {
-            console.log('removing2')
-            postcomments.classList.remove('hiddencommentsection');
-          } else {
-            console.log('adding2')
-            postcomments.classList.add('hiddencommentsection');
-          }
         }
-        function displayReplybox(commentid) {
-          replybox = document.getElementById(commentid + "-replybox");
-          if (replybox.classList.contains('hiddencommentsection')) {
-            replybox.classList.remove('hiddencommentsection');
-          } else {
-            replybox.classList.add('hiddencommentsection');
-          }
+
+        replybox = document.getElementById(rbcmtid + "-comment-replybox")
+        if (replybox.classList.contains('hiddencommentsection')) {
+          replybox.classList.remove('hiddencommentsection');
+        } else {
+          replybox.classList.add('hiddencommentsection');
         }
-        function displayReplies(commentid) {
-          replies = document.getElementById(commentid + '-replies');
-          if (replies.classList.contains('hiddencommentsection')) {
-            replies.classList.remove('hiddencommentsection');
-          } else {
-            replies.classList.add('hiddencommentsection');
-          }
+        
+      }
+      function displayReplies(commentid) {
+        replies = document.getElementById(commentid + '-comment-replies');
+        //loadmorereplies = document.getElementById(commentid + '-lmr');
+        
+        if (replies.classList.contains('hiddencommentsection')) {
+          replies.classList.remove('hiddencommentsection');
+          loadMoreReplies(commentid, 1)
+        } else {
+          replies.classList.add('hiddencommentsection');
+          replies.innerHTML= ""
+          viewrepliesbtn = document.getElementById(commentid + '-comment-replycount')
+          viewrepliesbtn.innerText = 'View ' + viewrepliesbtn.innerText.split(" ")[1] + ' replies'
         }
-      </script>
+        //if (loadmorereplies.classList.contains('hiddencommentsection')) {
+          //loadmorereplies.classList.remove('hiddencommentsection');
+        //} else {
+          //loadmorereplies.classList.add('hiddencommentsection');
+        //}
+      }
+    </script>
+    <script>
+      function submitReply (e, form, cmtId) {
+        //console.log(e);
+      
+        formData = new FormData(form)
+        console.log(formData.get("text"))
+        console.log(formData.get("csrfmiddlewaretoken"))
+        //replytext = document.getElementById(rbcmtid + "-reply-formtext").value
+        url = '/api/replies/'
+        data = {"text":   formData.get("text"), "comment": cmtId}
+        console.log(JSON.stringify(data))
+          fetch(url, {
+            method: "POST",
+            headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': formData.get("csrfmiddlewaretoken"),
+            },
+            body: JSON.stringify(data)
+          }).then(response => response.json()).then(response => {
+            replies = document.getElementById(cmtId + '-comment-replies');
+            if (!replies.classList.contains("hiddencommentsection"))
+            {
+              displayReplies(cmtId)
+            }
+            displayReplies(cmtId)
+          }).catch(err => { console.error(err) })
+      }
+    </script>
+    <script>
+      function loadMoreComments(postid, page) {
+        if (document.getElementById("comment-template"))
+        {
+          commenttemplate = document.getElementById("comment-template")
+          options = {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'};
+          url = '/api/comments/?page=' + page +'&postid='+postid
+          fetch(url, {
+            method: "GET",
+            headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            'X-Requested-With': 'XMLHttpRequest',
+            },
+          }).then(response => response.json()).then(response => {
+            postcomments = document.getElementById(postid + "-comments")
+            ///console.log(postcomments)
+            for (result of response.results) {
+              //console.log(result.owner.profile.image)
+              //commenttemplateclone = commenttemplate.cloneNode()
+
+              postcomments.appendChild(commenttemplate.cloneNode(true))
+              newcommentitem = document.getElementById("comment-template")
+              newcommentitem.id=result.id + "-comment-item"
+
+              newcommentimg = document.getElementById("comment-template-img")
+              newcommentimg.src = result.owner.profile.image
+              newcommentimg.id =result.id + "-comment-img"
+              newcommentimg.parentNode.href = '/' + result.owner.username
+
+              newcommentownername = document.getElementById("comment-template-ownername");
+              newcommentownername.innerText = result.owner.first_name + " " + result.owner.last_name
+              newcommentownername.id = result.id + "-comment-ownername"
+              newcommentownername.href = "/" + result.owner.username
+
+              newcommentcreationdate = document.getElementById("comment-template-creationdate");
+              newcommentcreationdate.innerText = new Date(result.created_at).toLocaleDateString("en-US", options)
+              newcommentcreationdate.id = result.id + "-comment-creationdate"
+
+              newcommenttext = document.getElementById("comment-template-text");
+              newcommenttext.innerText = result.text
+              newcommenttext.id = result.id + '-comment-text'
+              newcommentlikecount = document.getElementById("comment-template-likes");
+              newcommentlikecount.innerText = "Like (" + result.like_count + ")"
+              newcommentlikecount.id = result.id + "comment-likecount"
+
+              newcommentreplycount = document.getElementById("comment-template-viewreplies");
+              newcommentreplycount.innerText = "View " + result.reply_count + " replies"
+              newcommentreplycount.id = result.id + '-comment-replycount'
+              
+              document.getElementById("comment-template-reply").id = result.id + '-comment-reply'
+              document.getElementById("comment-template-replies").id = result.id + '-comment-replies'
+              document.getElementById("comment-template-replysection").id = result.id + '-comment-replysection'
+              let resultId = result.id
+              let ownerUsername = result.owner.username
+              document.getElementById(result.id + '-comment-reply').addEventListener("click", function drb () {return displayReplybox(resultId, ownerUsername)})
+              document.getElementById(result.id + '-comment-replycount').addEventListener("click", function drs () { return displayReplies(resultId)})
+              newcommentitem.classList.remove("hiddencommentsection")
+              //postcomments.getElementById("comment-template").getElementsByTagName("img").src = result.owner.profile.image
+              //postcomments.getElementById("comment-template").classList.remove("hiddencommentsection");
+              
+            }
+            page = page + 1
+            postitem = document.getElementById(postid + '-item')
+            if (page != 2) {
+              var old_element = document.getElementById(postid+"-lmc-a");
+              var new_element = old_element.cloneNode(true);
+              old_element.parentNode.replaceChild(new_element, old_element);
+            }
+            if (response.next != null) {
+              //console.log(document.getElementById(postid+"-lmc-a"))
+              document.getElementById(postid+"-lmc-a").addEventListener('click', function lmc () { return loadMoreComments(postid, page)})
+            } else {
+              document.getElementById(postid+"-lmc-a").remove()
+            }
+            //console.log(document.getElementById(postid+"-lmc-a"))
+            //commentsection.getElementsByTagName('img')[0].src = response.results[0].owner.profile.image
+          })
+        }
+      }
+      function loadMoreReplies(commentid, page) {
+        if (document.getElementById("reply-template"))
+        {
+          replytemplate = document.getElementById("reply-template")
+          options = {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'};
+          url = '/api/replies/?page=' + page +'&commentid='+commentid
+          fetch(url, {
+            method: "GET",
+            headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            'X-Requested-With': 'XMLHttpRequest',
+            },
+          }).then(response => response.json()).then(response => {
+            commentreplies = document.getElementById(commentid + '-comment-replies')
+            ///console.log(postcomments)
+            for (result of response.results) {
+              //console.log(result.owner.profile.image)
+              //commenttemplateclone = commenttemplate.cloneNode()
+
+              commentreplies.appendChild(replytemplate.cloneNode(true))
+              newreplyitem = document.getElementById("reply-template")
+              newreplyitem.id=result.id + "-reply-item"
+
+              newreplyimg = document.getElementById("reply-template-img")
+              newreplyimg.src = result.owner.profile.image
+              newreplyimg.id =result.id + "-reply-img"
+              newreplyimg.parentNode.href = '/' + result.owner.username
+    
+              newreplyownername = document.getElementById("reply-template-ownername");
+              newreplyownername.innerText = result.owner.first_name + " " + result.owner.last_name
+              newreplyownername.id = result.id + "-reply-ownername"
+              newreplyownername.href = "/" + result.owner.username
+  
+              newreplycreationdate = document.getElementById("reply-template-creationdate");
+              newreplycreationdate.innerText = new Date(result.created_at).toLocaleDateString("en-US", options)
+              newreplycreationdate.id = result.id + "-reply-creationdate"
+
+              newreplytext = document.getElementById("reply-template-text");
+              newreplytext.innerText = result.text
+              newreplytext.id = result.id + '-reply-text'
+              newreplylikecount = document.getElementById("reply-template-likes");
+              newreplylikecount.innerText = "Like (" + result.like_count + ")"
+              newreplylikecount.id = result.id + "reply-likecount"
+
+              //newcommentreplycount = document.getElementById("comment-template-viewreplies");
+              //newcommentreplycount.innerText = "View " + result.reply_count + " replies"
+              //newcommentreplycount.id = result.id + '-reply-replycount'
+              
+              document.getElementById("reply-template-reply").id = result.id + '-reply-reply'
+              //document.getElementById("comment-template-replies").id = result.id + '-comment-replies'
+              //document.getElementById("comment-template-replysection").id = result.id + '-comment-replysection'
+              let commentId = result.comment
+              document.getElementById(result.id + '-reply-reply').addEventListener("click", function drb () {return displayReplybox(commentId)})
+              //document.getElementById(result.id + '-comment-replycount').addEventListener("click", function drs () { return displayReplies(resultId)})
+              newreplyitem.classList.remove("hiddencommentsection")
+              //postcomments.getElementById("comment-template").getElementsByTagName("img").src = result.owner.profile.image
+              //postcomments.getElementById("comment-template").classList.remove("hiddencommentsection");
+              
+            }
+            viewrepliesbtn = document.getElementById(commentid + '-comment-replycount')
+            viewrepliesbtn.innerText = 'Hide '+response.count+' replies'
+
+            page = page + 1
+            commentitem = document.getElementById(commentid + '-item')
+            if (page == 2 && response.next !== null) {
+              commentitem.appendChild(document.getElementById("comment-template-lmr"))
+              document.getElementById("comment-template-lmr").id = commentid + "-lmr"
+            }
+            if (page != 2) {
+              var old_element = document.getElementById(commentid+"-lmr");
+              var new_element = old_element.cloneNode(true);
+              old_element.parentNode.replaceChild(new_element, old_element);
+            }
+            if (response.next !== null) {
+              //console.log(document.getElementById(postid+"-lmc-a"))
+              document.getElementById(commentid+"-lmr").addEventListener('click', function lmc () { return loadMoreReplies(commentid, page)})
+            } else if (page != 2) {
+              document.getElementById(commentid+"-lmr").remove()
+            }
+            //console.log(document.getElementById(postid+"-lmc-a"))
+            //commentsection.getElementsByTagName('img')[0].src = response.results[0].owner.profile.image
+          })
+        }
+      }
+    </script>
   </body>
 </html>
