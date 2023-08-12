@@ -3,8 +3,10 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
 urlpatterns = [
-    path('comments/', views.CommentList.as_view()),
+    path('comment/like/', views.CommentLikeView.as_view()),
+    path('comments/', views.CommentListView.as_view()),
     path('comments/<int:pk>/', views.CommentDetail.as_view()),
+    path('reply/like/', views.ReplyLikeView.as_view()),
     path('replies/', views.ReplyList.as_view()),
     path('replies/<int:pk>/', views.ReplyDetail.as_view()),
 ]

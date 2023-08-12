@@ -1325,11 +1325,11 @@ Header END -->
                     <div>
                       <div class="nav nav-divider">
                         <h6 class="nav-item card-title mb-0">
-                          <a href='{% static "#!" %}'> {{ post.owner.get_full_name }}</a>
+                          <a href='/{{ post.owner.username }}'> {{ post.owner.get_full_name }}</a>
                         </h6>
-                        <span class="nav-item small"> 1day</span>
+                        <span class="nav-item small"> {{ post.created_at }}</span>
                       </div>
-                      <p class="mb-0 small">02 January at 12:00</p>
+                      <p class="mb-0 small">{{post.owner.profile.occupation }}</p>
                     </div>
                   </div>
                   <!-- Card feed action dropdown START -->
@@ -4383,7 +4383,7 @@ Header END -->
           <!-- Comment react -->
           <ul class="nav nav-divider py-2 small">
             <li class="nav-item">
-              <a class="nav-link" href='{% static "#!" %}' id="comment-template-likes"> Likes () </a>
+              <a class="nav-link bi bi-hand-thumbs-up" href='javascript:;' id="comment-template-likes"> Likes </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href='javascript:;' id="comment-template-reply"> Reply</a>
@@ -4434,7 +4434,7 @@ Header END -->
           <!-- Comment react -->
           <ul class="nav nav-divider py-2 small">
             <li class="nav-item">
-              <a class="nav-link" href='{% static "#!" %}' id="reply-template-likes"> Like ( reply.replylike_set.count )</a>
+              <a class= "nav-link bi bi-hand-thumbs-up" href='javascript:;' id="reply-template-likes"> Likes </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href='javascript:;' id="reply-template-reply"> Reply</a>
@@ -4447,7 +4447,7 @@ Header END -->
     <div id="replybox-template" class="d-flex mb-3 hiddencommentsection">
       <!-- Avatar -->
       <div class="avatar avatar-xs me-2 reply-img">
-        <a href='{% static "#!" %}'>
+        <a href='/{{user.username}}'>
           <img
             class="avatar-img rounded-circle"
             src=' {{ user.profile.image.url }}'
@@ -4550,7 +4550,55 @@ JS libraries, plugins and custom scripts -->
       }
     </script>
     <script>
-      function likeCommentObj() {
+      function likeCommentObj(cmtObjId, cmtObjType) {
+        commentObjLikes = document.getElementById(cmtObjId + cmtObjType + "-likecount")
+        commentObjLikes.style.pointerEvents="none"
+
+        url = "/api/" + cmtObjType + "/like/"
+        token = document.getElementById("replybox-template-form").children[0].value
+        if (cmtObjType == 'comment') {
+          data = {'comment': cmtObjId}
+        } else if (cmtObjType == 'reply') {
+          data = {'reply': cmtObjId}
+        }
+
+        if (commentObjLikes.classList == "nav-link bi bi-hand-thumbs-up") {
+          console.log("post")
+          fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': token
+          },
+          body: JSON.stringify(data)
+          }).then(response => response.json()).then(response => {
+            console.log(response)
+            commentObjLikes.className = "nav-link bi bi-hand-thumbs-up-fill"
+            newLikeCount = parseInt(commentObjLikes.innerText[1]) + 1
+            console.log(newLikeCount)
+            commentObjLikes.innerText = " " + String(newLikeCount)
+            commentObjLikes.style.pointerEvents="auto"
+          })
+        } else if (commentObjLikes.classList == "nav-link bi bi-hand-thumbs-up-fill") {
+          console.log("delete")
+          fetch(url, {
+          method: "DELETE",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': token
+          },
+          body: JSON.stringify(data)
+          }).then(response => response.json()).then(response => {
+            console.log(response)
+            commentObjLikes.className = "nav-link bi bi-hand-thumbs-up"
+            newLikeCount = parseInt(commentObjLikes.innerText[1]) - 1
+            console.log(newLikeCount)
+            commentObjLikes.innerText = " " + String(newLikeCount)
+            commentObjLikes.style.pointerEvents="auto"
+          })
+        }
         
       }
     </script>
@@ -4627,8 +4675,8 @@ JS libraries, plugins and custom scripts -->
           posttext = document.getElementById("posttextmain").value;
           document.getElementById("postuploadtextvid1").value = posttext;
         }
-      </script>
-      <script>
+    </script>
+    <script>
         let hiddenPollOptions = 2;
         function unhideOption() {
           optionToReveal = document.getElementsByClassName("hidden-poll-option")[0];
@@ -4729,7 +4777,11 @@ JS libraries, plugins and custom scripts -->
           replies.innerHTML= ""
           viewrepliesbtn = document.getElementById(commentid + '-comment-replycount')
           viewrepliesbtn.innerText = 'View ' + viewrepliesbtn.innerText.split(" ")[1] + ' replies'
+          if (document.getElementById(commentid+"-lmr") != null) {
+            document.getElementById(commentid+"-lmr").classList.add("hiddencommentsection")
+          }
         }
+          
         //if (loadmorereplies.classList.contains('hiddencommentsection')) {
           //loadmorereplies.classList.remove('hiddencommentsection');
         //} else {
@@ -4742,8 +4794,8 @@ JS libraries, plugins and custom scripts -->
         //console.log(e);
       
         formData = new FormData(form)
-        console.log(formData.get("text"))
-        console.log(formData.get("csrfmiddlewaretoken"))
+        //console.log(formData.get("text"))
+        //console.log(formData.get("csrfmiddlewaretoken"))
         //replytext = document.getElementById(rbcmtid + "-reply-formtext").value
         url = '/api/replies/'
         data = {"text":   formData.get("text"), "comment": cmtId}
@@ -4835,9 +4887,11 @@ JS libraries, plugins and custom scripts -->
               newcommenttext.innerText = result.text
               newcommenttext.id = result.id + '-comment-text'
               newcommentlikecount = document.getElementById("comment-template-likes");
-              newcommentlikecount.innerText = "Like (" + result.like_count + ")"
+              newcommentlikecount.innerText = " " + result.like_count
               newcommentlikecount.id = result.id + "comment-likecount"
-
+              if (result.liked) {
+                newcommentlikecount.className = "nav-link bi bi-hand-thumbs-up-fill"
+              }
               newcommentreplycount = document.getElementById("comment-template-viewreplies");
               newcommentreplycount.innerText = "View " + result.reply_count + " replies"
               newcommentreplycount.id = result.id + '-comment-replycount'
@@ -4849,6 +4903,7 @@ JS libraries, plugins and custom scripts -->
               let ownerUsername = result.owner.username
               document.getElementById(result.id + '-comment-reply').addEventListener("click", function drb () {return displayReplybox(resultId, ownerUsername)})
               document.getElementById(result.id + '-comment-replycount').addEventListener("click", function drs () { return displayReplies(resultId)})
+              document.getElementById(result.id + "comment-likecount").addEventListener("click", function lco() { return likeCommentObj(resultId, 'comment')})
               newcommentitem.classList.remove("hiddencommentsection")
               //postcomments.getElementById("comment-template").getElementsByTagName("img").src = result.owner.profile.image
               //postcomments.getElementById("comment-template").classList.remove("hiddencommentsection");
@@ -4913,9 +4968,14 @@ JS libraries, plugins and custom scripts -->
               newreplytext = document.getElementById("reply-template-text");
               newreplytext.innerText = result.text
               newreplytext.id = result.id + '-reply-text'
+
               newreplylikecount = document.getElementById("reply-template-likes");
-              newreplylikecount.innerText = "Like (" + result.like_count + ")"
+              newreplylikecount.innerText = " "  + result.like_count
               newreplylikecount.id = result.id + "reply-likecount"
+              newreplylikecount.id = result.id + "reply-likecount"
+              if (result.liked) {
+                newreplylikecount.className = "nav-link bi bi-hand-thumbs-up-fill"
+              }
 
               //newcommentreplycount = document.getElementById("comment-template-viewreplies");
               //newcommentreplycount.innerText = "View " + result.reply_count + " replies"
@@ -4925,7 +4985,9 @@ JS libraries, plugins and custom scripts -->
               //document.getElementById("comment-template-replies").id = result.id + '-comment-replies'
               //document.getElementById("comment-template-replysection").id = result.id + '-comment-replysection'
               let commentId = result.comment
+              let resultId = result.id
               document.getElementById(result.id + '-reply-reply').addEventListener("click", function drb () {return displayReplybox(commentId)})
+              document.getElementById(result.id + "reply-likecount").addEventListener("click", function lro() { return likeCommentObj(resultId, 'reply')})
               //document.getElementById(result.id + '-comment-replycount').addEventListener("click", function drs () { return displayReplies(resultId)})
               newreplyitem.classList.remove("hiddencommentsection")
               //postcomments.getElementById("comment-template").getElementsByTagName("img").src = result.owner.profile.image
@@ -4941,9 +5003,12 @@ JS libraries, plugins and custom scripts -->
               commentitem.appendChild(document.getElementById("comment-template-lmr").cloneNode(true))
               document.getElementById("comment-template-lmr").id = commentid + "-lmr"
             }
-            var old_element = document.getElementById(commentid+"-lmr");
-            var new_element = old_element.cloneNode(true);
-            old_element.parentNode.replaceChild(new_element, old_element);
+            if (page != 2) {
+              var old_element = document.getElementById(commentid+"-lmr");
+              var new_element = old_element.cloneNode(true);
+              old_element.parentNode.replaceChild(new_element, old_element);
+            }
+            
             if (response.next != null) {
               document.getElementById(commentid+"-lmr").addEventListener('click', function lmc () { return loadMoreReplies(commentid, page)})
               document.getElementById(commentid+"-lmr").classList.remove("hiddencommentsection")
