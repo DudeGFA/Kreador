@@ -843,158 +843,6 @@ Header END -->
 
           <!-- Main content START -->
           <div class="col-md-8 col-lg-6 vstack gap-4">
-            <!-- Story START -->
-            <div class="tiny-slider arrow-hover overflow-hidden">
-              <div
-                class="tiny-slider-inner ms-n4"
-                data-arrow="true"
-                data-dots="true"
-                data-loop="false"
-                data-autoplay="false"
-                data-items-xl="4"
-                data-items-lg="3"
-                data-items-md="3"
-                data-items-sm="3"
-                data-items-xs="2"
-                data-gutter="12"
-                data-edge="30"
-              >
-                <!-- Slider items -->
-                <div>
-                  <!-- Card add story START -->
-                  <div
-                    class="card border border-2 border-dashed h-150px shadow-none d-flex align-items-center justify-content-center text-center"
-                  >
-                    <div>
-                      <a
-                        class="stretched-link btn btn-light rounded-circle icon-md"
-                        href='{% static "#!" %}'
-                        ><i class="fa-solid fa-plus"></i
-                      ></a>
-                      <h6 class="mt-2 mb-0 small">Post a Story</h6>
-                    </div>
-                  </div>
-                  <!-- Card add story END -->
-                </div>
-
-                <!-- Slider items -->
-                <div>
-                  <!-- Card START -->
-                  <div
-                    class="card card-overlay-bottom border-0 position-relative h-150px"
-                    style="
-                      background-image: url({% static 'assets/images/avatar/08.jpg' %});
-                      background-position: center left;
-                      background-size: cover;
-                    "
-                  >
-                    <div class="card-img-overlay d-flex align-items-center p-2">
-                      <div class="w-100 mt-auto">
-                        <!-- Name -->
-                        <a href='{% static "#!" %}' class="stretched-link text-white small"
-                          >Nehe Kamolu</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-                  <!-- Card END -->
-                </div>
-
-                <!-- Slider items -->
-                <div>
-                  <!-- Card START -->
-                  <div
-                    class="card card-overlay-bottom border-0 position-relative h-150px"
-                    style="
-                      background-image: url({% static 'assets/images/avatar/11.jpg' %});
-                      background-position: center left;
-                      background-size: cover;
-                    "
-                  >
-                    <div class="card-img-overlay d-flex align-items-center p-2">
-                      <div class="w-100 mt-auto">
-                        <!-- Name -->
-                        <a href='{% static "#!" %}' class="stretched-link text-white small"
-                          >Solomon Amao</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-                  <!-- Card END -->
-                </div>
-
-                <!-- Slider items -->
-                <div>
-                  <!-- Card START -->
-                  <div
-                    class="card card-overlay-bottom border-0 position-relative h-150px"
-                    style="
-                      background-image: url({% static 'assets/images/avatar/09.jpg' %});
-                      background-position: center left;
-                      background-size: cover;
-                    "
-                  >
-                    <div class="card-img-overlay d-flex align-items-center p-2">
-                      <div class="w-100 mt-auto">
-                        <!-- Name -->
-                        <a href='{% static "#!" %}' class="stretched-link text-white small"
-                          >Elo Idiodi</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-                  <!-- Card END -->
-                </div>
-
-                <!-- Slider items -->
-                <div>
-                  <!-- Card START -->
-                  <div
-                    class="card card-overlay-bottom border-0 position-relative h-150px"
-                    style="
-                      background-image: url({% static 'assets/images/avatar/10.jpg' %});
-                      background-position: center left;
-                      background-size: cover;
-                    "
-                  >
-                    <div class="card-img-overlay d-flex align-items-center p-2">
-                      <div class="w-100 mt-auto">
-                        <!-- Name -->
-                        <a href='{% static "#!" %}' class="stretched-link text-white small"
-                          >Philomina Lay</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-                  <!-- Card END -->
-                </div>
-
-                <!-- Slider items -->
-                <div>
-                  <!-- Card START -->
-                  <div
-                    class="card card-overlay-bottom border-0 position-relative h-150px"
-                    style="
-                      background-image: url({% static 'assets/images/avatar/13.jpg' %});
-                      background-position: center left;
-                      background-size: cover;
-                    "
-                  >
-                    <div class="card-img-overlay d-flex align-items-center p-2">
-                      <div class="w-100 mt-auto">
-                        <!-- Name -->
-                        <a href='{% static "#!" %}' class="stretched-link text-white small"
-                          >Bolatito Alaba</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-                  <!-- Card END -->
-                </div>
-              </div>
-            </div>
-            <!-- Story END -->
-
             <!-- Share feed START -->
             <div class="card card-body">
               <div class="d-flex mb-3">
@@ -1009,7 +857,7 @@ Header END -->
                   </a>
                 </div>
                 <!-- Post input -->
-                <form class="w-100" id="posttextform" action="/{{ user.username }}/" method="post" enctype="multipart/form-data">
+                <form class="w-100" id="posttextform" onsubmit="postTextSubmit(event)" action="/{{ user.username }}/" method="post" enctype="multipart/form-data">
                   {% csrf_token %}
                   <textarea
                     class="form-control pe-4 border-0"
@@ -1021,6 +869,7 @@ Header END -->
                   ></textarea>
                 </form>
               </div>
+              <p style="color: red; font-size: small;" id="emptyformvldtn" class="hiddenbtn">Post cannot be empty</p>
               <!-- Share feed toolbar START -->
               <div id="postoptions">
                 <ul class="nav nav-pills nav-stack small fw-normal">
@@ -1086,8 +935,8 @@ Header END -->
                 <div class="d-flex align-items-center justify-content-between">
                   <div class="d-flex align-items-center">
                     <!-- Avatar -->
-                    <div class="avatar me-2">
-                      <a href='/{{ post.owner.username}}/'>
+                    <div class="avatar avatar-story me-2">
+                      <a href='/{{ post.owner.username }}'>
                         <img
                           class="avatar-img rounded-circle"
                           src='{{ post.owner.profile.image.url }}'
@@ -1095,12 +944,15 @@ Header END -->
                         />
                       </a>
                     </div>
-                    <!-- Title -->
+                    <!-- Info -->
                     <div>
-                      <h6 class="card-title mb-0">
-                        <a href='{% static "#!" %}'> {{ post.owner.get_full_name }} </a>
-                      </h6>
-                      <p class="mb-0 small">{{ post.created_at }}</p>
+                      <div class="nav nav-divider">
+                        <h6 class="nav-item card-title mb-0">
+                          <a href='/{{ post.owner.username}}'> {{ post.owner.get_full_name }} </a>
+                        </h6>
+                        <span class="nav-item small"> {{ post.created_at }} </span>
+                      </div>
+                      <p class="mb-0 small">{{ post.owner.profile.occupation }}</p>
                     </div>
                   </div>
                   <!-- Card share action menu -->
@@ -1125,8 +977,7 @@ Header END -->
                     </li>
                     <li>
                       <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori
-                        ferguson
+                        <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow {{ post.owner.first_name }}
                       </a>
                     </li>
                     <li>
@@ -1207,9 +1058,6 @@ Header END -->
                 <ul class="nav nav-divider mt-2 mb-0">
                   <li class="nav-item">
                     <a id="{{post.id}}-totalvotes" class="nav-link" href='{% static "#" %}'>{{ post|calc_total_votes }} votes</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href='{% static "#" %}'>2d left</a>
                   </li>
                 </ul>
                 <!-- Feed poll votes ED -->
@@ -1355,8 +1203,7 @@ Header END -->
                       </li>
                       <li>
                         <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori
-                          ferguson
+                          <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow {{ post.owner.first_name }}
                         </a>
                       </li>
                       <li>
@@ -1513,7 +1360,6 @@ Header END -->
               </div>
               <!-- Card body END -->
               <!-- Card footer START -->
-              {% if post.comment_set.count > 10 %}
               <div id="{{post.id}}-lmc" class="card-footer border-0 pt-0 hiddencommentsection">
                 <!-- Load more comments -->
                 <a
@@ -1532,7 +1378,6 @@ Header END -->
                   Load more comments
                 </a>
               </div>
-              {% endif %}
               <!-- Card footer END -->
             </div>
             <!-- Card feed item END -->
@@ -1586,8 +1431,7 @@ Header END -->
                       </li>
                       <li>
                         <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori
-                          ferguson
+                          <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow {{ post.owner.first_name }}
                         </a>
                       </li>
                       <li>
@@ -1702,7 +1546,7 @@ Header END -->
                 <div id="{{post.id}}-postcomment" class="d-flex mb-3 hiddencommentsection">
                   <!-- Avatar -->
                   <div class="avatar avatar-xs me-2">
-                    <a href='{% static "#!" %}'>
+                    <a href='/{{user.username}}'>
                       <img
                         class="avatar-img rounded-circle"
                         src='{{ user.profile.image.url }}'
@@ -1711,7 +1555,7 @@ Header END -->
                     </a>
                   </div>
                   <!-- Comment box  -->
-                  <form class="w-100" action="/{{user.username }}/comment/post/{{ post.id }}" method="post" enctype="multipart/form-data">
+                  <form onsubmit="submitComment(event, '{{post.id}}')" id="{{post.id}}-cmt-submitform" class="w-100" action="/{{user.username }}/comment/post/{{ post.id }}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <textarea
                       data-autoresize
@@ -1727,151 +1571,21 @@ Header END -->
                 <!-- Comment wrap START -->
                 <ul id="{{post.id}}-comments" class="comment-wrap list-unstyled hiddencommentsection">
                   <!-- Comment item START -->
-                  {% for comment in post.comment_set.all %}
-                  <li class="comment-item">
-                    <div class="d-flex position-relative">
-                      <!-- Avatar -->
-                      <div class="avatar avatar-xs">
-                        <a href='{% static "#!" %}'
-                          ><img
-                            class="avatar-img rounded-circle"
-                            src='{{ comment.owner.profile.image.url }}'
-                            alt=""
-                        /></a>
-                      </div>
-                      <div class="ms-2">
-                        <!-- Comment by -->
-                        <div class="bg-light rounded-start-top-0 p-3 rounded">
-                          <div class="d-flex justify-content-between">
-                            <h6 class="mb-1">
-                              <a href='{% static "#!" %}'> {{ comment.owner.get_full_name }} </a>
-                            </h6>
-                            <small class="ms-2">{{ comment.created_at }}</small>
-                          </div>
-                          <p class="small mb-0">
-                            {{ comment.text }}
-                          </p>
-                        </div>
-                        <!-- Comment react -->
-                        <ul class="nav nav-divider py-2 small">
-                          <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'> Like ({{comment.commentlike_set.count}})</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href='javascript:;' onclick="displayReplybox('{{comment.id}}')"> Reply</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href='javascript:;' onclick="displayReplies('{{comment.id}}')"> View {{comment.reply_set.count}} replies</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <!-- Comment item nested START -->
-                    <ul class="comment-item-nested list-unstyled">
-                      <!-- Comment item START -->
-                      <div id="{{comment.id}}-replies" class="hiddencommentsection">
-                        {% for reply in comment.reply_set.all|reply_query_set_slice %}
-                        <li class="comment-item">
-                          <div class="d-flex">
-                            <!-- Avatar -->
-                            <div class="avatar avatar-xs">
-                              <a href='{% static "#!" %}'
-                                ><img
-                                  class="avatar-img rounded-circle"
-                                  src='{{ reply.owner.profile.image.url }}'
-                                  alt=""
-                              /></a>
-                            </div>
-                            <!-- Comment by -->
-                            <div class="ms-2">
-                              <div class="bg-light p-3 rounded">
-                                <div class="d-flex justify-content-between">
-                                  <h6 class="mb-1">
-                                    <a href='{% static "#!" %}'> {{ reply.owner.get_full_name }} </a>
-                                  </h6>
-                                  <small class="ms-2">2hr</small>
-                                </div>
-                                <p class="small mb-0">
-                                  {{ reply.text }}
-                                </p>
-                              </div>
-                              <!-- Comment react -->
-                              <ul class="nav nav-divider py-2 small">
-                                <li class="nav-item">
-                                  <a class="nav-link" href='{% static "#!" %}'> Like (5)</a>
-                                </li>
-                                <li class="nav-item">
-                                  <a class="nav-link" href='javascript:;' onclick="displayReplybox('{{comment.id}}')"> Reply</a>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </li>
-                        {% endfor %}
-                      </div>
-                      <!-- Add reply -->
-                      <div id="{{comment.id}}-replybox" class="d-flex mb-3 hiddencommentsection">
-                        <!-- Avatar -->
-                        <div class="avatar avatar-xs me-2 reply-img">
-                          <a href='{% static "#!" %}'>
-                            <img
-                              class="avatar-img rounded-circle"
-                              src='{{ user.profile.image.url }}'
-                              alt=""
-                            />
-                          </a>
-                        </div>
-                        <!-- Comment box  -->
-                        <form class="w-100" action="/{{ user.username }}/reply/post/{{ comment.id }}" method="post" enctype="multipart/form-data">
-                          {% csrf_token %}
-                          <textarea
-                            data-autoresize
-                            class="pe-4 bg-light reply"
-                            rows="1"
-                            placeholder="Reply a comment..."
-                            name="text"
-                          ></textarea>
-                          <input type="hidden" name="next" value="{{ request.path }}">
-                          <button type="submit" class="btn btn-success-soft mt-1 reply-btn">Reply</button>
-                        </form>
-                      </div>
-                    </ul>
-                    <!-- Load more replies -->
-                    {% if comment.reply_set.count > 5 %}
-                    <a
-                      href='{% static "#!" %}'
-                      role="button"
-                      class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center mb-3 ms-5 hiddencommentsection"
-                      data-bs-toggle="button"
-                      aria-pressed="true"
-                      id="{{comment.id}}-lmr"
-                    >
-                      <div class="spinner-dots me-2">
-                        <span class="spinner-dot"></span>
-                        <span class="spinner-dot"></span>
-                        <span class="spinner-dot"></span>
-                      </div>
-                      Load more replies
-                    </a>
-                    {% endif %}
-                    <!-- Comment item nested END -->
-                  </li>
                   <!-- Comment item END -->
-                  {% endfor %}
                 </ul>
                 <!-- Comment wrap END -->
               </div>
               <!-- Card body END -->
               <!-- Card footer START -->
-              {% if post.comment_set.count > 10 %}
               <div id="{{post.id}}-lmc" class="card-footer border-0 pt-0 hiddencommentsection">
                 <!-- Load more comments -->
                 <a
-                  href='{% static "#!" %}'
+                  href='javascript:;'
                   role="button"
                   class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center"
                   data-bs-toggle="button"
                   aria-pressed="true"
+                  id="{{post.id}}-lmc-a"
                 >
                   <div class="spinner-dots me-2">
                     <span class="spinner-dot"></span>
@@ -1881,7 +1595,6 @@ Header END -->
                   Load more comments
                 </a>
               </div>
-              {% endif %}
               <!-- Card footer END -->
             </div>
             <!-- Card feed item END -->
@@ -1889,117 +1602,12 @@ Header END -->
             <!-- Card feed item START -->
             <div class="card">
               <!-- Card header START -->
-              <div class="card-header">
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="d-flex align-items-center">
-                    <!-- Avatar -->
-                    <div class="avatar me-2">
-                      <a href='{% static "#!" %}'>
-                        <img
-                          class="avatar-img rounded-circle"
-                          src='{% static "assets/images/logo/12.jpg" %}'
-                          alt=""
-                        />
-                      </a>
-                    </div>
-                    <!-- Info -->
-                    <div>
-                      <h6 class="card-title mb-0">
-                        <a href='{% static "#!" %}'> {{ post.postimage_set.count }}</a>
-                      </h6>
-                      <a href='{% static "#!" %}' class="mb-0 text-body"
-                        >Sponsored
-                        <i
-                          class="bi bi-info-circle ps-1"
-                          data-bs-container="body"
-                          data-bs-toggle="popover"
-                          data-bs-placement="top"
-                          data-bs-content="You're seeing this ad because your activity meets the intended audience of our site."
-                        ></i>
-                      </a>
-                    </div>
-                  </div>
-                  <!-- Card share action START -->
-                  <div class="dropdown">
-                    <a
-                      href='{% static "#" %}'
-                      class="text-secondary btn btn-secondary-soft-hover py-1 px-2"
-                      id="cardShareAction2"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-three-dots"></i>
-                    </a>
-                    <!-- Card share action dropdown menu -->
-                    <ul
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="cardShareAction2"
-                    >
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori
-                          ferguson
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a
-                        >
-                      </li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-flag fa-fw pe-2"></i>Report post</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- Card share action START -->
-                </div>
-              </div>
-              <!-- Card header START -->
-              
-              <!-- Card body START -->
-              <div class="card-body">
-                <p class="mb-0">
-                  Quickly design and customize responsive mobile-first sites
-                  with Bootstrap.
-                </p>
-              </div>
-              <img src='{% static "assets/images/post/3by2/02.jpg" %}' alt="" />
-              <!-- Card body END -->
-              <!-- Card footer START -->
-              <div
-                class="card-footer border-0 d-flex justify-content-between align-items-center"
-              >
-                <p class="mb-0">Currently v5.1.3</p>
-                <a class="btn btn-primary-soft btn-sm" href='{% static "#" %}'>
-                  Download now
-                </a>
-              </div>
-              <!-- Card footer END -->
-            </div>
-            <!-- Card feed item END -->
-
-            <!-- Card feed item START -->
-            <div class="card">
-              <!-- Card header START -->
               <div class="card-header border-0 pb-0">
                 <div class="d-flex align-items-center justify-content-between">
                   <div class="d-flex align-items-center">
                     <!-- Avatar -->
-                    <div class="avatar me-2">
-                      <a href='{% static "#" %}'>
+                    <div class="avatar avatar-story me-2">
+                      <a href='/{{ post.owner.username }}'>
                         <img
                           class="avatar-img rounded-circle"
                           src='{{ post.owner.profile.image.url }}'
@@ -2009,22 +1617,13 @@ Header END -->
                     </div>
                     <!-- Info -->
                     <div>
-                      <h6 class="card-title mb-0">
-                        <a href='{% static "#" %}'> {{ post.owner.get_full_name }}</a>
-                      </h6>
                       <div class="nav nav-divider">
-                        <p class="nav-item mb-0 small">
-                          {{ post.owner.profile.occupation }}
-                        </p>
-                        <span
-                          class="nav-item small"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          title="Public"
-                        >
-                          <i class="bi bi-globe"></i>
-                        </span>
+                        <h6 class="nav-item card-title mb-0">
+                          <a href='/{{ post.owner.username}}'> {{ post.owner.get_full_name }} </a>
+                        </h6>
+                        <span class="nav-item small"> {{ post.created_at }} </span>
                       </div>
+                      <p class="mb-0 small">{{ post.owner.profile.occupation }}</p>
                     </div>
                   </div>
                   <!-- Card share action START -->
@@ -2050,8 +1649,7 @@ Header END -->
                       </li>
                       <li>
                         <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori
-                          ferguson
+                          <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow {{ post.owner.first_name }}
                         </a>
                       </li>
                       <li>
@@ -2215,7 +1813,7 @@ Header END -->
                 <div id="{{post.id}}-postcomment" class="d-flex mb-3 hiddencommentsection">
                   <!-- Avatar -->
                   <div class="avatar avatar-xs me-2">
-                    <a href='{% static "#!" %}'>
+                    <a href='/{{user.username}}'>
                       <img
                         class="avatar-img rounded-circle"
                         src='{{ user.profile.image.url }}'
@@ -2224,7 +1822,7 @@ Header END -->
                     </a>
                   </div>
                   <!-- Comment box  -->
-                  <form class="w-100" action="/{{user.username }}/comment/post/{{ post.id }}" method="post" enctype="multipart/form-data">
+                  <form onsubmit="submitComment(event, '{{post.id}}')" id="{{post.id}}-cmt-submitform" class="w-100" action="/{{user.username }}/comment/post/{{ post.id }}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <textarea
                       data-autoresize
@@ -2240,151 +1838,21 @@ Header END -->
                 <!-- Comment wrap START -->
                 <ul id="{{post.id}}-comments" class="comment-wrap list-unstyled hiddencommentsection">
                   <!-- Comment item START -->
-                  {% for comment in post.comment_set.all %}
-                  <li class="comment-item">
-                    <div class="d-flex">
-                      <!-- Avatar -->
-                      <div class="avatar avatar-xs">
-                        <a href='{% static "#" %}'>
-                          <img
-                            class="avatar-img rounded-circle"
-                            src='{{ comment.owner.profile.image.url }}'
-                            alt=""
-                          />
-                        </a>
-                      </div>
-                      <div class="ms-2">
-                        <!-- Comment by -->
-                        <div class="bg-light rounded-start-top-0 p-3 rounded">
-                          <div class="d-flex justify-content-between">
-                            <h6 class="mb-1">
-                              <a href='{% static "#!" %}'> {{ comment.owner.get_full_name }} </a>
-                            </h6>
-                            <small class="ms-2">{{ comment.created_at }}</small>
-                          </div>
-                          <p class="small mb-0">
-                            {{ comment.text }}
-                          </p>
-                        </div>
-                        <!-- Comment rect -->
-                        <ul class="nav nav-divider py-2 small">
-                          <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'> Like ({{comment.commentlike_set.count}})</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href='javascript:;' onclick="displayReplybox('{{comment.id}}')"> Reply</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href='javascript:;' onclick="displayReplies('{{comment.id}}')"> View {{ comment.reply_set.count }} replies</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <!-- Comment item nested START -->
-                    <ul class="comment-item-nested list-unstyled">
-                      <!-- Comment item START -->
-                      <div id="{{comment.id}}-replies" class="hiddencommentsection">
-                        {% for reply in comment.reply_set.all|reply_query_set_slice %}
-                        <li class="comment-item">
-                          <div class="d-flex">
-                            <!-- Avatar -->
-                            <div class="avatar avatar-xs">
-                              <a href='{% static "#!" %}'
-                                ><img
-                                  class="avatar-img rounded-circle"
-                                  src='{{ reply.owner.profile.image.url }}'
-                                  alt=""
-                              /></a>
-                            </div>
-                            <!-- Comment by -->
-                            <div class="ms-2">
-                              <div class="bg-light p-3 rounded">
-                                <div class="d-flex justify-content-between">
-                                  <h6 class="mb-1">
-                                    <a href='{% static "#!" %}'> {{ reply.owner.get_full_name }} </a>
-                                  </h6>
-                                  <small class="ms-2">2hr</small>
-                                </div>
-                                <p class="small mb-0">
-                                  {{ reply.text }}
-                                </p>
-                              </div>
-                              <!-- Comment rect -->
-                              <ul class="nav nav-divider py-2 small">
-                                <li class="nav-item">
-                                  <a class="nav-link" href='{% static "#!" %}'> Like ({{ reply.replylike_set.count }})</a>
-                                </li>
-                                <li class="nav-item">
-                                  <a class="nav-link" href='javascript:;' onclick="displayReplybox('{{comment.id}}')"> Reply</a>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </li>
-                        {% endfor %}
-                      </div>
-                      <!-- Add reply -->
-                      <div id="{{comment.id}}-replybox" class="d-flex mb-3 hiddencommentsection">
-                        <!-- Avatar -->
-                        <div class="avatar avatar-xs me-2 reply-img">
-                          <a href='{% static "#!" %}'>
-                            <img
-                              class="avatar-img rounded-circle"
-                              src='{{ user.profile.image.url }}'
-                              alt=""
-                            />
-                          </a>
-                        </div>
-                        <!-- Comment box  -->
-                        <form class="w-100" action="/{{ user.username }}/reply/post/{{ comment.id }}" method="post" enctype="multipart/form-data">
-                          {% csrf_token %}
-                          <textarea
-                            data-autoresize
-                            class="pe-4 bg-light reply"
-                            rows="1"
-                            placeholder="Reply a comment..."
-                            name="text"
-                          ></textarea>
-                          <input type="hidden" name="next" value="{{ request.path }}">
-                          <button type="submit" class="btn btn-success-soft mt-1 reply-btn">Reply</button>
-                        </form>
-                      </div>
-                    </ul>
-                    <!-- Load more replies -->
-                    {% if comment.reply_set.count > 5 %}
-                    <a
-                      href='{% static "#!" %}'
-                      role="button"
-                      class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center mb-3 ms-5 hiddencommentsection"
-                      data-bs-toggle="button"
-                      aria-pressed="true"
-                      id="{{comment.id}}-lmr"
-                    >
-                      <div class="spinner-dots me-2">
-                        <span class="spinner-dot"></span>
-                        <span class="spinner-dot"></span>
-                        <span class="spinner-dot"></span>
-                      </div>
-                      Load more replies
-                    </a>
-                    {% endif %}
-                  </li>
                   <!-- Comment item END -->
-                  {% endfor %}
                 </ul>
                 <!-- Comment wrap END -->
               </div>
               <!-- Card body END -->
               <!-- Card footer START -->
-              {% if post.comment_set.count > 10 %}
               <div id="{{post.id}}-lmc" class="card-footer border-0 pt-0 hiddencommentsection">
                 <!-- Load more comments -->
                 <a
-                  href='{% static "#!" %}'
+                  href='javascript:;'
                   role="button"
                   class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center"
                   data-bs-toggle="button"
                   aria-pressed="true"
+                  id="{{post.id}}-lmc-a"
                 >
                   <div class="spinner-dots me-2">
                     <span class="spinner-dot"></span>
@@ -2394,7 +1862,6 @@ Header END -->
                   Load more comments
                 </a>
               </div>
-              {% endif %}
               <!-- Card footer END -->
             </div>
             <!-- Card feed item END -->
@@ -2446,8 +1913,7 @@ Header END -->
                     </li>
                     <li>
                       <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori
-                        ferguson
+                        <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow {{ post.owner.first_name }}
                       </a>
                     </li>
                     <li>
@@ -2682,8 +2148,7 @@ Header END -->
                       </li>
                       <li>
                         <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori
-                          ferguson
+                          <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow {{ post.owner.first_name }}
                         </a>
                       </li>
                       <li>
@@ -4654,6 +4119,17 @@ JS libraries, plugins and custom scripts -->
        }
     </script>
     <script>
+        function postTextSubmit(event) {
+          event.preventDefault()
+          form = event.target
+          if (form.children[1].value == "") {
+            document.getElementById("emptyformvldtn").classList.remove("hiddenbtn");
+            return false;
+          } else {
+            document.getElementById("emptyformvldtn").classList.add("hiddenbtn");
+          }
+          form.submit()
+        }
         function postSubmit() {
           posttext = document.getElementById("postuploadtext1").value;
           document.getElementById("postuploadtext2").value = posttext;
