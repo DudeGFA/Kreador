@@ -143,18 +143,24 @@ class PollVoteView(LoginRequiredMixin, View):
         print(JsonResponse(response, safe=False))
         return JsonResponse(response, safe=False)
         
-class PostDeleteView(LoginRequiredMixin, DeleteView):
+class PostDeleteView(LoginRequiredMixin, View):
     """
         Deletes a post
     """
-    model = Post
-    def get_success_url(self):
-        return self.request.GET.get('next', reverse_lazy('home:homepage'))
+    def post(self, request, pk, username):
+        try:
+            user = User.objects.get(username=username)
+        except ObjectDoesNotExist:
+            return HttpResponse('User does not exist', status=404)
+        try:
+            post_obj = Post.objects.get(id=pk)
+        except ObjectDoesNotExist:
+            return HttpResponse('Post object does not exist')
 
-    def get_queryset(self):
-        print('delete get_queryset called')
-        qs = super(PostDeleteView, self).get_queryset()
-        return qs.filter(owner=self.request.user)
+        if request.user != user or request.user != post_obj.owner:
+            return HttpResponse('User not authorized', status-404)
+        post_obj.delete()
+        return HttpResponse()
 
 @method_decorator(csrf_exempt, name='dispatch')
 class PostLikeView(LoginRequiredMixin, View):
@@ -315,9 +321,9 @@ class DeleteContactView(LoginRequiredMixin, View):
             Deletes a UserContact object
         """
         #print("Delete PK", pk)
-        old_contact = get_object_or_404(Usercontacts, id=pk)
+        old_contact = get_object_or_404(User, id=pk)
         try:
             usercontact = UserContact.objects.get(profile=request.user.profile, contact=old_contact).delete()
-        except UserContacts.DoesNotExist as e:
+        except UserContact.DoesNotExist as e:
             pass
-        return HttpResponse()
+        return JsonResponse({"text": old_contact.get_full_name() + ' has been removed from your contacts'})

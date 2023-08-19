@@ -25,7 +25,7 @@ urlpatterns = [
     path('reply/post/<int:pk>',
         views.PostReplyView.as_view(), name='post_reply'),
     path('contacts/add/<int:pk>',
-        views.AddContactView.as_view(), name='del_contact'),
-    path('contacts/del/<int:pk>',
-        views.DeleteContactView.as_view(), name='add_contact'),
+        views.AddContactView.as_view(), name='add_contact'),
+    path('contacts/delete/<int:pk>',
+        views.DeleteContactView.as_view(), name='del_contact'),
 ]

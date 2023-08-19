@@ -17523,6 +17523,10 @@ span.flatpickr-weekday,
   display: none;
 }
 
+.hidden-poll-choice {
+  display: none !important;
+}
+
 .hidden-poll-option {
   display: none !important;
 }

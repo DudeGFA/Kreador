@@ -17487,3 +17487,65 @@ span.flatpickr-weekday,
 }
 /*User CSS*/
 /*# sourceMappingURL=style-dark.css.map */
+
+.custom__form input {
+  opacity: 0;
+  height: 0;
+}
+
+.red-color {
+  color: #d90000;
+}
+
+#dropzonesubmit {    
+  visibility: hidden;
+}
+
+#postoptions>ul {
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+#postoptions {
+  display: flex;
+  flex-direction: column;
+}
+
+.hiddenbtn {
+  display: none;
+}
+
+.hidden-poll-choice {
+  display: none !important;
+}
+
+.hidden-poll-option {
+  display: none !important;
+}
+
+.reply-img {
+  height: 30px;
+  width: 30px;
+}
+.reply {
+  padding: 5px 10px 0 10px !important;
+  min-height: 30px;
+  font-size: 13px;
+  background-clip: padding-box;
+  border: 1px solid #e1e4e6;
+  appearance: none;
+  border-radius: 0.3rem;
+  width: 100%;
+}
+.reply-btn {
+  height: 30px !important;
+  padding: 2px 5px !important;
+}
+
+.hiddencommentsection {
+  display: none !important;
+}
+
+.pymk {
+  height: 40px;
+}

@@ -92,6 +92,8 @@
 
       gtag("config", "G-GMKQ4P9YMZ");
     </script>
+    <!-- Template Functions -->
+    <script src='{% static "assets/js/myfunctions.js" %}'></script>
   </head>
   <body>
     <!-- =======================
@@ -156,182 +158,6 @@ Header START -->
               </div>
             </div>
             <!-- Nav Search END -->
-
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-              <!-- Nav item 1 Demos -->
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link active dropdown-toggle"
-                  href='{% static "#" %}'
-                  id="homeMenu"
-                  data-bs-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  >Feed</a
-                >
-                <ul class="dropdown-menu" aria-labelledby="homeMenu">
-                  <li>
-                    <a class="dropdown-item active" href='{% static "index.html" %}'>Post</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "index-post.html" %}'>Projects</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "index-post.html" %}'>Jobs</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "index-post.html" %}'
-                      >Companies</a
-                    >
-                  </li>
-                </ul>
-              </li>
-              <!-- Nav item 2 Pages -->
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href='{% static "#" %}'
-                  id="pagesMenu"
-                  data-bs-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  >Events</a
-                >
-                <ul class="dropdown-menu" aria-labelledby="pagesMenu">
-                  <li>
-                    <a class="dropdown-item" href='{% static "albums.html" %}'>Create Event</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "celebration.html" %}'
-                      >Live Event</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "messaging.html" %}'>Recording</a>
-                  </li>
-                </ul>
-              </li>
-
-              <!-- Nav item 3 Post -->
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href='{% static "#" %}'
-                  id="postMenu"
-                  data-bs-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  >Account
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="postMenu">
-                  <li>
-                    <a class="dropdown-item" href='{% static "create-page.html" %}'
-                      >Create a page</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "settings.html" %}'>Settings</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "notifications.html" %}'
-                      >Notifications</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "help.html" %}'>Help center</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "help-details.html" %}'
-                      >Help details</a
-                    >
-                  </li>
-                  <!-- dropdown submenu open left -->
-                  <li class="dropdown-submenu dropstart">
-                    <a class="dropdown-item dropdown-toggle" href='{% static "#" %}'
-                      >Authentication</a
-                    >
-                    <ul
-                      class="dropdown-menu dropdown-menu-end"
-                      data-bs-popper="none"
-                    >
-                      <li>
-                        <a class="dropdown-item" href='{% static "sign-in.html" %}'>Sign in</a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "sign-up.html" %}'>Sing up</a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "forgot-password.html" %}'
-                          >Forgot password</a
-                        >
-                      </li>
-                      <li class="dropdown-divider"></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "sign-in-advance.html" %}'
-                          >Sign in advance</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "sign-up-advance.html" %}'
-                          >Sing up advance</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href='{% static "forgot-password-advance.html" %}'
-                          >Forgot password advance</a
-                        >
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "error-404.html" %}'>Error 404</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "offline.html" %}'>Offline</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "privacy-and-terms.html" %}'
-                      >Privacy & terms</a
-                    >
-                  </li>
-                </ul>
-              </li>
-
-              <!-- Nav item 4 Mega menu -->
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href='{% static "#" %}'
-                  id="postMenu"
-                  data-bs-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  class="nav-link"
-                  href='/{{ user.username }}/connections'
-                  >My network</a
-                >
-                <ul class="dropdown-menu" aria-labelledby="postMenu">
-                  <li>
-                    <a class="dropdown-item" href='/{{ user.username }}/connections'
-                      >Connections</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "create-page.html" %}'>Groups</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "create-page.html" %}'>Friends</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "create-page.html" %}'>
-                      Active Projects</a
-                    >
-                  </li>
-                </ul>
-              </li>
-            </ul>
           </div>
           <!-- Main navbar END -->
 
@@ -512,7 +338,6 @@ Header START -->
             <li class="nav-item ms-2 dropdown">
               <a
                 class="nav-link btn icon-md p-0"
-                href='{% static "#" %}'
                 id="profileDropdown"
                 role="button"
                 data-bs-auto-close="outside"
@@ -580,7 +405,7 @@ Header START -->
                 <li>
                   <a
                     class="dropdown-item bg-danger-soft-hover"
-                    href='{% static "sign-in-advance.html" %}'
+                    href="{% url 'logout' %}"
                     ><i class="bi bi-power fa-fw me-2"></i>Sign Out</a
                   >
                 </li>
@@ -654,7 +479,7 @@ Header END -->
                     <div
                       class="h-50px"
                       style="
-                        background-image: url({{ user.profile.background_photo.url }});
+                        background-image: url('{{ user.profile.background_photo.url }}');
                         background-position: center;
                         background-size: cover;
                         background-repeat: no-repeat;
@@ -714,69 +539,51 @@ Header END -->
                         class="nav nav-link-secondary flex-column fw-bold gap-2"
                       >
                         <li class="nav-item">
-                          <a class="nav-link" href='{% static "my-profile.html" %}'>
-                            <img
-                              class="me-2 h-20px fa-fw"
-                              src='/{{ user.get_full_name }}'
-                              alt=""
-                            /><span>Feed </span></a
-                          >
-                        </li>
-                        <li class="nav-item">
                           <a
                             class="nav-link"
-                            href='/{{ user.username }}/connections'
+                            href='/{{ user.username }}/about/'
                           >
                             <img
                               class="me-2 h-20px fa-fw"
                               src='{% static "assets/images/icon/person-outline-filled.svg" %}'
                               alt=""
-                            /><span>Connections </span></a
+                            /><span>About </span></a
                           >
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href='{% static "blog.html" %}'>
+                          <a
+                            class="nav-link"
+                            href='/{{ user.username }}/'
+                          >
                             <img
                               class="me-2 h-20px fa-fw"
-                              src='{% static "assets/images/icon/earth-outline-filled.svg" %}'
+                              src='{% static "assets/images/icon/icons8-post-64.png" %}'
                               alt=""
-                            /><span>Latest News </span></a
+                            /><span>Posts </span></a
                           >
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href='{% static "events.html" %}'>
+                          <a
+                            class="nav-link"
+                            href='/{{ user.username }}/connections/'
+                          >
                             <img
                               class="me-2 h-20px fa-fw"
-                              src='{% static "assets/images/icon/calendar-outline-filled.svg" %}'
+                              src='{% static "assets/images/icon/icons8-contact-48.png" %}'
                               alt=""
-                            /><span>Events </span></a
+                            /><span>Contacts </span></a
                           >
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href='{% static "groups.html" %}'>
-                            <img
-                              class="me-2 h-20px fa-fw"
-                              src='{% static "assets/images/icon/chat-outline-filled.svg" %}'
-                              alt=""
-                            /><span>Groups </span></a
+                          <a
+                            class="nav-link"
+                            href='/{{ user.username }}/media/'
                           >
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href='{% static "notifications.html" %}'>
                             <img
                               class="me-2 h-20px fa-fw"
-                              src='{% static "assets/images/icon/notification-outlined-filled.svg" %}'
+                              src='{% static "assets/images/icon/icons8-media-48.png" %}'
                               alt=""
-                            /><span>Notifications </span></a
-                          >
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href='{% static "settings.html" %}'>
-                            <img
-                              class="me-2 h-20px fa-fw"
-                              src='{% static "assets/images/icon/cog-outline-filled.svg" %}'
-                              alt=""
-                            /><span>Settings </span></a
+                            /><span>Media </span></a
                           >
                         </li>
                       </ul>
@@ -785,7 +592,7 @@ Header END -->
                     <!-- Card body END -->
                     <!-- Card footer -->
                     <div class="card-footer text-center py-2">
-                      <a class="btn btn-link btn-sm" href='{% static "my-profile.html" %}'
+                      <a class="btn btn-link btn-sm" href='/{{user.username}}'
                         >View Profile
                       </a>
                     </div>
@@ -898,17 +705,6 @@ Header END -->
                   </li>
                   <li class="nav-item">
                     <a
-                      href='{% static "#" %}'
-                      class="nav-link bg-light py-1 px-2 mb-0"
-                      data-bs-toggle="modal"
-                      data-bs-target="#modalCreateEvents"
-                    >
-                      <i class="bi bi-calendar2-event-fill text-danger pe-2"></i
-                      >Event
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a
                       class="nav-link bg-light py-1 px-2 mb-0"
                       href='{% static "#!" %}'
                       data-bs-toggle="modal"
@@ -929,7 +725,7 @@ Header END -->
             {% for post in feed %}
             {% if post.question %}
             <!-- Card feed item START -->
-            <div class="card">
+            <div class="card {{post.owner.id}}-post">
               <!-- Card header START -->
               <div class="card-header border-0 pb-0">
                 <div class="d-flex align-items-center justify-content-between">
@@ -971,30 +767,15 @@ Header END -->
                     aria-labelledby="cardShareAction7"
                   >
                     <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow {{ post.owner.first_name }}
+                      {% if post.owner == user %}
+                      <a class="dropdown-item" href='javascript:;' onclick="deletePost('{{user.username}}','{{post.id}}')">
+                        <i class="bi bi-trash fa-fw pe-2"></i>Delete Post
                       </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a
-                      >
-                    </li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-flag fa-fw pe-2"></i>Report post</a
-                      >
+                      {% else %}
+                      <a class="dropdown-item" href='javascript:;' onclick="removeFromContacts('{{user.username}}', '{{post.owner.id}}')">
+                        <i class="bi bi-person-x fa-fw pe-2"></i>Remove {{ post.owner.first_name }} from your contacts
+                      </a>
+                      {% endif %}
                     </li>
                   </ul>
                 </div>
@@ -1016,8 +797,9 @@ Header END -->
                       id="{{option.id}}"
                     />
                     <label class="btn btn-outline-primary w-100" for="{{option.id}}"
-                      onclick="submitVote('{{post.id}}','{{option.id}}')">{{option.text}}</label
+                      onclick="submitVote('{{post.id}}','{{option.id}}', '{{user.username}}')">{{option.text}}</label
                     >
+                    <script onload="submitVote('{{post.id}}','{{option.id}}', '{{user.username}}')"></script>
                   </div>
                   {% endfor %}
                 </div>
@@ -1061,100 +843,17 @@ Header END -->
                   </li>
                 </ul>
                 <!-- Feed poll votes ED -->
-
-                <!-- Feed react START -->
-                <ul class="nav nav-stack pb-2 small mt-4">
-                  <li class="nav-item">
-                    <a class="nav-link active text-secondary" href='{% static "#!" %}'>
-                      <i
-                        class="bi bi-heart-fill me-1 icon-xs bg-danger text-white rounded-circle"
-                      ></i>
-                      Solomon, Elo and 126 others
-                    </a>
-                  </li>
-                  <li class="nav-item ms-sm-auto">
-                    <a class="nav-link" href='{% static "#!" %}'>
-                      <i class="bi bi-chat-fill pe-1"></i>Comments (12)</a
-                    >
-                  </li>
-                </ul>
-                <!-- Feed react END -->
               </div>
               <!-- Card body END -->
               <!-- Card Footer START -->
               <div class="card-footer py-3">
-                <!-- Feed react START -->
-                <ul class="nav nav-fill nav-stack small">
-                  <li class="nav-item">
-                    <a class="nav-link mb-0 active" href='{% static "#!" %}'>
-                      <i class="bi bi-heart pe-1"></i>Liked (56)</a
-                    >
-                  </li>
-                  <!-- Card share action dropdown START -->
-                  <li class="nav-item dropdown">
-                    <a
-                      href='{% static "#" %}'
-                      class="nav-link mb-0"
-                      id="feedActionShare6"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-reply-fill flip-horizontal ps-1"></i>Share
-                      (3)
-                    </a>
-                    <!-- Card share action dropdown menu -->
-                    <ul
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="feedActionShare6"
-                    >
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-envelope fa-fw pe-2"></i>Send via
-                          Direct Message</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-bookmark-check fa-fw pe-2"></i
-                          >Bookmark
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-link fa-fw pe-2"></i>Copy link to
-                          post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-share fa-fw pe-2"></i>Share post via
-                          …</a
-                        >
-                      </li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to
-                          News Feed</a
-                        >
-                      </li>
-                    </ul>
-                  </li>
-                  <!-- Card share action dropdown END -->
-                  <li class="nav-item">
-                    <a class="nav-link mb-0" href='{% static "#!" %}'>
-                      <i class="bi bi-send-fill pe-1"></i>Send</a
-                    >
-                  </li>
-                </ul>
-                <!-- Feed react END -->
               </div>
               <!-- Card Footer END -->
             </div>
             <!-- Card feed item END -->
             {% elif post.video %}
             <!-- Card feed item START -->
-            <div class="card">
+            <div class="card {{post.owner.id}}-post">
               <!-- Card header START -->
               <div class="card-header border-0 pb-0">
                 <div class="d-flex align-items-center justify-content-between">
@@ -1183,7 +882,6 @@ Header END -->
                   <!-- Card feed action dropdown START -->
                   <div class="dropdown">
                     <a
-                      href='{% static "#" %}'
                       class="text-secondary btn btn-secondary-soft-hover py-1 px-2"
                       id="cardFeedAction2"
                       data-bs-toggle="dropdown"
@@ -1197,30 +895,15 @@ Header END -->
                       aria-labelledby="cardFeedAction2"
                     >
                       <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow {{ post.owner.first_name }}
+                        {% if post.owner == user %}
+                        <a class="dropdown-item" href='javascript:;' onclick="deletePost('{{user.username}}','{{post.id}}')">
+                          <i class="bi bi-trash fa-fw pe-2"></i>Delete Post
                         </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a
-                        >
-                      </li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-flag fa-fw pe-2"></i>Report post</a
-                        >
+                        {% else %}
+                        <a class="dropdown-item" href='javascript:;' onclick="removeFromContacts('{{user.username}}', '{{post.owner.id}}')">
+                          <i class="bi bi-person-x fa-fw pe-2"></i>Remove {{ post.owner.first_name }} from your contacts
+                        </a>
+                        {% endif %}
                       </li>
                     </ul>
                   </div>
@@ -1382,7 +1065,7 @@ Header END -->
             </div>
             <!-- Card feed item END -->
             {% elif post.postimage_set.count < 2 %}
-            <div class="card">
+            <div class="card {{post.owner.id}}-post">
               <!-- Card header START -->
               <div class="card-header border-0 pb-0">
                 <div class="d-flex align-items-center justify-content-between">
@@ -1411,7 +1094,6 @@ Header END -->
                   <!-- Card feed action dropdown START -->
                   <div class="dropdown">
                     <a
-                      href='{% static "#" %}'
                       class="text-secondary btn btn-secondary-soft-hover py-1 px-2"
                       id="cardFeedAction"
                       data-bs-toggle="dropdown"
@@ -1425,30 +1107,15 @@ Header END -->
                       aria-labelledby="cardFeedAction"
                     >
                       <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow {{ post.owner.first_name }}
+                        {% if post.owner == user %}
+                        <a class="dropdown-item" href='javascript:;' onclick="deletePost('{{user.username}}','{{post.id}}')">
+                          <i class="bi bi-trash fa-fw pe-2"></i>Delete Post
                         </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a
-                        >
-                      </li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-flag fa-fw pe-2"></i>Report post</a
-                        >
+                        {% else %}
+                        <a class="dropdown-item" href='javascript:;' onclick="removeFromContacts('{{user.username}}', '{{post.owner.id}}')">
+                          <i class="bi bi-person-x fa-fw pe-2"></i>Remove {{ post.owner.first_name }} from your contacts
+                        </a>
+                        {% endif %}
                       </li>
                     </ul>
                   </div>
@@ -1600,7 +1267,7 @@ Header END -->
             <!-- Card feed item END -->
             {% else %}
             <!-- Card feed item START -->
-            <div class="card">
+            <div class="card {{post.owner.id}}-post">
               <!-- Card header START -->
               <div class="card-header border-0 pb-0">
                 <div class="d-flex align-items-center justify-content-between">
@@ -1643,30 +1310,15 @@ Header END -->
                       aria-labelledby="cardShareAction3"
                     >
                       <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow {{ post.owner.first_name }}
+                        {% if post.owner == user %}
+                        <a class="dropdown-item" href='javascript:;' onclick="deletePost('{{user.username}}','{{post.id}}')">
+                          <i class="bi bi-trash fa-fw pe-2"></i>Delete Post
                         </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a
-                        >
-                      </li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-flag fa-fw pe-2"></i>Report post</a
-                        >
+                        {% else %}
+                        <a class="dropdown-item" href='javascript:;' onclick="removeFromContacts('{{user.username}}', '{{post.owner.id}}')">
+                          <i class="bi bi-person-x fa-fw pe-2"></i>Remove {{ post.owner.first_name }} from your contacts
+                        </a>
+                        {% endif %}
                       </li>
                     </ul>
                   </div>
@@ -1867,173 +1519,6 @@ Header END -->
             <!-- Card feed item END -->
             {% endif %}
             {% endfor %}
-            <!-- Card feed item START -->
-            <div class="card">
-              <!-- Card header START -->
-              <div class="card-header border-0 pb-0">
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="d-flex align-items-center">
-                    <!-- Avatar -->
-                    <div class="avatar me-2">
-                      <a href='{% static "#" %}'>
-                        <img
-                          class="avatar-img rounded-circle"
-                          src='{% static "assets/images/logo/13.svg" %}'
-                          alt=""
-                        />
-                      </a>
-                    </div>
-                    <!-- Title -->
-                    <div>
-                      <h6 class="card-title mb-0">
-                        <a href='{% static "#!" %}'> GitHub Education </a>
-                      </h6>
-                      <p class="mb-0 small">10 December at 23:29</p>
-                    </div>
-                  </div>
-                  <!-- Card share action menu -->
-                  <a
-                    href='{% static "#" %}'
-                    class="text-secondary btn btn-secondary-soft-hover py-1 px-2"
-                    id="cardShareAction5"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="bi bi-three-dots"></i>
-                  </a>
-                  <!-- Card share action dropdown menu -->
-                  <ul
-                    class="dropdown-menu dropdown-menu-end"
-                    aria-labelledby="cardShareAction5"
-                  >
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow {{ post.owner.first_name }}
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a
-                      >
-                    </li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li>
-                      <a class="dropdown-item" href='{% static "#" %}'>
-                        <i class="bi bi-flag fa-fw pe-2"></i>Report post</a
-                      >
-                    </li>
-                  </ul>
-                </div>
-                <!-- Card share action END -->
-              </div>
-              <!-- Card header START -->
-              <!-- Card body START -->
-              <div class="card-body pb-0">
-                <p>
-                  Find out how you can save time in the classroom this year.
-                  Earn recognition while you learn new skills on iPad and Mac.
-                  Start recognition your first Apple Teacher badge today!
-                </p>
-                <!-- Feed react START -->
-                <ul class="nav nav-stack pb-2 small">
-                  <li class="nav-item">
-                    <a class="nav-link active text-secondary" href='{% static "#!" %}'>
-                      <i
-                        class="bi bi-heart-fill me-1 icon-xs bg-danger text-white rounded-circle"
-                      ></i>
-                      Solomon, Elo and 126 others
-                    </a>
-                  </li>
-                  <li class="nav-item ms-sm-auto">
-                    <a class="nav-link" href='{% static "#!" %}'>
-                      <i class="bi bi-chat-fill pe-1"></i>Comments (12)</a
-                    >
-                  </li>
-                </ul>
-                <!-- Feed react END -->
-              </div>
-              <!-- Card body END -->
-              <!-- Card Footer START -->
-              <div class="card-footer py-3">
-                <!-- Feed react START -->
-                <ul class="nav nav-fill nav-stack small">
-                  <li class="nav-item">
-                    <a class="nav-link mb-0 active" href='{% static "#!" %}'>
-                      <i class="bi bi-heart pe-1"></i>Liked (56)</a
-                    >
-                  </li>
-                  <!-- Card share action dropdown START -->
-                  <li class="nav-item dropdown">
-                    <a
-                      href='{% static "#" %}'
-                      class="nav-link mb-0"
-                      id="cardShareAction6"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-reply-fill flip-horizontal ps-1"></i>Share
-                      (3)
-                    </a>
-                    <!-- Card share action dropdown menu -->
-                    <ul
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="cardShareAction6"
-                    >
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-envelope fa-fw pe-2"></i>Send via
-                          Direct Message</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-bookmark-check fa-fw pe-2"></i
-                          >Bookmark
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-link fa-fw pe-2"></i>Copy link to
-                          post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-share fa-fw pe-2"></i>Share post via
-                          …</a
-                        >
-                      </li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to
-                          News Feed</a
-                        >
-                      </li>
-                    </ul>
-                  </li>
-                  <!-- Card share action dropdown END -->
-                  <li class="nav-item">
-                    <a class="nav-link mb-0" href='{% static "#!" %}'>
-                      <i class="bi bi-send-fill pe-1"></i>Send</a
-                    >
-                  </li>
-                </ul>
-                <!-- Feed react END -->
-              </div>
-              <!-- Card Footer END -->
-            </div>
-            <!-- Card feed item END -->
 
             <!-- Card feed item START -->
             <div class="card">
@@ -2077,7 +1562,7 @@ Header END -->
                             /></a>
                           </div>
                           <h6 class="card-title mb-1 mt-3 pymk">
-                            <a href='{% static "#!" %}'> {{connection.first_name}} {{connection.last_name}}</a>
+                            <a href='/{{connection.username}}'> {{connection.first_name}} {{connection.last_name}}</a>
                           </h6>
                           <p class="mb-0 small lh-sm"> {{connection.mccount}} mutual contacts</p>
                         </div>
@@ -2100,201 +1585,6 @@ Header END -->
               <!-- Card body END -->
             </div>
             <!-- Card feed item END -->
-
-            <!-- Card feed item START -->
-            <div class="card">
-              <!-- Card header START -->
-              <div class="card-header">
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="d-flex align-items-center">
-                    <!-- Avatar -->
-                    <div class="avatar me-2">
-                      <a href='{% static "#!" %}'>
-                        <img
-                          class="avatar-img rounded-circle"
-                          src='{% static "assets/images/logo/11.jpg" %}'
-                          alt=""
-                        />
-                      </a>
-                    </div>
-                    <!-- Info -->
-                    <div>
-                      <h6 class="card-title mb-0">
-                        <a href='{% static "#!" %}'> ALX-Africa </a>
-                      </h6>
-                      <p class="small mb-0">9 December at 10:00</p>
-                    </div>
-                  </div>
-                  <!-- Card share action START -->
-                  <div class="dropdown">
-                    <a
-                      href='{% static "#" %}'
-                      class="text-secondary btn btn-secondary-soft-hover py-1 px-2"
-                      id="cardShareAction8"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-three-dots"></i>
-                    </a>
-                    <!-- Card share action dropdown menu -->
-                    <ul
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="cardShareAction8"
-                    >
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow {{ post.owner.first_name }}
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a
-                        >
-                      </li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-flag fa-fw pe-2"></i>Report post</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- Card share action START -->
-                </div>
-              </div>
-              <!-- Card header START -->
-
-              <!-- Card body START -->
-              <div class="card-body">
-                <p class="mb-0">
-                  Gain The Skills, Experience And Relationships You Need To
-                  Become A Full Stack Developer. Learn How To Code To Silicon
-                  Valley Standards & Get A Future-Proof Career. Tech career
-                  opportunities. Fully Sponsored. No Fees. Remote Access.
-                  Work-ready skills.
-                  <a href='{% static "#!" %}'> #webdevlopment</a>
-                  <a href='{% static "#!" %}'> #software </a> <a href='{% static "#!" %}'> #engineer</a>
-                  <a href='{% static "#" %}'> #developer </a>
-                </p>
-              </div>
-              <!-- Card body END -->
-              <a href='{% static "#!" %}'>
-                <img src='{% static "assets/images/post/3by2/03.jpg" %}' alt="" />
-              </a>
-              <!-- Card body START -->
-              <div class="card-body position-relative bg-light">
-                <a href='{% static "#!" %}' class="small stretched-link"
-                  >https://alxafrica.com</a
-                >
-                <h6 class="mb-0 mt-1">
-                  Fullstack - Software Engineering Programme
-                </h6>
-                <p class="mb-0 small">Fully Sponsorship Funded</p>
-              </div>
-              <!-- Card body END -->
-
-              <!-- Card Footer START -->
-              <div class="card-footer py-3">
-                <!-- Feed react START -->
-                <ul class="nav nav-fill nav-stack small">
-                  <li class="nav-item">
-                    <a class="nav-link mb-0 active" href='{% static "#!" %}'>
-                      <i class="bi bi-heart pe-1"></i>Liked (56)</a
-                    >
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link mb-0" href='{% static "#!" %}'>
-                      <i class="bi bi-chat-fill pe-1"></i>Comments (12)</a
-                    >
-                  </li>
-                  <!-- Card share action dropdown START -->
-                  <li class="nav-item dropdown">
-                    <a
-                      href='{% static "#" %}'
-                      class="nav-link mb-0"
-                      id="feedActionShare7"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-reply-fill flip-horizontal ps-1"></i>Share
-                      (3)
-                    </a>
-                    <!-- Card share action dropdown menu -->
-                    <ul
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="feedActionShare7"
-                    >
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-envelope fa-fw pe-2"></i>Send via
-                          Direct Message</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-bookmark-check fa-fw pe-2"></i
-                          >Bookmark
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-link fa-fw pe-2"></i>Copy link to
-                          post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-share fa-fw pe-2"></i>Share post via
-                          …</a
-                        >
-                      </li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to
-                          News Feed</a
-                        >
-                      </li>
-                    </ul>
-                  </li>
-                  <!-- Card share action dropdown END -->
-                  <li class="nav-item">
-                    <a class="nav-link mb-0" href='{% static "#!" %}'>
-                      <i class="bi bi-send-fill pe-1"></i>Send</a
-                    >
-                  </li>
-                </ul>
-                <!-- Feed react END -->
-              </div>
-              <!-- Card Footer END -->
-            </div>
-            <!-- Card feed item END -->
-            <!-- Load more button START -->
-            <a
-              href='{% static "#!" %}'
-              role="button"
-              class="btn btn-loader btn-primary-soft"
-              data-bs-toggle="button"
-              aria-pressed="true"
-            >
-              <span class="load-text"> Load more </span>
-              <div class="load-icon">
-                <div class="spinner-grow spinner-grow-sm" role="status">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>
-            </a>
-            <!-- Load more button END -->
           </div>
           <!-- Main content END -->
 
@@ -2338,84 +1628,11 @@ Header END -->
                       ></a>
                     </div>
                     {% endfor %}
-                    <!-- View more button -->
-                    <div class="d-grid mt-3">
-                      <a class="btn btn-sm btn-primary-soft" href='{% static "#!" %}'
-                        >View more</a
-                      >
-                    </div>
                   </div>
                   <!-- Card body END -->
                 </div>
               </div>
               <!-- Card follow START -->
-
-              <!-- Card News START -->
-              <div class="col-sm-6 col-lg-12">
-                <div class="card">
-                  <!-- Card header START -->
-                  <div class="card-header pb-0 border-0">
-                    <h5 class="card-title mb-0">Today’s news</h5>
-                  </div>
-                  <!-- Card header END -->
-                  <!-- Card body START -->
-                  <div class="card-body">
-                    <!-- News item -->
-                    <div class="mb-3">
-                      <h6 class="mb-0">
-                        <a href='{% static "blog-details.html" %}'
-                          >Ten questions you should answer truthfully</a
-                        >
-                      </h6>
-                      <small>2hr</small>
-                    </div>
-                    <!-- News item -->
-                    <div class="mb-3">
-                      <h6 class="mb-0">
-                        <a href='{% static "blog-details.html" %}'
-                          >Five unbelievable facts about money</a
-                        >
-                      </h6>
-                      <small>3hr</small>
-                    </div>
-                    <!-- News item -->
-                    <div class="mb-3">
-                      <h6 class="mb-0">
-                        <a href='{% static "blog-details.html" %}'
-                          >Best Pinterest Boards for learning about business</a
-                        >
-                      </h6>
-                      <small>4hr</small>
-                    </div>
-                    <!-- News item -->
-                    <div class="mb-3">
-                      <h6 class="mb-0">
-                        <a href='{% static "blog-details.html" %}'
-                          >Skills that you can learn from business</a
-                        >
-                      </h6>
-                      <small>6hr</small>
-                    </div>
-                    <!-- Load more comments -->
-                    <a
-                      href='{% static "#!" %}'
-                      role="button"
-                      class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center"
-                      data-bs-toggle="button"
-                      aria-pressed="true"
-                    >
-                      <div class="spinner-dots me-2">
-                        <span class="spinner-dot"></span>
-                        <span class="spinner-dot"></span>
-                        <span class="spinner-dot"></span>
-                      </div>
-                      View all latest news
-                    </a>
-                  </div>
-                  <!-- Card body END -->
-                </div>
-              </div>
-              <!-- Card News END -->
             </div>
           </div>
           <!-- Right sidebar END -->
@@ -3402,8 +2619,8 @@ Header END -->
             </div>
 
             <!-- Dropzone photo START -->
-            <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
-            <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+            <!-- <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+             <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" /> -->
             <div>
               <label class="form-label">Upload attachment</label>
               <form
@@ -3519,8 +2736,12 @@ Header END -->
           <!-- Modal feed footer -->
           <div class="modal-footer">
             <!-- Button -->
-            <button type="button" class="btn btn-danger-soft me-2">
-              <i class="bi bi-camera-video-fill pe-1"></i> Live video
+            <button
+              type="button"
+              class="btn btn-danger-soft me-2"
+              data-bs-dismiss="modal"
+            >
+              Cancel
             </button>
             <button id="vidpresubmitbtn" class="btn btn-success-soft" onclick="vidSubmit()">Post</button>
             <button class="hiddenbtn" type="hidden" id="vidsubmitbtn"></button>
@@ -3776,7 +2997,7 @@ Header END -->
                 ></textarea>
               </div>
               <!-- third option -->
-              <div class="col-12 hidden-poll-option">
+              <div class="col-12 hidden-poll-choice">
                 <label class="form-label">Choice 3 (optional)</label>
                 <textarea
                   class="form-control"
@@ -3786,7 +3007,7 @@ Header END -->
                 ></textarea>
               </div>
               <!-- fourth option-->
-              <div class="col-12 hidden-poll-option">
+              <div class="col-12 hidden-poll-choice">
                 <label class="form-label">Choice 4 (optional)</label>
                 <textarea
                   class="form-control"
@@ -3953,12 +3174,13 @@ Header END -->
     </a>
     <!-- Comment item END -->
     <!-- Modal create poll END -->
-    <!-- =======================
-JS libraries, plugins and custom scripts -->
+
+    <!-- ======================= JS libraries, plugins and custom scripts -->
 
     <!-- Bootstrap JS -->
     <script src='{% static "assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js" %}'></script>
-
+    <link rel="stylesheet" href="{% static 'assets/vendor/silverbox/silverBox.min.css' %}">
+    <script src="{% static 'assets/vendor/silverbox/silverBox.min.js' %}"></script>
     <!-- Vendors -->
     <script src='{% static "assets/vendor/tiny-slider/dist/tiny-slider.js" %}'></script>
     <script src='{% static "assets/vendor/OverlayScrollbars-master/js/OverlayScrollbars.min.js" %}'></script>
@@ -3966,536 +3188,7 @@ JS libraries, plugins and custom scripts -->
     <script src='{% static "assets/vendor/glightbox-master/dist/js/glightbox.min.js" %}'></script>
     <script src='{% static "assets/vendor/flatpickr/dist/flatpickr.min.js" %}'></script>
     <script src='{% static "assets/vendor/plyr/plyr.js" %}'></script>
-    <!-- <script src='{% static "assets/vendor/dropzone/dist/min/dropzone.min.js" %}'></script> -->
-
-    <!-- Template Functions -->
+    <script src='{% static "assets/vendor/dropzone/dist/min/dropzone.min.js" %}'></script>
     <script src='{% static "assets/js/functions.js" %}'></script>
-    <script>
-      function postAlbum() {
-        
-        const innerDiv = document.getElementById('image_upload').getElementsByClassName('dz-image')
-        const innerinnerDiv = innerDiv.getElementsByClassName("dz-preview dz-processing dz-image-preview dz-success dz-complete")
-        document.getElementById('upload_img2') = innerDiv.getElementsByClassName("dz-image").getElementsByTagName('img').src
-        document.getElementById('postform').submit()
-      }
-      function likePost(post_id) {
-
-        likeBtn = document.getElementById(post_id + 'likebtn')
-        if ( likeBtn.className === "bi bi-hand-thumbs-up-fill pe-1") {
-          var url = '/{{user.username}}/post/' + post_id + '/unlike'
-          document.getElementById(post_id + 'likebtn').className = "bi bi-hand-thumbs-up pe-1"
-          likecnt = parseInt(document.getElementById(post_id + 'likecnt').innerHTML)
-          likecnt = likecnt - 1
-          document.getElementById(post_id + 'likecnt').innerHTML = likecnt
-        } else if ( likeBtn.className === "bi bi-hand-thumbs-up pe-1" ) {
-          var url = '/{{user.username}}/post/' + post_id + '/like'
-          document.getElementById(post_id + 'likebtn').className = "bi bi-hand-thumbs-up-fill pe-1"
-          likecnt = parseInt(document.getElementById(post_id + 'likecnt').innerHTML)
-          likecnt = likecnt + 1
-          document.getElementById(post_id + 'likecnt').innerHTML = likecnt
-        } else if ( likeBtn.className === "bi bi-heart-fill pe-1" ) {
-          var url = '/{{user.username}}/post/' + post_id + '/unlike'
-          document.getElementById(post_id + 'likebtn').className = "bi bi-heart pe-1"
-          likecnt = parseInt(document.getElementById(post_id + 'likecnt').innerHTML)
-          likecnt = likecnt - 1
-          document.getElementById(post_id + 'likecnt').innerHTML = likecnt
-        } else if ( likeBtn.className === "bi bi-heart pe-1" ) {
-          var url = '/{{user.username}}/post/' + post_id + '/like'
-          document.getElementById(post_id + 'likebtn').className = "bi bi-heart-fill pe-1"
-          likecnt = parseInt(document.getElementById(post_id + 'likecnt').innerHTML)
-          likecnt = likecnt + 1
-          document.getElementById(post_id + 'likecnt').innerHTML = likecnt
-        }
-        fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json; charset=UTF-8"
-          }
-        })
-      }
-    </script>
-    <script>
-      function likeCommentObj(cmtObjId, cmtObjType) {
-        commentObjLikes = document.getElementById(cmtObjId + cmtObjType + "-likecount")
-        commentObjLikes.style.pointerEvents="none"
-
-        url = "/api/" + cmtObjType + "/like/"
-        token = document.getElementById("replybox-template-form").children[0].value
-        if (cmtObjType == 'comment') {
-          data = {'comment': cmtObjId}
-        } else if (cmtObjType == 'reply') {
-          data = {'reply': cmtObjId}
-        }
-
-        if (commentObjLikes.classList == "nav-link bi bi-hand-thumbs-up") {
-          console.log("post")
-          fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': token
-          },
-          body: JSON.stringify(data)
-          }).then(response => response.json()).then(response => {
-            console.log(response)
-            commentObjLikes.className = "nav-link bi bi-hand-thumbs-up-fill"
-            newLikeCount = parseInt(commentObjLikes.innerText[1]) + 1
-            console.log(newLikeCount)
-            commentObjLikes.innerText = " " + String(newLikeCount)
-            commentObjLikes.style.pointerEvents="auto"
-          })
-        } else if (commentObjLikes.classList == "nav-link bi bi-hand-thumbs-up-fill") {
-          console.log("delete")
-          fetch(url, {
-          method: "DELETE",
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': token
-          },
-          body: JSON.stringify(data)
-          }).then(response => response.json()).then(response => {
-            console.log(response)
-            commentObjLikes.className = "nav-link bi bi-hand-thumbs-up"
-            newLikeCount = parseInt(commentObjLikes.innerText[1]) - 1
-            console.log(newLikeCount)
-            commentObjLikes.innerText = " " + String(newLikeCount)
-            commentObjLikes.style.pointerEvents="auto"
-          })
-        }
-        
-      }
-    </script>
-    <script>
-      function changeContacts(usname, id)
-       {
-        //usname = contact.username
-        console.log(id, usname);
-        var newform = document.createElement('form');
-        //var input = document.createElement("input");
-
-        //input.setAttribute("type", "hidden");
-        //input.setAttribute("name", "newcontact");
-        //input.setAttribute("value", usname);
-
-        newform.setAttribute('method', 'post');
-        newform.setAttribute('target', 'hiddenFrame');
-        //form.appendChild(input)
-        //var input = document.createElement("input");
-        //input.setAttribute("type", "submit");
-        elem = document.getElementById(id + 'ctca')
-        if (elem.className === "btn btn-primary-soft rounded-circle icon-md ms-auto") {
-          newform.setAttribute('action', '/' + usname + '/contacts/add/' + id);
-          newform.style.display = 'hidden';
-          document.body.appendChild(newform)
-          console.log(newform)
-          newform.submit()
-          document.getElementById(id + 'ctca').className = "btn btn-primary rounded-circle icon-md ms-auto"
-          document.getElementById(id + 'ctci').className = "bi bi-person-check-fill";
-        } else {
-          newform.setAttribute('action', '/' + usname + '/contacts/del/' + id);
-          newform.style.display = 'hidden';
-          document.body.appendChild(newform)
-          newform.submit()
-          document.getElementById(id + 'ctca').className = "btn btn-primary-soft rounded-circle icon-md ms-auto"
-          document.getElementById(id + 'ctci').className = "fa-solid fa-plus";
-        }
-        return false;
-       }
-       function addToContacts(contactid, username) {
-        url='/' + username + '/contacts/add/' + contactid
-        fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json; charset=UTF-8"
-          }
-        }).then( response => { 
-          console.log(document.getElementById(contactid + '-pymk'))
-        })
-        console.log(document.getElementById(contactid + '-pymk').getElementsByTagName('button')[0].innerHTML)
-        document.getElementById(contactid + '-pymk').getElementsByTagName('button')[0].innerHTML='Contact Added';
-        return false;
-       }
-    </script>
-    <script>
-        function postTextSubmit(event) {
-          event.preventDefault()
-          form = event.target
-          if (form.children[1].value == "") {
-            document.getElementById("emptyformvldtn").classList.remove("hiddenbtn");
-            return false;
-          } else {
-            document.getElementById("emptyformvldtn").classList.add("hiddenbtn");
-          }
-          form.submit()
-        }
-        function postSubmit() {
-          posttext = document.getElementById("postuploadtext1").value;
-          document.getElementById("postuploadtext2").value = posttext;
-          document.getElementById("picsubmitbtn").click();
-          location.reload()
-        }
-
-        function vidSubmit() {
-          posttext = document.getElementById("postuploadtextvid1").value;
-          document.getElementById("postuploadtextvid2").value = posttext;
-          document.getElementById("vidsubmitbtn").click();
-          //location.reload()
-        }
-        function updatePhotoUploadText() {
-          posttext = document.getElementById("posttextmain").value;
-          document.getElementById("postuploadtext1").value = posttext;
-        }
-        function updateVidUploadText() {
-          posttext = document.getElementById("posttextmain").value;
-          document.getElementById("postuploadtextvid1").value = posttext;
-        }
-    </script>
-    <script>
-        let hiddenPollOptions = 2;
-        function unhideOption() {
-          optionToReveal = document.getElementsByClassName("hidden-poll-option")[0];
-          optionToReveal.classList.remove("hidden-poll-option");
-          hiddenPollOptions -= 1
-          if (hiddenPollOptions === 0) {
-            document.getElementById("addoptionbtn").classList.add("hiddenbtn");
-          }
-        }
-        function submitVote(pollid, optionid) {
-          console.log("received")
-          url = '/{{user.username}}/polls/vote/' + optionid
-          fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            'X-Requested-With': 'XMLHttpRequest'
-          }
-        }).then(response => response.json()).then( responseobj => {
-          for (const key in responseobj) {
-            if (key !== 'totalvotes') {
-              document.getElementById(key+'-resultbar').style.width = String(responseobj[key]) + '%'
-              document.getElementById(key+'-resultbar').style["aria-valuenow"] = String(responseobj[key]) + '%'
-              document.getElementById(key+'-result').innerHTML = String(responseobj[key]) + '%'
-              
-            } else {
-              document.getElementById(pollid+"-totalvotes").innerHTML = String(responseobj[key]) + ' votes'
-            }
-          }
-        })
-        document.getElementById(pollid + '-options').classList.add("hidden-poll-option");
-        document.getElementById(pollid + '-results').classList.remove("hidden-poll-option");
-      }  
-    </script>
-    <script>
-      function displayComments(postid) {
-        commentbox = document.getElementById(postid + '-postcomment')
-        postcomments = document.getElementById(postid + '-comments')
-        loadmorecomments = document.getElementById(postid + '-lmc')
-        if (commentbox.classList.contains('hiddencommentsection')) {
-          commentbox.classList.remove('hiddencommentsection');
-        } else {
-          commentbox.classList.add('hiddencommentsection');
-        }
-        
-        if (postcomments.classList.contains('hiddencommentsection')) {
-          postcomments.classList.remove('hiddencommentsection');
-          loadMoreComments(postid, 1)
-        } else {
-          postcomments.classList.add('hiddencommentsection');
-          postcomments.innerHTML= ""
-        }
-        if (loadmorecomments.classList.contains('hiddencommentsection') && !postcomments.classList.contains('hiddencommentsection')) {
-          loadmorecomments.classList.remove('hiddencommentsection');
-        } else {
-          loadmorecomments.classList.add('hiddencommentsection');
-        }
-      }
-      function displayReplybox(rbcmtid, ownerUsername) {
-        //console.log('called' + rbcmtid)
-        if (document.getElementById(rbcmtid + "-comment-replybox") == null) {
-          let replyboxtemplate = document.getElementById("replybox-template")
-          //commentitem = document.getElementById(commentid + "comment-item")
-          let replysection = document.getElementById(rbcmtid + "-comment-replysection")
-          console.log(replysection)
-          replysection.appendChild(replyboxtemplate.cloneNode(true))
-          //console.log(replysection)
-          replybox = document.getElementById("replybox-template")
-          replyform = document.getElementById("replybox-template-form")
-          replyformtext = document.getElementById("replybox-template-formtext")
-          replyform.id = rbcmtid + "-reply-formn"
-          replybox.id = rbcmtid + "-comment-replybox"
-          replyformtext.id = rbcmtid + "-reply-formtext"
-          let cmtId = rbcmtid
-          replyform.addEventListener("submit", function submitreplywrapper (e) { e.preventDefault()
-            return submitReply(e, this, cmtId)})
-          replybox.href = "/" + ownerUsername
-          
-        }
-
-        replybox = document.getElementById(rbcmtid + "-comment-replybox")
-        if (replybox.classList.contains('hiddencommentsection')) {
-          replybox.classList.remove('hiddencommentsection');
-        } else {
-          replybox.classList.add('hiddencommentsection');
-        }
-        
-      }
-      function displayReplies(commentid) {
-        replies = document.getElementById(commentid + '-comment-replies');
-        //loadmorereplies = document.getElementById(commentid + '-lmr');
-        
-        if (replies.classList.contains('hiddencommentsection')) {
-          replies.classList.remove('hiddencommentsection');
-          loadMoreReplies(commentid, 1)
-        } else {
-          replies.classList.add('hiddencommentsection');
-          replies.innerHTML= ""
-          viewrepliesbtn = document.getElementById(commentid + '-comment-replycount')
-          viewrepliesbtn.innerText = 'View ' + viewrepliesbtn.innerText.split(" ")[1] + ' replies'
-          if (document.getElementById(commentid+"-lmr") != null) {
-            document.getElementById(commentid+"-lmr").classList.add("hiddencommentsection")
-          }
-        }
-          
-        //if (loadmorereplies.classList.contains('hiddencommentsection')) {
-          //loadmorereplies.classList.remove('hiddencommentsection');
-        //} else {
-          //loadmorereplies.classList.add('hiddencommentsection');
-        //}
-      }
-    </script>
-    <script>
-      function submitReply (e, form, cmtId) {
-        //console.log(e);
-      
-        formData = new FormData(form)
-        //console.log(formData.get("text"))
-        //console.log(formData.get("csrfmiddlewaretoken"))
-        //replytext = document.getElementById(rbcmtid + "-reply-formtext").value
-        url = '/api/replies/'
-        data = {"text":   formData.get("text"), "comment": cmtId}
-        console.log(JSON.stringify(data))
-          fetch(url, {
-            method: "POST",
-            headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': formData.get("csrfmiddlewaretoken"),
-            },
-            body: JSON.stringify(data)
-          }).then(response => response.json()).then(response => {
-            replies = document.getElementById(cmtId + '-comment-replies');
-            if (!replies.classList.contains("hiddencommentsection"))
-            {
-              displayReplies(cmtId)
-            }
-            displayReplies(cmtId)
-          }).catch(err => { console.error(err) })
-      }
-      function submitComment (event, postId) {
-        event.preventDefault()
-        //console.log(e);
-        form = event.target
-        formData = new FormData(form)
-        console.log(formData.get("text"))
-        console.log(formData.get("csrfmiddlewaretoken"))
-        //replytext = document.getElementById(rbcmtid + "-reply-formtext").value
-        url = '/api/comments/'
-        data = {"text":   formData.get("text"), "post": postId}
-        console.log(JSON.stringify(data))
-          fetch(url, {
-            method: "POST",
-            headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': formData.get("csrfmiddlewaretoken"),
-            },
-            body: JSON.stringify(data)
-          }).then(response => response.json()).then(response => {
-            postcomments = document.getElementById(postId + '-comments')
-            //postcomments.classList.remove("hiddencommentsection")
-            postcomments.innerHTML=""
-            loadMoreComments(postId, 1)
-          }).catch(err => { console.error(err) })
-      }
-    
-    </script>
-    <script>
-      function loadMoreComments(postid, page) {
-        if (document.getElementById("comment-template"))
-        {
-          commenttemplate = document.getElementById("comment-template")
-          options = {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'};
-          url = '/api/comments/?page=' + page +'&postid='+postid
-          fetch(url, {
-            method: "GET",
-            headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            'X-Requested-With': 'XMLHttpRequest',
-            },
-          }).then(response => response.json()).then(response => {
-            postcomments = document.getElementById(postid + "-comments")
-            ///console.log(postcomments)
-            for (result of response.results) {
-              //console.log(result.owner.profile.image)
-              //commenttemplateclone = commenttemplate.cloneNode()
-
-              postcomments.appendChild(commenttemplate.cloneNode(true))
-              newcommentitem = document.getElementById("comment-template")
-              newcommentitem.id=result.id + "-comment-item"
-
-              newcommentimg = document.getElementById("comment-template-img")
-              newcommentimg.src = result.owner.profile.image
-              newcommentimg.id =result.id + "-comment-img"
-              newcommentimg.parentNode.href = '/' + result.owner.username
-
-              newcommentownername = document.getElementById("comment-template-ownername");
-              newcommentownername.innerText = result.owner.first_name + " " + result.owner.last_name
-              newcommentownername.id = result.id + "-comment-ownername"
-              newcommentownername.href = "/" + result.owner.username
-
-              newcommentcreationdate = document.getElementById("comment-template-creationdate");
-              newcommentcreationdate.innerText = new Date(result.created_at).toLocaleDateString("en-US", options)
-              newcommentcreationdate.id = result.id + "-comment-creationdate"
-
-              newcommenttext = document.getElementById("comment-template-text");
-              newcommenttext.innerText = result.text
-              newcommenttext.id = result.id + '-comment-text'
-              newcommentlikecount = document.getElementById("comment-template-likes");
-              newcommentlikecount.innerText = " " + result.like_count
-              newcommentlikecount.id = result.id + "comment-likecount"
-              if (result.liked) {
-                newcommentlikecount.className = "nav-link bi bi-hand-thumbs-up-fill"
-              }
-              newcommentreplycount = document.getElementById("comment-template-viewreplies");
-              newcommentreplycount.innerText = "View " + result.reply_count + " replies"
-              newcommentreplycount.id = result.id + '-comment-replycount'
-              
-              document.getElementById("comment-template-reply").id = result.id + '-comment-reply'
-              document.getElementById("comment-template-replies").id = result.id + '-comment-replies'
-              document.getElementById("comment-template-replysection").id = result.id + '-comment-replysection'
-              let resultId = result.id
-              let ownerUsername = result.owner.username
-              document.getElementById(result.id + '-comment-reply').addEventListener("click", function drb () {return displayReplybox(resultId, ownerUsername)})
-              document.getElementById(result.id + '-comment-replycount').addEventListener("click", function drs () { return displayReplies(resultId)})
-              document.getElementById(result.id + "comment-likecount").addEventListener("click", function lco() { return likeCommentObj(resultId, 'comment')})
-              newcommentitem.classList.remove("hiddencommentsection")
-              //postcomments.getElementById("comment-template").getElementsByTagName("img").src = result.owner.profile.image
-              //postcomments.getElementById("comment-template").classList.remove("hiddencommentsection");
-              
-            }
-            page = page + 1
-            postitem = document.getElementById(postid + '-item')
-            var old_element = document.getElementById(postid+"-lmc-a");
-            var new_element = old_element.cloneNode(true);
-            console.log(new_element)
-            old_element.parentNode.replaceChild(new_element, old_element);
-
-            if (response.next != null) {
-              //console.log(document.getElementById(postid+"-lmc-a"))
-              document.getElementById(postid+"-lmc-a").addEventListener('click', function lmc () { return loadMoreComments(postid, page)})
-              document.getElementById(postid+"-lmc").classList.remove("hiddencommentsection")
-            } else {
-              document.getElementById(postid+"-lmc").classList.add("hiddencommentsection")
-            }
-            //console.log(document.getElementById(postid+"-lmc-a"))
-            //commentsection.getElementsByTagName('img')[0].src = response.results[0].owner.profile.image
-          })
-        }
-      }
-      function loadMoreReplies(commentid, page) {
-        if (document.getElementById("reply-template"))
-        {
-          replytemplate = document.getElementById("reply-template")
-          options = {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'};
-          url = '/api/replies/?page=' + page +'&commentid='+commentid
-          fetch(url, {
-            method: "GET",
-            headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            'X-Requested-With': 'XMLHttpRequest',
-            },
-          }).then(response => response.json()).then(response => {
-            commentreplies = document.getElementById(commentid + '-comment-replies')
-            ///console.log(postcomments)
-            for (result of response.results) {
-              //console.log(result.owner.profile.image)
-              //commenttemplateclone = commenttemplate.cloneNode()
-
-              commentreplies.appendChild(replytemplate.cloneNode(true))
-              newreplyitem = document.getElementById("reply-template")
-              newreplyitem.id=result.id + "-reply-item"
-
-              newreplyimg = document.getElementById("reply-template-img")
-              newreplyimg.src = result.owner.profile.image
-              newreplyimg.id =result.id + "-reply-img"
-              newreplyimg.parentNode.href = '/' + result.owner.username
-    
-              newreplyownername = document.getElementById("reply-template-ownername");
-              newreplyownername.innerText = result.owner.first_name + " " + result.owner.last_name
-              newreplyownername.id = result.id + "-reply-ownername"
-              newreplyownername.href = "/" + result.owner.username
-  
-              newreplycreationdate = document.getElementById("reply-template-creationdate");
-              newreplycreationdate.innerText = new Date(result.created_at).toLocaleDateString("en-US", options)
-              newreplycreationdate.id = result.id + "-reply-creationdate"
-
-              newreplytext = document.getElementById("reply-template-text");
-              newreplytext.innerText = result.text
-              newreplytext.id = result.id + '-reply-text'
-
-              newreplylikecount = document.getElementById("reply-template-likes");
-              newreplylikecount.innerText = " "  + result.like_count
-              newreplylikecount.id = result.id + "reply-likecount"
-              newreplylikecount.id = result.id + "reply-likecount"
-              if (result.liked) {
-                newreplylikecount.className = "nav-link bi bi-hand-thumbs-up-fill"
-              }
-
-              //newcommentreplycount = document.getElementById("comment-template-viewreplies");
-              //newcommentreplycount.innerText = "View " + result.reply_count + " replies"
-              //newcommentreplycount.id = result.id + '-reply-replycount'
-              
-              document.getElementById("reply-template-reply").id = result.id + '-reply-reply'
-              //document.getElementById("comment-template-replies").id = result.id + '-comment-replies'
-              //document.getElementById("comment-template-replysection").id = result.id + '-comment-replysection'
-              let commentId = result.comment
-              let resultId = result.id
-              document.getElementById(result.id + '-reply-reply').addEventListener("click", function drb () {return displayReplybox(commentId)})
-              document.getElementById(result.id + "reply-likecount").addEventListener("click", function lro() { return likeCommentObj(resultId, 'reply')})
-              //document.getElementById(result.id + '-comment-replycount').addEventListener("click", function drs () { return displayReplies(resultId)})
-              newreplyitem.classList.remove("hiddencommentsection")
-              //postcomments.getElementById("comment-template").getElementsByTagName("img").src = result.owner.profile.image
-              //postcomments.getElementById("comment-template").classList.remove("hiddencommentsection");
-              
-            }
-            viewrepliesbtn = document.getElementById(commentid + '-comment-replycount')
-            viewrepliesbtn.innerText = 'Hide '+response.count+' replies'
-
-            page = page + 1
-            commentitem = document.getElementById(commentid + '-comment-item')
-            if (page == 2 && response.next != null) {
-              commentitem.appendChild(document.getElementById("comment-template-lmr").cloneNode(true))
-              document.getElementById("comment-template-lmr").id = commentid + "-lmr"
-            }
-            if (page != 2) {
-              var old_element = document.getElementById(commentid+"-lmr");
-              var new_element = old_element.cloneNode(true);
-              old_element.parentNode.replaceChild(new_element, old_element);
-            }
-            
-            if (response.next != null) {
-              document.getElementById(commentid+"-lmr").addEventListener('click', function lmc () { return loadMoreReplies(commentid, page)})
-              document.getElementById(commentid+"-lmr").classList.remove("hiddencommentsection")
-            } else if (page != 2) {
-              document.getElementById(commentid+"-lmr").classList.add("hiddencommentsection")
-            }
-            
-            //commentsection.getElementsByTagName('img')[0].src = response.results[0].owner.profile.image
-          })
-        }
-      }
-    </script>
   </body>
 </html>

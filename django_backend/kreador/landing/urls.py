@@ -6,4 +6,5 @@ from django.shortcuts import render
 urlpatterns = [
     path('', views.LandingView.as_view()),
     path('register/', views.UserRegView.as_view()),
+    path('login/', views.LoginView.as_view()),
 ]

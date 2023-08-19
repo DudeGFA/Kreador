@@ -11,8 +11,8 @@ from django.db.models import Count, F
 class HomeView(LoginRequiredMixin, View):
 
     def get(self, request):
-        posts = Post.objects.filter(owner__in=request.user.profile.contacts.all()).order_by('-created_at')
-        polls = Poll.objects.filter(owner__in=request.user.profile.contacts.all())
+        posts = Post.objects.filter(owner__in=request.user.profile.contacts.all()).order_by('-created_at') | Post.objects.filter(owner=request.user).order_by('-created_at')
+        polls = Poll.objects.filter(owner__in=request.user.profile.contacts.all()) | Poll.objects.filter(owner=request.user).order_by('-created_at')
         feed = sorted(chain(posts, polls), key=lambda feedobj: feedobj.created_at, reverse=True)
         contacts = list(User.objects.all())
 

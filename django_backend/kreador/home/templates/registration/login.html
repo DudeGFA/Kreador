@@ -65,7 +65,7 @@
                 >
               </p>
               <!-- Form START -->
-              <form class="mt-sm-4" method="post" action="{% url 'login' %}">
+              <form class="mt-sm-4" method="post" onsubmit="userLogin(event)">
                 {% csrf_token %}
                 <!-- Email -->
                 <div class="mb-3 input-group-lg">
@@ -134,8 +134,8 @@
                 <!-- Copyright -->
                 <p class="mb-0 mt-3">
                   ©2022
-                  <a target="_blank" href="https://kreador.netlify.app/"
-                    >Kerador.</a
+                  <a target="_blank"
+                    >Kreador.</a
                   >
                   All rights reserved
                 </p>
@@ -159,8 +159,11 @@ JS libraries, plugins and custom scripts -->
 
     <!-- Vendors -->
     <script src='{% static "assets/vendor/pswmeter/pswmeter.min.js" %}'></script>
+    <link rel="stylesheet" href="{% static 'assets/vendor/iziToast/iziToast.min.css' %}">
+    <script src="{% static 'assets/vendor/iziToast/iziToast.min.js' %}"></script>
 
     <!-- Template Functions -->
     <script src='{% static "assets/js/functions.js" %}'></script>
+    <script src='{% static "assets/js/myfunctions.js" %}'></script>
   </body>
 </html>
