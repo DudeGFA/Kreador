@@ -8,7 +8,7 @@ from .forms import NewUserForm
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponse
 import json
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 # Create your views here.
 class LandingView(View):
     """
@@ -27,21 +27,35 @@ class UserRegView(View):
         if newform.is_valid():
             new_user = newform.save()
             login(request, new_user)
+            if not request.POST.get("persistentsession"):
+                request.session.set_expiry(0)
             return redirect("home:homepage")
-        return render(request, 'home/sign-up.html')
+        return render(request, 'home/sign-up.html', {'form_error': newform.errors})
 
     def get(self, request):
         return render(request, 'home/sign-up.html')
 
-class LoginView(View):
+class LoginView(LoginView):
     def post(self, request):
         data = json.loads(request.body.decode("utf-8"))
         username = data.get("username")
         password = data.get("password")
         user = authenticate(request, username=username, password=password)
-        #redirect_url = request.POST.get('next', '/home/')
+        if not data.get("persistentsession"):
+            request.session.set_expiry(0)
         if user is not None:
             login(request, user)
             return HttpResponse(status=200)
         else:
             return HttpResponse(status=401)
+
+class LogoutView(LogoutView):
+    pass
+# class LoginView(LoginView):
+#     def post(self, request):
+#         result = super().post(request)
+#         data = json.loads(request.body.decode("utf-8"))
+#         print(data)
+#         #if not data.get("persistentsession"):
+#         #    request.session.set_expiry(0)
+#         return result

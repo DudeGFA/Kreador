@@ -69,7 +69,7 @@
       href='{% static "assets/vendor/flatpickr/dist/flatpickr.css" %}'
     />
     <link rel="stylesheet" type="text/css" href='{% static "assets/vendor/plyr/plyr.css" %}' />
-
+    <link rel="stylesheet" type="text/css" href='{% static "assets/vendor/iziToast/iziToast.min.css" %}' />
     <!-- Theme CSS -->
     <link
       id="style-switch"
@@ -291,7 +291,7 @@ Header START -->
                           <div class="ms-sm-3">
                             <div class="d-flex">
                               <p class="small mb-2">
-                                Kerador has 15 like and 1 new activity
+                                Kreador has 15 like and 1 new activity
                               </p>
                               <p class="small ms-3">1hr</p>
                             </div>
@@ -725,7 +725,7 @@ Header END -->
             {% for post in feed %}
             {% if post.question %}
             <!-- Card feed item START -->
-            <div class="card {{post.owner.id}}-post">
+            <div class="card {{post.owner.id}}-post" id="{{post.id}}-postobj">
               <!-- Card header START -->
               <div class="card-header border-0 pb-0">
                 <div class="d-flex align-items-center justify-content-between">
@@ -839,7 +839,7 @@ Header END -->
                 <!-- Feed poll votes START -->
                 <ul class="nav nav-divider mt-2 mb-0">
                   <li class="nav-item">
-                    <a id="{{post.id}}-totalvotes" class="nav-link" href='{% static "#" %}'>{{ post|calc_total_votes }} votes</a>
+                    <a id="{{post.id}}-totalvotes" class="nav-link"'>{{ post|calc_total_votes }} votes</a>
                   </li>
                 </ul>
                 <!-- Feed poll votes ED -->
@@ -853,7 +853,7 @@ Header END -->
             <!-- Card feed item END -->
             {% elif post.video %}
             <!-- Card feed item START -->
-            <div class="card {{post.owner.id}}-post">
+            <div class="card {{post.owner.id}}-post" id="{{post.id}}-postobj">
               <!-- Card header START -->
               <div class="card-header border-0 pb-0">
                 <div class="d-flex align-items-center justify-content-between">
@@ -1065,7 +1065,7 @@ Header END -->
             </div>
             <!-- Card feed item END -->
             {% elif post.postimage_set.count < 2 %}
-            <div class="card {{post.owner.id}}-post">
+            <div class="card {{post.owner.id}}-post" id="{{post.id}}-postobj">
               <!-- Card header START -->
               <div class="card-header border-0 pb-0">
                 <div class="d-flex align-items-center justify-content-between">
@@ -1267,7 +1267,7 @@ Header END -->
             <!-- Card feed item END -->
             {% else %}
             <!-- Card feed item START -->
-            <div class="card {{post.owner.id}}-post">
+            <div class="card {{post.owner.id}}-post" id="{{post.id}}-postobj">
               <!-- Card header START -->
               <div class="card-header border-0 pb-0">
                 <div class="d-flex align-items-center justify-content-between">
@@ -2940,7 +2940,7 @@ Header END -->
     </div>
     <!-- Modal create events END -->
 
-    <!-- Modal create poll START -->
+    <!-- Comment Obects Templates START -->
     <div
       class="modal fade"
       id="modalCreatePoll"
@@ -3040,6 +3040,7 @@ Header END -->
         </div>
       </div>
     </div>
+    <!-- Modal create poll END -->
     <!-- Comment item sample -->
     <li id="comment-template" class="comment-item hiddencommentsection">
       <div class="d-flex position-relative">
@@ -3172,15 +3173,13 @@ Header END -->
       </div>
       Load more replies
     </a>
-    <!-- Comment item END -->
-    <!-- Modal create poll END -->
+    <!-- Comment Obects Templates END -->
 
     <!-- ======================= JS libraries, plugins and custom scripts -->
 
     <!-- Bootstrap JS -->
     <script src='{% static "assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js" %}'></script>
-    <link rel="stylesheet" href="{% static 'assets/vendor/silverbox/silverBox.min.css' %}">
-    <script src="{% static 'assets/vendor/silverbox/silverBox.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/iziToast/iziToast.min.js' %}"></script>
     <!-- Vendors -->
     <script src='{% static "assets/vendor/tiny-slider/dist/tiny-slider.js" %}'></script>
     <script src='{% static "assets/vendor/OverlayScrollbars-master/js/OverlayScrollbars.min.js" %}'></script>

@@ -28,4 +28,6 @@ urlpatterns = [
         views.AddContactView.as_view(), name='add_contact'),
     path('contacts/delete/<int:pk>',
         views.DeleteContactView.as_view(), name='del_contact'),
+    path('edit/',
+        views.EditProfileView.as_view(), name='edit_profile'),
 ]

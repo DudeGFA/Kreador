@@ -62,7 +62,7 @@
                 <h1 class="mb-2">Sign up</h1>
                 <span class="d-block"
                   >Already have an account?
-                  <a href="sign-in.html">Sign in here</a></span
+                  <a href="{% url 'login' %}">Sign in here</a></span
                 >
               </div>
               <!-- Form START -->
@@ -144,9 +144,9 @@
                   </div>
                 </div>
                 <!-- Confirm password -->
-                <div class="mb-3 input-group-lg">
+                <div class="mb-3 input-group input-group-lg">
                   <input
-                    class="form-control"
+                    class="form-control fakepassword"
                     type="password"
                     placeholder="Confirm password"
                     name="password2"
@@ -158,11 +158,13 @@
                     type="checkbox"
                     class="form-check-input"
                     id="keepsingnedCheck"
+                    name="persistentsession"
                   />
                   <label class="form-check-label" for="keepsingnedCheck">
                     Keep me signed in</label
                   >
                 </div>
+                <div>{{form_error}}</div>
                 <!-- Button -->
                 <div class="d-grid">
                   <button type="submit" class="btn btn-lg btn-primary">
@@ -171,10 +173,7 @@
                 </div>
                 <!-- Copyright -->
                 <p class="mb-0 mt-3 text-center">
-                  ©2022
-                  <a target="_blank" href="https://kreador.netlify.app/"
-                    >Kreador.</a
-                  >
+                  ©2022 Kreador.
                   All rights reserved
                 </p>
               </form>
@@ -189,7 +188,17 @@
     </main>
 
     <!-- **************** MAIN CONTENT END **************** -->
-
+    <link rel="stylesheet" href="{% static 'assets/vendor/iziToast/iziToast.min.css' %}">
+    <script src="{% static 'assets/vendor/iziToast/iziToast.min.js' %}"></script>
+    <script>
+      if ('{{form_error}}') {
+        iziToast.error({
+				title: 'Error',
+				message: 'Invalid registration details',
+			});
+        window.scrollTo(0, document.body.scrollHeight);
+      }
+    </script>
     <!-- =======================
 JS libraries, plugins and custom scripts -->
 

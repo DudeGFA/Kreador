@@ -103,12 +103,9 @@ function removeFromContacts(usname, id) {
       deletedContactCards.forEach(card => {
         card.remove()
       })
-	  silverBox({
-		title: {
-			   text: response.text,
-			   alertIcon: "success"
-		}
- 	})
+	  iziToast.success({
+		title: response.text,
+	});
     }
 	
 	)
@@ -546,29 +543,17 @@ function deletePost(username, postid) {
         'X-Requested-With': 'XMLHttpRequest',
         'X-CSRFToken': token
         },
-        }).then((response) => {response}).then((response) => {
-			if (response.status == 404) {
-				silverBox({
-					title: {
-						   text: 'Something went wrong',
-						   alertIcon: "error"
-					}
-				 })
-			} else {
-				silverBox({
-					title: {
-						   text: 'Post successfully deleted',
-						   alertIcon: "success"
-					}
-				 })
-			}
+        }).then((response) => {
+			iziToast.success({
+				title: 'Post successfully deleted',
+			});
+			document.getElementById(postid + "-postobj").remove()
 		}).catch((e) => {
-			silverBox({
-				title: {
-					   text: 'Something went wrong',
-					   alertIcon: "error"
-				}
-			 })
+			console.log(e)
+			iziToast.error({
+				title: 'Error',
+				message: 'Something went wrong',
+			});
 		})
 }
 

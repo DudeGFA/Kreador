@@ -13,16 +13,19 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Post, Comment, UserContact, PostImage, PostLike, Poll, PollOption, Voter
+from .models import Post, Comment, UserContact, PostImage, PostLike, Poll, PollOption, Voter, Profile
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from .forms import PostForm, CommentForm, ReplyForm
+from .forms import PostForm, CommentForm, ReplyForm, UpdateProfileForm, UpdateUserForm, UpdateProfileBackgroundPhotoForm, UpdateProfileImageForm
 from django.urls import reverse_lazy, reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.db.utils import IntegrityError
 import json
+from django.core.files.images import ImageFile
+from copy import copy
+from landing.forms import NewUserForm
 # Create your views here.
 class ProfileView(View):
     def get(self, request, username):
@@ -327,3 +330,81 @@ class DeleteContactView(LoginRequiredMixin, View):
         except UserContact.DoesNotExist as e:
             pass
         return JsonResponse({"text": old_contact.get_full_name() + ' has been removed from your contacts'})
+
+class EditProfileView(LoginRequiredMixin, View):
+    """
+        Handles user profile Edit
+    """
+    def get(self, request, username):
+        """
+            returns user profile
+            edit form
+        """
+        try:
+            user = User.objects.get(username=username)
+        except ObjectDoesNotExist:
+            return HttpResponse('User does not exist')
+        if request.user != user:
+            return HttpResponse('User not authorized')
+        return render(request, 'home_modified/edit_profile.html')
+    
+    def post(self, request, username):
+        """
+            Updates user profile
+        """
+        try:
+            user = User.objects.get(username=username)
+        except ObjectDoesNotExist:
+            return HttpResponse('User does not exist')
+        if request.user != user:
+            return HttpResponse('User not authorized')
+        user_profile = user.profile
+        # print(user_profile)
+        # profile_pic = request.FILES.get('profile_pic')
+        # print(request.FILES)
+        # if profile_pic:
+        #     # profile_pic = ImageFile(request.POST.get('profile_pic'))
+        #     # filename = request.user.username + ' profile pic'
+        #     user_profile.image.save(profile_pic.name,profile_pic, True)
+        #     # user_profile.save()
+        # profile_data = copy(request.POST)
+        # profile_data['user'] = user
+        # profile_form = ProfileForm(data=profile_data, instance=user_profile)
+        # if profile_form.is_valid():
+        #     profile_form.save()
+        # else:
+        #     print(profile_form.errors)
+        if (request.FILES.get("image")):
+            print("image")
+            image_form = UpdateProfileImageForm(request.POST, request.FILES, instance=request.user.profile)
+            if image_form.is_valid():
+                image_form.save()
+                return HttpResponseRedirect('/' + user.username)
+            else:
+                print(image_form.errors)
+                return render(request, 'home_modified/edit_profile.html', {'img_error': image_form.errors})
+        elif (request.FILES.get("background_photo")):
+            print("bg_photo")
+            background_photo_form = UpdateProfileBackgroundPhotoForm(request.POST, request.FILES, instance=request.user.profile)
+            if background_photo_form.is_valid():
+                background_photo_form.save()
+                return HttpResponseRedirect('/' + user.username)
+            else:
+                print(image_form.errors)
+                return render(request, 'home_modified/edit_profile.html', {'img_error': image_form.errors})
+        elif(request.POST.get("username")):
+            user_form = UpdateUserForm(request.POST, instance=request.user)
+            profile_form = UpdateProfileForm(request.POST, instance=request.user.profile)
+
+            if user_form.is_valid():
+                user_form.save()
+            else:
+                print(user_form.errors)
+                return render(request, 'home_modified/edit_profile.html', {'form_error': user_form.errors})
+            if profile_form.is_valid():
+                profile_form.save()
+            else:
+                print(profile_form.errors)
+                return render(request, 'home_modified/edit_profile.html', {'form_error': profile_form.errors})
+            return HttpResponseRedirect('/' + request.POST.get("username"))
+        return render(request, 'home_modified/edit_profile.html')

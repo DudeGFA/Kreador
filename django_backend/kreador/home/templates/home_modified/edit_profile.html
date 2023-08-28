@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <title>Kreador - Social Network | Community</title>
+
+    <!-- Meta Tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="author" content="https://kreador.netlify.app/" />
+    <meta
+      name="description"
+      content="Social Network and Community for Techies"
+    />
+    <!-- Theme CSS -->
+		<!-- Favicon -->
+    <link rel="shortcut icon" href='{% static "assets/images/favicon.ico" %}' />
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+    />
+
+    <!-- Plugins CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href='{% static "assets/vendor/font-awesome/css/all.min.css" %}'
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href='{% static "assets/css/style.css" %}'
+    />
+    <link
+			id="style-switch"
+			rel="stylesheet"
+			type="text/css"
+			href='{% static "assets/css/edit_profile-style.css" %}'
+    />
+	</head>
+
+  <body>
+		<div class="container-xl px-4 mt-4">
+				<div class="row">
+						<div class="col-xl-4">
+								<!-- Profile picture card-->
+								<div class="card mb-4 mb-xl-0">
+										<div class="card-header">Profile Picture</div>
+										<div class="card-body text-center">
+												<!-- Profile picture image-->
+												<div>
+													<!-- Avatar -->
+													<div class="avatar avatar-xxl mt-n5 mb-3">
+													  <img
+														class="avatar-img rounded-circle border border-white border-3"
+														src="{{ user.profile.image.url }}"
+														alt=""
+													  />
+													</div>
+												  </div>
+												<!-- Profile picture help block-->
+												<!-- <div class="small font-italic mb-4">JPG or PNG no larger than 5 MB</div> -->
+												<!-- Profile picture upload form-->
+												<form method="post" id="upload_img_form" enctype="multipart/form-data">
+													{% csrf_token %}
+													<input type="file" id="upload_img" name="image" accept="image/*" class="hiddenbtn" oninput="submitProfilePic(event)">
+													<label class="btn btn-primary" for="upload_img">Upload new Profile Photo</label>
+												</form>
+										</div>
+										<div>{{img_error}}</div>
+								</div>
+								<!-- Profile background photo card-->
+								<div class="card mt-4 mb-xl-0">
+									<div class="card-header">Background Photo</div>
+									<div class="card-body text-center">
+											<!-- Background photo-->
+											<!-- <div>
+												<div class="avatar avatar-xxl ">
+												  <img
+													class="avatar-img border border-white border-3"
+													src="{{ user.profile.background_photo.url }}"
+													alt=""
+												  />
+												</div>
+											  </div> -->
+											<div
+											  class="h-200px rounded-top"
+											  style="
+												background-image: url('{{ user.profile.background_photo.url }}');
+												background-position: center;
+												background-size: cover;
+												background-repeat: no-repeat;
+											  "
+											></div>
+											<!-- Profile picture help block-->
+											<!-- <div class="small font-italic mb-4">JPG or PNG no larger than 5 MB</div> -->
+											<!-- Profile picture upload form-->
+											<form method="post" enctype="multipart/form-data">
+												{% csrf_token %}
+												<input type="file" id="upload_bg_photo" name="background_photo" accept="image/*" class="hiddenbtn" oninput="submitProfilePic(event)">
+												<label class="btn btn-primary" for="upload_bg_photo">Upload new Background photo</label>
+											</form>
+									</div>
+									<div>{{img_error}}</div>
+							</div>
+						</div>
+						<div class="col-xl-8">
+								<!-- Account details card-->
+								<div class="card mb-4">
+										<div class="card-header">Account Details</div>
+										<div class="card-body">
+												<form id="edit_profile_form" method="post">
+														{% csrf_token %}
+														<div class="row gx-3 mb-3">
+																<!-- Form Group (username)-->
+																<div class="col-md-6">
+																	<label class="small mb-1" for="inputUsername">Username (how your name will appear to other users on the site)</label>
+																	<input class="form-control" id="inputUsername" name="username" type="text" placeholder="Enter your username" value="{{user.username}}" required>
+																</div>
+																<!-- Form Group (occupation)-->
+																<div class="col-md-6">
+																	<label class="small mb-1" for="inputOrgName">Occupation</label>
+																	<input class="form-control" name="occupation" id="inputOrgName" type="text" placeholder="Enter your occupation" value="{{user.profile.occupation}}">
+																</div>
+														</div>
+														<!-- Form Row-->
+														<div class="row gx-3 mb-3">
+																<!-- Form Group (first name)-->
+																<div class="col-md-6">
+																		<label class="small mb-1" for="inputFirstName">First name</label>
+																		<input class="form-control" name="first_name" id="inputFirstName" type="text" placeholder="Enter your first name" value="{{user.first_name}}" required>
+																</div>
+																<!-- Form Group (last name)-->
+																<div class="col-md-6">
+																		<label class="small mb-1" for="inputLastName">Last name</label>
+																		<input class="form-control" name="last_name" id="inputLastName" type="text" placeholder="Enter your last name" value="{{user.last_name}}" required>
+																</div>
+														</div>
+														<!-- Form Row        -->
+														<div class="row gx-3 mb-3">
+																<!-- Form Group (Country)-->
+																<div class="col-md-6">
+																		<label class="small mb-1" for="inputOrgName">Country</label>
+																		<input class="form-control" name="country" id="inputOrgName" type="text" placeholder="Enter your country of residence" value="{{user.profile.country}}">
+																</div>
+																<!-- Form Group (city)-->
+																<div class="col-md-6">
+																		<label class="small mb-1" for="inputLocation">City</label>
+																		<input class="form-control" name="city" id="inputLocation" type="text" placeholder="Enter your city" value="{{user.profile.city}}">
+																</div>
+														</div>
+														<!-- Form Row-->
+														<div class="row gx-3 mb-3">
+															<!-- Form Group (phone number)-->
+															<div class="col-md-6">
+																	<label class="small mb-1" for="inputPhone">Employment Status</label>
+																	<input class="form-control" name="status" id="inputPhone" type="text" placeholder="Enter your employment status" value="{{user.profile.status}}">
+															</div>
+															<!-- Form Group (birthday)-->
+															<div class="col-md-6">
+																	<label class="small mb-1" for="inputBirthday">Date of Birth</label>
+																	<input class="form-control" name="dob" id="inputdob" type="date" name="birthday" placeholder="Enter your birthday" value="{{user.profile.dob|date:'Y-m-d'}}">
+															</div>
+														</div>
+														<!-- Form Group (email address)-->
+														<div class="mb-3">
+																<label class="small mb-1" for="inputEmailAddress">About</label>
+																<input class="form-control" name="about" id="inputAbout" type="text" placeholder="Tell others who you are" value="{{user.profile.about}}">
+														</div>
+														<!-- Save changes button-->
+														<button class="btn btn-primary" type="submit">Save changes</button>
+												</form>
+										</div>
+										<div>{{form_error}}</div>
+								</div>
+						</div>
+				</div>
+		</div>
+		<!-- Bootstrap JS -->
+    <script src="{% static 'assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+		<script>
+			function submitProfilePic(event) {
+				// img_form = document.getElementById("upload_img_form")
+				event.target.form.submit()
+			}
+		</script>
+	</body>
+</html>
