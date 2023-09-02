@@ -68,7 +68,7 @@ Table Of Content
 		}
 }();
 
-
+let IziCount = 0
 var e = {
 		init: function () {
 				e.preLoader(),
@@ -553,24 +553,51 @@ var e = {
 								//console.log(this)
 								// First change the button to actually tell Dropzone to process the queue.
 								let el = document.getElementById("picsubmitbtn")
-								el.addEventListener("click", function(e) {
-								// Make sure that the form isn't actually being sent.
-									//console.log("submit event triggered")
-									e.preventDefault();
-									e.stopPropagation();
-									console.log(myDropzone);
-									myDropzone.processQueue();
-								});
+								if (el) {
+									el.addEventListener("click", function(e) {
+										// Make sure that the form isn't actually being sent.
+											//console.log("submit event triggered")
+											e.preventDefault();
+											e.stopPropagation();
+											// console.log(myDropzone);
+											myDropzone.processQueue();
+											if (IziCount == 0) {
+												iziToast.success({
+													title: 'Post successfully Uploaded',
+												});
+												IziCount += 1
+											} else {
+												IziCount = 0
+											}
+											
+										});
+								}
+								
 								let em = document.getElementById("vidsubmitbtn")
-								em.addEventListener("click", function(e) {
-								// Make sure that the form isn't actually being sent.
-									//console.log("submit event triggered")
-									e.preventDefault();
-									e.stopPropagation();
-									console.log(myDropzone);
-									myDropzone.processQueue();
-								});
+								if (em) {
+									em.addEventListener("click", function(e) {
+										// Make sure that the form isn't actually being sent.
+											//console.log("submit event triggered")
+											e.preventDefault();
+											e.stopPropagation();
+											// console.log(myDropzone);
+											myDropzone.processQueue();
+											if (IziCount == 0) {
+												iziToast.success({
+													title: 'Post successfully Uploaded',
+												});
+												IziCount += 1
+											} else {
+												IziCount = 0
+											}
+										});
+								}
+								
 								this.on('error', function(file, errorMessage) {
+									iziToast.error({
+										title: 'Error',
+										message: 'Something went wrong',
+									});
 									if (file.accepted) {
 										var mypreview = document.getElementsByClassName('dz-error');
 										mypreview = mypreview[mypreview.length - 1];
@@ -596,7 +623,7 @@ var e = {
 							addRemoveLinks: true,
 							previewsContainer: d.querySelector(".dz-preview"),
 							previewTemplate: d.querySelector(".dz-preview").innerHTML,
-							url: '/upload/', // Change this URL to your actual image upload code
+							url: '/{{user.username}}/', // Change this URL to your actual image upload code
 							// Now fake the file upload, since GitHub does not handle file uploads
 							// and returns a 404
 							// https://docs.dropzone.dev/getting-started/setup/server-side-implementation

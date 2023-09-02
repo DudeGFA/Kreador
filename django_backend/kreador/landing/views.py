@@ -21,15 +21,13 @@ class LandingView(View):
 
 class UserRegView(View):
     def post(self, request):
-        print(request.POST)
         newform = NewUserForm(request.POST)
-        #print(newform)
         if newform.is_valid():
             new_user = newform.save()
             login(request, new_user)
             if not request.POST.get("persistentsession"):
                 request.session.set_expiry(0)
-            return redirect("home:homepage")
+            return redirect("/" + new_user.username + '/edit/')
         return render(request, 'home/sign-up.html', {'form_error': newform.errors})
 
     def get(self, request):

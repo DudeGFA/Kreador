@@ -17,7 +17,7 @@ from .models import Post, Comment, UserContact, PostImage, PostLike, Poll, PollO
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from .forms import PostForm, CommentForm, ReplyForm, UpdateProfileForm, UpdateUserForm, UpdateProfileBackgroundPhotoForm, UpdateProfileImageForm
+from .forms import PostForm, CommentForm, ReplyForm, UpdateProfileForm, UpdateUserForm, UpdateProfileBackgroundPhotoForm, UpdateProfileImageForm, PostImageForm
 from django.urls import reverse_lazy, reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -26,8 +26,9 @@ import json
 from django.core.files.images import ImageFile
 from copy import copy
 from landing.forms import NewUserForm
+import time
 # Create your views here.
-class ProfileView(View):
+class ProfileView(LoginRequiredMixin, View):
     def get(self, request, username):
         """ Handles get request for a user's profile
             Args:
@@ -60,22 +61,34 @@ class ProfileView(View):
             return HttpResponse('User does not exist')
         if request.user != user:
             return HttpResponse('User not authorized')
-        #print(request.POST)
-        #print(request.FILES)
-        new_post = Post.objects.create(text=request.POST.get('text'), owner=user)
-        new_post.save()
+        next = request.POST.get('next', '/home')
+        post_form = PostForm(request.POST, request.FILES)
+        if post_form.is_valid():
+            new_post = post_form.save(commit=False)
+            new_post.owner = self.request.user
+            new_post.save()
+        else:
+            print(post_form.errors)
+            return HttpResponseRedirect(next)
+        # new_post = Post.objects.create(text=request.POST.get('text'), owner=user)
+        # new_post.save()
+        # if request.FILES.getlist('video'):
+        #     # saves video file    
+        #     new_post.video = request.FILES.getlist('video')[0]
+        #     new_post.save()
         if request.FILES.getlist('picture[0]'):
             # creates and saves post image
             for key in request.FILES.keys():
                 #loops through each uploaded image file
                 if key.startswith('picture'):
                     value=request.FILES.getlist(key)[0]
-                    new_post_image = PostImage.objects.create(image=value, post=new_post)
-                    new_post_image.save()
-        elif request.FILES.getlist('video'):
-            # saves video file    
-            new_post.video = request.FILES.getlist('video')[0]
-            new_post.save()
+                    post_img_form = PostImageForm(request.POST, {'image': value})
+                    if post_img_form.is_valid():
+                        new_post_img = post_img_form.save(commit=False)
+                        new_post_img.post = new_post
+                        new_post_img.save()
+                    else:
+                        print(post_img_form.errors)
         #post_form = PostForm(request.POST, request.FILES or None)
     
         #if not post_form.is_valid():
@@ -86,11 +99,10 @@ class ProfileView(View):
         #saved_form.owner = user
         #saved_form.save()
         #post_form.save_m2m()
-        next = request.POST.get('next', '/home')
         #redirects to the value of next form attribute
         return HttpResponseRedirect(next)
 
-class PollView(View):
+class PollView(LoginRequiredMixin, View):
     """Handles Poll creation"""
     def post(self, request, username):
         """Creates a new Poll object
@@ -161,9 +173,9 @@ class PostDeleteView(LoginRequiredMixin, View):
             return HttpResponse('Post object does not exist')
 
         if request.user != user or request.user != post_obj.owner:
-            return HttpResponse('User not authorized', status-404)
+            return HttpResponse('User not authorized', status=404)
         post_obj.delete()
-        return HttpResponse()
+        return HttpResponse(status=200)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class PostLikeView(LoginRequiredMixin, View):
@@ -201,7 +213,7 @@ class PostUnLikeView(LoginRequiredMixin, View):
             pass
         return HttpResponse()
 
-class PostCommentView(View):
+class PostCommentView(LoginRequiredMixin, View):
     """
         Handles posting a comment
     """
@@ -226,7 +238,7 @@ class PostCommentView(View):
         return HttpResponseRedirect(next)
         #return redirect('/' + username)
 
-class PostReplyView(View):
+class PostReplyView(LoginRequiredMixin, View):
     """
         Handles posting a reply
     """
@@ -251,15 +263,31 @@ class PostReplyView(View):
         return HttpResponseRedirect(next)
         #return redirect('/' + username)
 
-class VideoView(View):
+class VideoView(LoginRequiredMixin, View):
     def get(self, request, username):
-        return render(request, 'home/my-profile-videos.html')
+        try:
+            user = User.objects.get(username=username)            
+        except ObjectDoesNotExist:
+            return HttpResponse('User does not exist')
+        month_joined = user.date_joined.strftime('%b, %Y')
+        album = PostImage.objects.filter(post__owner=user).order_by("-post__created_at")
+        post_with_videos = user.post_set.exclude(video__isnull=True).exclude(video__exact='')
+        print(post_with_videos)
+        ctx = {'month_joined': month_joined, 'profile_owner': user, 'album': album, 'post_with_vid': post_with_videos}
+        return render(request, 'home/my-profile-videos.html', ctx)
 
-class MediaView(View):
+class MediaView(LoginRequiredMixin, View):
     def get(self, request, username):
-        return render(request, 'home/my-profile-media.html')
+        try:
+            user = User.objects.get(username=username)            
+        except ObjectDoesNotExist:
+            return HttpResponse('User does not exist')
+        month_joined = user.date_joined.strftime('%b, %Y')
+        album = PostImage.objects.filter(post__owner=user).order_by("-post__created_at")
+        ctx = {'month_joined': month_joined, 'profile_owner': user, 'album': album}
+        return render(request, 'home/my-profile-media.html', ctx)
 
-class AboutView(View):
+class AboutView(LoginRequiredMixin, View):
     def get(self, request, username):
         try:
             user = User.objects.get(username=username)            
@@ -270,7 +298,7 @@ class AboutView(View):
         ctx = {'month_joined': month_joined, 'profile_owner': user, 'album': album}
         return render(request, 'home/my-profile-about.html', ctx)
 
-class ConnectionsView(View):
+class ContactsView(LoginRequiredMixin, View):
     def get(self, request, username):
         try:
             user = User.objects.get(username=username)            
@@ -279,7 +307,7 @@ class ConnectionsView(View):
         month_joined = user.date_joined.strftime('%b, %Y')
         album = PostImage.objects.filter(post__owner=user)[:5]
         ctx = {'month_joined': month_joined, 'profile_owner': user, 'album': album}
-        return render(request, 'home/my-profile-connections.html', ctx)
+        return render(request, 'home/my-profile-contacts.html', ctx)
 
 class EventsView(View):
     def get(self, request, username):
@@ -311,7 +339,7 @@ class AddContactView(LoginRequiredMixin, View):
             usercontact.save()  # In case of duplicate key
         except IntegrityError as e:
             pass
-        return HttpResponse()
+        return JsonResponse({"text": new_contact.get_full_name() + ' has been added to your contacts'})
  
 @method_decorator(csrf_exempt, name='dispatch')
 class DeleteContactView(LoginRequiredMixin, View):

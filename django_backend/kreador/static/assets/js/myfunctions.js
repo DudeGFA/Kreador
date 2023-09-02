@@ -6,8 +6,24 @@ document.getElementById('upload_img2') = innerDiv.getElementsByClassName("dz-ima
 document.getElementById('postform').submit()
 }
 
+// function likeMedia(post_id, username) {
+// 	var url = username + '/post/' + post_id + '/like'
+	
+// 	fetch(url, {
+// 		method: "POST",
+// 		headers: {
+// 		"Content-type": "application/json; charset=UTF-8"
+// 		}
+// 	}).then((response) => {
+// 		likecnt = parseInt(document.getElementById(post_id + '-likecnt').innerHTML)
+//     	likecnt = likecnt + 1
+//     	like_cnts = Array.from(document.getElementsByClassName(post_id + '-likecnt'))
+// 		like_cnts.forEach((like_cnt) => {like_cnt.innerHTML = likecnt})
+// 	})
+// }
+
 function likePost(post_id) {
-likeBtn = document.getElementById(post_id + 'likebtn')
+likeBtn = document.getElementById(likebtn_id)
 if ( likeBtn.className === "bi bi-hand-thumbs-up-fill pe-1") {
     var url = '/{{user.username}}/post/' + post_id + '/unlike'
     document.getElementById(post_id + 'likebtn').className = "bi bi-hand-thumbs-up pe-1"
@@ -99,13 +115,21 @@ function removeFromContacts(usname, id) {
     fetch(url, {method: "POST"}).then(response => response.json()).then( response => {
       console.log(response.text)
       deletedContactCards = Array.from(document.getElementsByClassName(id+"-post"))
-      console.log(deletedContactCards)
+    //   console.log(deletedContactCards)
       deletedContactCards.forEach(card => {
         card.remove()
       })
+	  if (document.getElementById(id+"-contactcard")) {
+		console.log("present sir")
+		document.getElementById(id+"-contactcard").remove()
+	  }
 	  iziToast.success({
 		title: response.text,
 	});
+	  contactCounts = Array.from(document.getElementsByClassName("contacts-count"))
+	  contactCounts.forEach((contactCount) => {
+		contactCount.innerHTML = parseInt(contactCount.innerHTML.trim()) - 1
+	  })
     }
 	
 	)
@@ -113,43 +137,37 @@ function removeFromContacts(usname, id) {
   }
   
 function changeContacts(usname, id) {
-    var newform = document.createElement('form');
-    newform.setAttribute('target', 'hiddenFrame');
     elem = document.getElementById(id + 'ctca')
-    newform.setAttribute('method', 'post');
-    newform.id = "changeContactsForm"
     if (elem.className === "btn btn-primary-soft rounded-circle icon-md ms-auto") {
-      newform.setAttribute('action', '/' + usname + '/contacts/add/' + id);
-      newform.style.display = 'hidden';
-      document.body.appendChild(newform)
-      console.log(newform)
-      newform.submit()
-      document.getElementById("changeContactsForm").remove()
+	  addToContacts(id, usname);
       document.getElementById(id + 'ctca').className = "btn btn-primary rounded-circle icon-md ms-auto"
       document.getElementById(id + 'ctci').className = "bi bi-person-check-fill";
     } else {
-      newform.setAttribute('action', '/' + usname + '/contacts/delete/' + id);
-      newform.style.display = 'hidden';
-      document.body.appendChild(newform)
-      newform.submit()
-      document.getElementById("changeContactsForm").remove()
+      removeFromContacts(usname, id)
       document.getElementById(id + 'ctca').className = "btn btn-primary-soft rounded-circle icon-md ms-auto"
       document.getElementById(id + 'ctci').className = "fa-solid fa-plus";
     }
     return false;
    }
-   function addToContacts(contactid, username) {
+   function addToContacts(contactid, username, type) {
     url='/' + username + '/contacts/add/' + contactid
     fetch(url, {
       method: "POST",
       headers: {
         "Content-type": "application/json; charset=UTF-8"
       }
-    }).then( response => { 
-      console.log(document.getElementById(contactid + '-pymk'))
+    }).then(response => response.json()).then( response => { 
+	  iziToast.success({
+		title: response.text,
+	});
+	  document.getElementsByClassName("contacts-count").forEach((contactCount) => {
+		contactCount.innerHTML = parseInt(contactCount.innerHTML.trim()) + 1
+	  })
     })
-    console.log(document.getElementById(contactid + '-pymk').getElementsByTagName('button')[0].innerHTML)
-    document.getElementById(contactid + '-pymk').getElementsByTagName('button')[0].innerHTML='Contact Added';
+    // console.log(document.getElementById(contactid + '-pymk').getElementsByTagName('button')[0].innerHTML)
+	if (type == 'pymk') {
+	  document.getElementById(contactid + '-pymk').getElementsByTagName('button')[0].innerHTML='Contact Added';
+	}
     return false;
 }
 
@@ -168,14 +186,12 @@ function postSubmit() {
 	posttext = document.getElementById("postuploadtext1").value;
 	document.getElementById("postuploadtext2").value = posttext;
 	document.getElementById("picsubmitbtn").click();
-	location.reload()
 }
 
 function vidSubmit() {
 	posttext = document.getElementById("postuploadtextvid1").value;
 	document.getElementById("postuploadtextvid2").value = posttext;
 	document.getElementById("vidsubmitbtn").click();
-	location.reload()
 }
 function updatePhotoUploadText() {
 	posttext = document.getElementById("posttextmain").value;

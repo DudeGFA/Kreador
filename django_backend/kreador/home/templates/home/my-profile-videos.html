@@ -65,6 +65,8 @@
       type="text/css"
       href='{% static "assets/css/style.css" %}'
     />
+    <link rel="stylesheet" type="text/css" href='{% static "assets/vendor/iziToast/iziToast.min.css" %}' />
+    <script src='{% static "assets/js/myfunctions.js" %}'></script>
   </head>
 
   <body>
@@ -75,7 +77,7 @@ Header START -->
       <nav class="navbar navbar-expand-lg">
         <div class="container">
           <!-- Logo START -->
-          <a class="navbar-brand" href='{% static "index.html" %}'>
+          <a class="navbar-brand" href='/home'>
             <img
               class="light-mode-item navbar-brand-item"
               src='{% static "assets/images/Kreador.png" %}'
@@ -106,387 +108,11 @@ Header START -->
             </span>
           </button>
 
-          <!-- Main navbar START -->
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <!-- Nav Search START -->
-            <div
-              class="nav mt-3 mt-lg-0 flex-nowrap align-items-center px-4 px-lg-0"
-            >
-              <div class="nav-item w-100">
-                <form class="rounded position-relative">
-                  <input
-                    class="form-control ps-5 bg-light"
-                    type="search"
-                    placeholder="Search..."
-                    aria-label="Search"
-                  />
-                  <button
-                    class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y"
-                    type="submit"
-                  >
-                    <i class="bi bi-search fs-5"> </i>
-                  </button>
-                </form>
-              </div>
-            </div>
-            <!-- Nav Search END -->
-
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-              <!-- Nav item 1 Demos -->
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link active dropdown-toggle"
-                  href='{% static "#" %}'
-                  id="homeMenu"
-                  data-bs-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  >Feed</a
-                >
-                <ul class="dropdown-menu" aria-labelledby="homeMenu">
-                  <li>
-                    <a class="dropdown-item active" href='{% static "index.html" %}'>Post</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "index-post.html" %}'>Projects</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "index-post.html" %}'>Jobs</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "index-post.html" %}'
-                      >Companies</a
-                    >
-                  </li>
-                </ul>
-              </li>
-              <!-- Nav item 2 Pages -->
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href='{% static "#" %}'
-                  id="pagesMenu"
-                  data-bs-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  >Events</a
-                >
-                <ul class="dropdown-menu" aria-labelledby="pagesMenu">
-                  <li>
-                    <a class="dropdown-item" href='{% static "albums.html" %}'>Create Event</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "celebration.html" %}'
-                      >Live Event</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "messaging.html" %}'>Recording</a>
-                  </li>
-                </ul>
-              </li>
-
-              <!-- Nav item 3 Post -->
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href='{% static "#" %}'
-                  id="postMenu"
-                  data-bs-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  >Account
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="postMenu">
-                  <li>
-                    <a class="dropdown-item" href='{% static "create-page.html" %}'
-                      >Create a page</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "settings.html" %}'>Settings</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "notifications.html" %}'
-                      >Notifications</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "help.html" %}'>Help center</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "help-details.html" %}'
-                      >Help details</a
-                    >
-                  </li>
-                  <!-- dropdown submenu open left -->
-                  <li class="dropdown-submenu dropstart">
-                    <a class="dropdown-item dropdown-toggle" href='{% static "#" %}'
-                      >Authentication</a
-                    >
-                    <ul
-                      class="dropdown-menu dropdown-menu-end"
-                      data-bs-popper="none"
-                    >
-                      <li>
-                        <a class="dropdown-item" href='{% static "sign-in.html" %}'>Sign in</a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "sign-up.html" %}'>Sing up</a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "forgot-password.html" %}'
-                          >Forgot password</a
-                        >
-                      </li>
-                      <li class="dropdown-divider"></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "sign-in-advance.html" %}'
-                          >Sign in advance</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "sign-up-advance.html" %}'
-                          >Sing up advance</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href='{% static "forgot-password-advance.html" %}'
-                          >Forgot password advance</a
-                        >
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "error-404.html" %}'>Error 404</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "offline.html" %}'>Offline</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "privacy-and-terms.html" %}'
-                      >Privacy & terms</a
-                    >
-                  </li>
-                </ul>
-              </li>
-
-              <!-- Nav item 4 Mega menu -->
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href='{% static "#" %}'
-                  id="postMenu"
-                  data-bs-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  class="nav-link"
-                  href='{% static "my-profile-connections.html" %}'
-                  >My network</a
-                >
-                <ul class="dropdown-menu" aria-labelledby="postMenu">
-                  <li>
-                    <a class="dropdown-item" href='{% static "create-page.html" %}'
-                      >Connections</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "create-page.html" %}'>Groups</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "create-page.html" %}'>Friends</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href='{% static "create-page.html" %}'>
-                      Active Projects</a
-                    >
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <!-- Main navbar END -->
-
           <!-- Nav right START -->
           <ul class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
-            <li class="nav-item ms-2">
-              <a
-                class="nav-link icon-md btn btn-light p-0"
-                href='{% static "messaging.html" %}'
-              >
-                <i class="bi bi-chat-left-text-fill fs-6"> </i>
-              </a>
-            </li>
-            <li class="nav-item ms-2">
-              <a
-                class="nav-link icon-md btn btn-light p-0"
-                href='{% static "settings.html" %}'
-              >
-                <i class="bi bi-gear-fill fs-6"> </i>
-              </a>
-            </li>
-            <li class="nav-item dropdown ms-2">
-              <a
-                class="nav-link icon-md btn btn-light p-0"
-                href='{% static "#" %}'
-                id="notifDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                data-bs-auto-close="outside"
-              >
-                <span class="badge-notif animation-blink"></span>
-                <i class="bi bi-bell-fill fs-6"> </i>
-              </a>
-              <div
-                class="dropdown-menu dropdown-animation dropdown-menu-end dropdown-menu-size-md p-0 shadow-lg border-0"
-                aria-labelledby="notifDropdown"
-              >
-                <div class="card">
-                  <div
-                    class="card-header d-flex justify-content-between align-items-center"
-                  >
-                    <h6 class="m-0">
-                      Notifications
-                      <span
-                        class="badge bg-danger bg-opacity-10 text-danger ms-2"
-                        >4 new</span
-                      >
-                    </h6>
-                    <a class="small" href='{% static "#" %}'>Clear all</a>
-                  </div>
-                  <div class="card-body p-0">
-                    <ul class="list-group list-group-flush list-unstyled p-2">
-                      <!-- Notif item -->
-                      <li>
-                        <div
-                          class="list-group-item list-group-item-action rounded badge-unread d-flex border-0 mb-1 p-3"
-                        >
-                          <div
-                            class="avatar text-center d-none d-sm-inline-block"
-                          >
-                            <img
-                              class="avatar-img rounded-circle"
-                              src='{% static "assets/images/avatar/01.jpg" %}'
-                              alt=""
-                            />
-                          </div>
-                          <div class="ms-sm-3">
-                            <div class="d-flex">
-                              <p class="small mb-2">
-                                <b>Josiah Emmy</b> sent you a friend request.
-                              </p>
-                              <p class="small ms-3 text-nowrap">Just now</p>
-                            </div>
-                            <div class="d-flex">
-                              <button class="btn btn-sm py-1 btn-primary me-2">
-                                Accept
-                              </button>
-                              <button class="btn btn-sm py-1 btn-danger-soft">
-                                Delete
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                      <!-- Notif item -->
-                      <li>
-                        <div
-                          class="list-group-item list-group-item-action rounded badge-unread d-flex border-0 mb-1 p-3 position-relative"
-                        >
-                          <div
-                            class="avatar text-center d-none d-sm-inline-block"
-                          >
-                            <img
-                              class="avatar-img rounded-circle"
-                              src='{% static "assets/images/avatar/02.jpg" %}'
-                              alt=""
-                            />
-                          </div>
-                          <div class="ms-sm-3 d-flex">
-                            <div>
-                              <p class="small mb-2">
-                                Wish <b>DudeGFA</b> a happy birthday (Nov 12)
-                              </p>
-                              <button
-                                class="btn btn-sm btn-outline-light py-1 me-2"
-                              >
-                                Say happy birthday 🎂
-                              </button>
-                            </div>
-                            <p class="small ms-3">2min</p>
-                          </div>
-                        </div>
-                      </li>
-                      <!-- Notif item -->
-                      <li>
-                        <a
-                          href='{% static "#" %}'
-                          class="list-group-item list-group-item-action rounded d-flex border-0 mb-1 p-3"
-                        >
-                          <div
-                            class="avatar text-center d-none d-sm-inline-block"
-                          >
-                            <div class="avatar-img rounded-circle bg-success">
-                              <span
-                                class="text-white position-absolute top-50 start-50 translate-middle fw-bold"
-                                >WB</span
-                              >
-                            </div>
-                          </div>
-                          <div class="ms-sm-3">
-                            <div class="d-flex">
-                              <p class="small mb-2">
-                                Kerador has 15 like and 1 new activity
-                              </p>
-                              <p class="small ms-3">1hr</p>
-                            </div>
-                          </div>
-                        </a>
-                      </li>
-                      <!-- Notif item -->
-                      <li>
-                        <a
-                          href='{% static "#" %}'
-                          class="list-group-item list-group-item-action rounded d-flex border-0 p-3 mb-1"
-                        >
-                          <div
-                            class="avatar text-center d-none d-sm-inline-block"
-                          >
-                            <img
-                              class="avatar-img rounded-circle"
-                              src='{% static "assets/images/logo/12.svg" %}'
-                              alt=""
-                            />
-                          </div>
-                          <div class="ms-sm-3 d-flex">
-                            <p class="small mb-2">
-                              <b>Alx_Africa in the news:</b> The search giant’s
-                              parent company, Alphabet, just joined an exclusive
-                              club of tech stocks.
-                            </p>
-                            <p class="small ms-3">4hr</p>
-                          </div>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="card-footer text-center">
-                    <a href='{% static "#" %}' class="btn btn-sm btn-primary-soft"
-                      >See all incoming activity</a
-                    >
-                  </div>
-                </div>
-              </div>
-            </li>
-            <!-- Notification dropdown END -->
-
             <li class="nav-item ms-2 dropdown">
               <a
                 class="nav-link btn icon-md p-0"
-                href='{% static "#" %}'
                 id="profileDropdown"
                 role="button"
                 data-bs-auto-close="outside"
@@ -496,7 +122,7 @@ Header START -->
               >
                 <img
                   class="avatar-img rounded-2"
-                  src='{% static "assets/images/avatar/07.jpg" %}'
+                  src='{{user.profile.image.url}}'
                   alt=""
                 />
               </a>
@@ -511,27 +137,22 @@ Header START -->
                     <div class="avatar me-3">
                       <img
                         class="avatar-img rounded-circle"
-                        src='{% static "assets/images/avatar/07.jpg" %}'
+                        src='{{user.profile.image.url}}'
                         alt="avatar"
                       />
                     </div>
                     <div>
-                      <a class="h6 stretched-link" href='{% static "#" %}'>Izi Martin</a>
-                      <p class="small m-0">Software Engineer</p>
+                      <a class="h6 stretched-link">{{user.get_full_name}}</a>
+                      <p class="small m-0">{{user.profile.occupation}}</p>
                     </div>
                   </div>
                   <a
                     class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center"
-                    href='{% static "my-profile.html" %}'
+                    href='/{{user.username}}'
                     >View profile</a
                   >
                 </li>
                 <!-- Links -->
-                <li>
-                  <a class="dropdown-item" href='{% static "settings.html" %}'
-                    ><i class="bi bi-gear fa-fw me-2"></i>Settings & Privacy</a
-                  >
-                </li>
                 <li>
                   <a
                     class="dropdown-item"
@@ -593,7 +214,7 @@ Header END -->
               <div
                 class="h-200px rounded-top"
                 style="
-                  background-image: url(assets/images/bg/08.jpg);
+                  background-image: url('{{ profile_owner.profile.background_photo.url }}');
                   background-position: center;
                   background-size: cover;
                   background-repeat: no-repeat;
@@ -609,7 +230,7 @@ Header END -->
                     <div class="avatar avatar-xxl mt-n5 mb-3">
                       <img
                         class="avatar-img rounded-circle border border-white border-3"
-                        src='{% static "assets/images/avatar/07.jpg" %}'
+                        src='{{profile_owner.profile.image.url}}'
                         alt=""
                       />
                     </div>
@@ -617,58 +238,16 @@ Header END -->
                   <div class="ms-sm-4 mt-sm-3">
                     <!-- Info -->
                     <h1 class="mb-0 h5">
-                      Sam Lanson
+                      {{profile_owner.get_full_name}}
                       <i class="bi bi-patch-check-fill text-success small"></i>
                     </h1>
-                    <p>250 connections</p>
+                    <p><span class="contacts-count">{{ profile_owner.profile.contacts.count }}</span> contacts | Added to {{ profile_owner.contacted_by.count }} contact lists</p>
                   </div>
                   <!-- Button -->
                   <div class="d-flex mt-3 justify-content-center ms-sm-auto">
-                    <button class="btn btn-danger-soft me-2" type="button">
+                    <a class="btn btn-danger-soft me-2" type="button" href="/{{profile_owner.username}}/edit">
                       <i class="bi bi-pencil-fill pe-1"></i> Edit profile
-                    </button>
-                    <div class="dropdown">
-                      <!-- Card share action menu -->
-                      <button
-                        class="icon-md btn btn-light"
-                        type="button"
-                        id="profileAction2"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <i class="bi bi-three-dots"></i>
-                      </button>
-                      <!-- Card share action dropdown menu -->
-                      <ul
-                        class="dropdown-menu dropdown-menu-end"
-                        aria-labelledby="profileAction2"
-                      >
-                        <li>
-                          <a class="dropdown-item" href='{% static "#" %}'>
-                            <i class="bi bi-bookmark fa-fw pe-2"></i>Share
-                            profile in a message</a
-                          >
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href='{% static "#" %}'>
-                            <i class="bi bi-file-earmark-pdf fa-fw pe-2"></i
-                            >Save your profile to PDF</a
-                          >
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href='{% static "#" %}'>
-                            <i class="bi bi-lock fa-fw pe-2"></i>Lock profile</a
-                          >
-                        </li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li>
-                          <a class="dropdown-item" href='{% static "#" %}'>
-                            <i class="bi bi-gear fa-fw pe-2"></i>Profile
-                            settings</a
-                          >
-                        </li>
-                      </ul>
-                    </div>
+                    </a>
                   </div>
                 </div>
                 <!-- List profile -->
@@ -676,14 +255,13 @@ Header END -->
                   class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0"
                 >
                   <li class="list-inline-item">
-                    <i class="bi bi-briefcase me-1"></i> Lead Developer
+                    <i class="bi bi-briefcase me-1"></i> {{ profile_owner.profile.occupation }}
                   </li>
                   <li class="list-inline-item">
-                    <i class="bi bi-geo-alt me-1"></i> New Hampshire
+                    <i class="bi bi-geo-alt me-1"></i> {{ profile_owner.profile.city }}, {{ profile_owner.profile.country }}
                   </li>
                   <li class="list-inline-item">
-                    <i class="bi bi-calendar2-plus me-1"></i> Joined on Nov 26,
-                    2019
+                    <i class="bi bi-calendar2-plus me-1"></i> Joined {{ month_joined }}
                   </li>
                 </ul>
               </div>
@@ -701,11 +279,11 @@ Header END -->
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href='/{{ user.username }}/connections'>
-                      Connections
+                      Contacts
                       <span
                         class="badge bg-success bg-opacity-10 text-success small"
                       >
-                        230</span
+                        {{profile_owner.profile.contacts.count}}</span
                       >
                     </a>
                   </li>
@@ -715,16 +293,6 @@ Header END -->
                   <li class="nav-item">
                     <a class="nav-link active" href='{{user.username}}/videos'>
                       Videos</a
-                    >
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href='/{{ user.username}}/events'>
-                      Events</a
-                    >
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href='/{{ user.username }}/activty'>
-                      Activity</a
                     >
                   </li>
                 </ul>
@@ -749,14 +317,14 @@ Header END -->
                     <div
                       class="border border-2 py-5 border-dashed h-100 rounded text-center d-flex align-items-center justify-content-center position-relative"
                     >
-                      <a class="stretched-link" href='{% static "#!" %}'>
+                      <a class="stretched-link" data-bs-toggle="modal" data-bs-target="#feedActionVideo">
                         <i class="fa-solid fa-camera-retro fs-1"></i>
                         <h6 class="mt-2">Add Video</h6>
                       </a>
                     </div>
                   </div>
                   <!-- Add Video END -->
-
+                  {% for post in post_with_vid %}
                   <div class="col-sm-6 col-md-4">
                     <!-- Video START -->
                     <div
@@ -766,7 +334,7 @@ Header END -->
                       <div class="position-relative">
                         <img
                           class="rounded"
-                          src='{% static "assets/images/albums/01.jpg" %}'
+                          src='{% static "assets/images/videos/default_poster.png" %}'
                           alt=""
                         />
                         <!-- Play icon -->
@@ -774,33 +342,25 @@ Header END -->
                           <a
                             class="icon-md bg-danger text-white rounded-circle"
                             data-glightbox
-                            href='{% static "assets/images/videos/video-call.mp4" %}'
+                            data-gallery="videos"
+                            href='{{post.video.url}}'
                           >
                             <i class="bi bi-play-fill fs-5"> </i>
                           </a>
-                        </div>
-                        <!-- Duration -->
-                        <div
-                          class="position-absolute bottom-0 start-0 p-3 d-flex w-100"
-                        >
-                          <span
-                            class="bg-dark bg-opacity-50 px-2 rounded text-white small"
-                            >02:20</span
-                          >
                         </div>
                       </div>
                       <!-- Video info -->
                       <div class="card-body px-0 pb-0 pt-2">
                         <ul class="nav nav-stack small">
                           <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'>
+                            <a class="nav-link">
                               <i class="bi bi-heart-fill text-danger pe-1"></i
-                              >22k
+                              >{{post.likes.count}}
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'>
-                              <i class="bi bi-chat-left-text-fill pe-1"></i>3k
+                            <a class="nav-link">
+                              <i class="bi bi-chat-left-text-fill pe-1"></i>{{post.comment_set.count}}
                             </a>
                           </li>
                         </ul>
@@ -808,162 +368,7 @@ Header END -->
                     </div>
                     <!-- Video END -->
                   </div>
-
-                  <div class="col-sm-6 col-md-4">
-                    <!-- Video START -->
-                    <div
-                      class="card p-0 shadow-none border-0 position-relative"
-                    >
-                      <!-- Video image -->
-                      <div class="position-relative">
-                        <img
-                          class="rounded"
-                          src='{% static "assets/images/albums/03.jpg" %}'
-                          alt=""
-                        />
-                        <!-- Play icon -->
-                        <div class="position-absolute top-0 end-0 p-3">
-                          <a
-                            class="icon-md bg-danger text-white rounded-circle"
-                            data-glightbox
-                            href='{% static "assets/images/videos/video-call.mp4" %}'
-                          >
-                            <i class="bi bi-play-fill fs-5"> </i>
-                          </a>
-                        </div>
-                        <!-- Duration -->
-                        <div
-                          class="position-absolute bottom-0 start-0 p-3 d-flex w-100"
-                        >
-                          <span
-                            class="bg-dark bg-opacity-50 px-2 rounded text-white small"
-                            >01:15</span
-                          >
-                        </div>
-                      </div>
-                      <!-- Video info -->
-                      <div class="card-body px-0 pb-0 pt-2">
-                        <ul class="nav nav-stack small">
-                          <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'>
-                              <i class="bi bi-heart-fill text-danger pe-1"></i
-                              >232k
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'>
-                              <i class="bi bi-chat-left-text-fill pe-1"></i>43k
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <!-- Video END -->
-                  </div>
-
-                  <div class="col-sm-6 col-md-4">
-                    <!-- Video START -->
-                    <div
-                      class="card p-0 shadow-none border-0 position-relative"
-                    >
-                      <!-- Video image -->
-                      <div class="position-relative">
-                        <img
-                          class="rounded"
-                          src='{% static "assets/images/albums/04.jpg" %}'
-                          alt=""
-                        />
-                        <!-- Play icon -->
-                        <div class="position-absolute top-0 end-0 p-3">
-                          <a
-                            class="icon-md bg-danger text-white rounded-circle"
-                            data-glightbox
-                            href='{% static "assets/images/videos/video-call.mp4" %}'
-                          >
-                            <i class="bi bi-play-fill fs-5"> </i>
-                          </a>
-                        </div>
-                        <!-- Duration -->
-                        <div
-                          class="position-absolute bottom-0 start-0 p-3 d-flex w-100"
-                        >
-                          <span
-                            class="bg-dark bg-opacity-50 px-2 rounded text-white small"
-                            >02:00</span
-                          >
-                        </div>
-                      </div>
-                      <!-- Video info -->
-                      <div class="card-body px-0 pb-0 pt-2">
-                        <ul class="nav nav-stack small">
-                          <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'>
-                              <i class="bi bi-heart-fill text-danger pe-1"></i
-                              >10k
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'>
-                              <i class="bi bi-chat-left-text-fill pe-1"></i>2k
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <!-- Video END -->
-                  </div>
-
-                  <div class="col-sm-6 col-md-4">
-                    <!-- Video START -->
-                    <div
-                      class="card p-0 shadow-none border-0 position-relative"
-                    >
-                      <!-- Video image -->
-                      <div class="position-relative">
-                        <img
-                          class="rounded"
-                          src='{% static "assets/images/albums/05.jpg" %}'
-                          alt=""
-                        />
-                        <!-- Play icon -->
-                        <div class="position-absolute top-0 end-0 p-3">
-                          <a
-                            class="icon-md bg-danger text-white rounded-circle"
-                            data-glightbox
-                            href='{% static "assets/images/videos/video-call.mp4" %}'
-                          >
-                            <i class="bi bi-play-fill fs-5"> </i>
-                          </a>
-                        </div>
-                        <!-- Duration -->
-                        <div
-                          class="position-absolute bottom-0 start-0 p-3 d-flex w-100"
-                        >
-                          <span
-                            class="bg-dark bg-opacity-50 px-2 rounded text-white small"
-                            >01:00</span
-                          >
-                        </div>
-                      </div>
-                      <!-- Video info -->
-                      <div class="card-body px-0 pb-0 pt-2">
-                        <ul class="nav nav-stack small">
-                          <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'>
-                              <i class="bi bi-heart-fill text-danger pe-1"></i
-                              >56k
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href='{% static "#!" %}'>
-                              <i class="bi bi-chat-left-text-fill pe-1"></i>4k
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <!-- Video END -->
-                  </div>
+                  {% endfor %}
                 </div>
                 <!-- Video of you tab END -->
               </div>
@@ -989,23 +394,21 @@ Header END -->
                   <!-- Card body START -->
                   <div class="card-body position-relative pt-0">
                     <p>
-                      He moonlights difficult engrossed it, sportsmen.
-                      Interested has all Devonshire difficulty gay assistance
-                      joy.
+                      {{profile_owner.profile.about}}
                     </p>
                     <!-- Date time -->
                     <ul class="list-unstyled mt-3 mb-0">
                       <li class="mb-2">
                         <i class="bi bi-calendar-date fa-fw pe-1"></i> Born:
-                        <strong> October 20, 1990 </strong>
+                        <strong> {{profile_owner.profile.dob}} </strong>
                       </li>
                       <li class="mb-2">
                         <i class="bi bi-heart fa-fw pe-1"></i> Status:
-                        <strong> Single </strong>
+                        <strong> {{profile_owner.profile.status}} </strong>
                       </li>
                       <li>
                         <i class="bi bi-envelope fa-fw pe-1"></i> Email:
-                        <strong> webestica@gmail.com </strong>
+                        <strong> {{profile_owner.email}} </strong>
                       </li>
                     </ul>
                   </div>
@@ -1015,199 +418,57 @@ Header END -->
               <!-- Card END -->
 
               <!-- Card START -->
-              <div class="col-sm-6 col-lg-12">
-                <div class="card">
-                  <!-- Card header START -->
-                  <div
-                    class="card-header d-flex justify-content-between border-0"
-                  >
-                    <h5 class="card-title">Experience</h5>
-                    <a class="btn btn-primary-soft btn-sm" href='{% static "#!" %}'>
-                      <i class="fa-solid fa-plus"></i>
-                    </a>
-                  </div>
-                  <!-- Card header END -->
-                  <!-- Card body START -->
-                  <div class="card-body position-relative pt-0">
-                    <!-- Experience item START -->
-                    <div class="d-flex">
-                      <!-- Avatar -->
-                      <div class="avatar me-3">
-                        <a href='{% static "#!" %}'>
-                          <img
-                            class="avatar-img rounded-circle"
-                            src='{% static "assets/images/logo/08.svg" %}'
-                            alt=""
-                          />
-                        </a>
-                      </div>
-                      <!-- Info -->
-                      <div>
-                        <h6 class="card-title mb-0">
-                          <a href='{% static "#!" %}'> Phoenix Information Technology </a>
-                        </h6>
-                        <p class="small">
-                          May 2017 – Present Employment Duration 6 yrs +
-                          <a class="btn btn-primary-soft btn-xs ms-2" href='{% static "#!" %}'
-                            >Edit
-                          </a>
-                        </p>
-                      </div>
-                    </div>
-                    <!-- Experience item END -->
-
-                    <!-- Experience item START -->
-                    <div class="d-flex">
-                      <!-- Avatar -->
-                      <div class="avatar me-3">
-                        <a href='{% static "#!" %}'>
-                          <img
-                            class="avatar-img rounded-circle"
-                            src='{% static "assets/images/logo/09.svg" %}'
-                            alt=""
-                          />
-                        </a>
-                      </div>
-                      <!-- Info -->
-                      <div>
-                        <h6 class="card-title mb-0">
-                          <a href='{% static "#!" %}'> Nexus24Agrik Commodities </a>
-                        </h6>
-                        <p class="small">
-                          June 2022 – Present Employment Duration 8 mos
-                          <a class="btn btn-primary-soft btn-xs ms-2" href='{% static "#!" %}'
-                            >Edit
-                          </a>
-                        </p>
-                      </div>
-                    </div>
-                    <!-- Experience item END -->
-
-                    <!-- Experience item START -->
-                    <div class="d-flex">
-                      <!-- Avatar -->
-                      <div class="avatar me-3">
-                        <a href='{% static "#!" %}'>
-                          <img
-                            class="avatar-img rounded-circle"
-                            src='{% static "assets/images/logo/10.svg" %}'
-                            alt=""
-                          />
-                        </a>
-                      </div>
-                      <!-- Info -->
-                      <div>
-                        <h6 class="card-title mb-0">
-                          <a href='{% static "#!" %}'> Loryb & DP Ventures Limited </a>
-                        </h6>
-                        <p class="small mb-0">
-                          May 2012- 2022
-                          <a class="btn btn-primary-soft btn-xs ms-2" href='{% static "#!" %}'
-                            >Edit
-                          </a>
-                        </p>
-                      </div>
-                    </div>
-                    <!-- Experience item END -->
-                  </div>
-                  <!-- Card body END -->
-                </div>
-              </div>
-              <!-- Card END -->
-
-              <!-- Card START -->
-              <div class="col-sm-6 col-lg-12">
+              <div class="col-md-6 col-lg-12">
                 <div class="card">
                   <!-- Card header START -->
                   <div
                     class="card-header d-sm-flex justify-content-between border-0"
                   >
                     <h5 class="card-title">Photos</h5>
-                    <a class="btn btn-primary-soft btn-sm" href='{% static "#!" %}'>
-                      See all photo</a
-                    >
                   </div>
                   <!-- Card header END -->
                   <!-- Card body START -->
                   <div class="card-body position-relative pt-0">
                     <div class="row g-2">
+                      {% for photo in album %}
+                      {% if forloop.counter0 < 2 %}
                       <!-- Photos item -->
                       <div class="col-6">
                         <a
-                          href='{% static "assets/images/albums/01.jpg" %}'
+                          href='{{ photo.image.url }}'
                           data-gallery="image-popup"
                           data-glightbox=""
                         >
                           <img
                             class="rounded img-fluid"
-                            src='{% static "assets/images/albums/01.jpg" %}'
+                            src='{{ photo.image.url }}'
                             alt=""
                           />
                         </a>
                       </div>
-                      <!-- Photos item -->
-                      <div class="col-6">
-                        <a
-                          href='{% static "assets/images/albums/02.jpg" %}'
-                          data-gallery="image-popup"
-                          data-glightbox=""
-                        >
-                          <img
-                            class="rounded img-fluid"
-                            src='{% static "assets/images/albums/02.jpg" %}'
-                            alt=""
-                          />
-                        </a>
-                      </div>
+                      {% else %}
                       <!-- Photos item -->
                       <div class="col-4">
                         <a
-                          href='{% static "assets/images/albums/03.jpg" %}'
+                          href='{{ photo.image.url }}'
                           data-gallery="image-popup"
                           data-glightbox=""
                         >
                           <img
                             class="rounded img-fluid"
-                            src='{% static "assets/images/albums/03.jpg" %}'
+                            src='{{ photo.image.url }}'
                             alt=""
                           />
                         </a>
                       </div>
-                      <!-- Photos item -->
-                      <div class="col-4">
-                        <a
-                          href='{% static "assets/images/albums/04.jpg" %}'
-                          data-gallery="image-popup"
-                          data-glightbox=""
-                        >
-                          <img
-                            class="rounded img-fluid"
-                            src='{% static "assets/images/albums/04.jpg" %}'
-                            alt=""
-                          />
-                        </a>
-                      </div>
-                      <!-- Photos item -->
-                      <div class="col-4">
-                        <a
-                          href='{% static "assets/images/albums/05.jpg" %}'
-                          data-gallery="image-popup"
-                          data-glightbox=""
-                        >
-                          <img
-                            class="rounded img-fluid"
-                            src='{% static "assets/images/albums/05.jpg" %}'
-                            alt=""
-                          />
-                        </a>
-                        <!-- glightbox Albums left bar END  -->
-                      </div>
+                      {% endif %}
+                      {% endfor %}
                     </div>
                   </div>
                   <!-- Card body END -->
                 </div>
               </div>
-              <!-- Card END -->
+              <!-- Card END -->>
 
               <!-- Card START -->
               <div class="col-sm-6 col-lg-12">
@@ -1217,54 +478,42 @@ Header END -->
                     class="card-header d-sm-flex justify-content-between align-items-center border-0"
                   >
                     <h5 class="card-title">
-                      Friends
-                      <span class="badge bg-danger bg-opacity-10 text-danger"
-                        >230</span
+                      Contacts
+                      <span class="badge bg-danger bg-opacity-10 text-danger contacts-count"
+                        >{{ profile_owner.profile.contacts.count }}</span
                       >
                     </h5>
-                    <a class="btn btn-primary-soft btn-sm" href='{% static "#!" %}'>
-                      See all friends</a
-                    >
                   </div>
                   <!-- Card header END -->
                   <!-- Card body START -->
                   <div class="card-body position-relative pt-0">
                     <div class="row g-3">
-                      <div class="col-6">
+                      {% for contact in profile_owner.profile.contacts.all %}
+                      <div class="col-6" id="{{contact.id}}-contactcard">
                         <!-- Friends item START -->
                         <div class="card shadow-none text-center h-100">
                           <!-- Card body -->
                           <div class="card-body p-2 pb-0">
                             <div class="avatar avatar-story avatar-xl">
-                              <a href='{% static "#!" %}'
+                              <a href='/{{ contact.username }}'
                                 ><img
                                   class="avatar-img rounded-circle"
-                                  src='{% static "assets/images/avatar/02.jpg" %}'
+                                  src='{{ contact.profile.image.url }}'
                                   alt=""
                               /></a>
                             </div>
                             <h6 class="card-title mb-1 mt-3">
-                              <a href='{% static "#!" %}'> Amanda Reed </a>
+                              <a href='/{{ contact.username }}'> {{ contact.username }} </a>
                             </h6>
-                            <p class="mb-0 small lh-sm">
-                              16 mutual connections
-                            </p>
                           </div>
                           <!-- Card footer -->
                           <div class="card-footer p-2 border-0">
                             <button
-                              class="btn btn-sm btn-primary"
-                              data-bs-toggle="tooltip"
-                              data-bs-placement="top"
-                              title="Send message"
-                            >
-                              <i class="bi bi-chat-left-text"></i>
-                            </button>
-                            <button
                               class="btn btn-sm btn-danger"
                               data-bs-toggle="tooltip"
                               data-bs-placement="top"
-                              title="Remove friend"
+                              title="Remove from contacts"
+                              onclick="removeFromContacts('{{user.username}}', '{{contact.id}}')"
                             >
                               <i class="bi bi-person-x"></i>
                             </button>
@@ -1272,133 +521,7 @@ Header END -->
                         </div>
                         <!-- Friends item END -->
                       </div>
-
-                      <div class="col-6">
-                        <!-- Friends item START -->
-                        <div class="card shadow-none text-center h-100">
-                          <!-- Card body -->
-                          <div class="card-body p-2 pb-0">
-                            <div class="avatar avatar-xl">
-                              <a href='{% static "#!" %}'
-                                ><img
-                                  class="avatar-img rounded-circle"
-                                  src='{% static "assets/images/avatar/03.jpg" %}'
-                                  alt=""
-                              /></a>
-                            </div>
-                            <h6 class="card-title mb-1 mt-3">
-                              <a href='{% static "#!" %}'> Samuel Bishop </a>
-                            </h6>
-                            <p class="mb-0 small lh-sm">
-                              22 mutual connections
-                            </p>
-                          </div>
-                          <!-- Card footer -->
-                          <div class="card-footer p-2 border-0">
-                            <button
-                              class="btn btn-sm btn-primary"
-                              data-bs-toggle="tooltip"
-                              data-bs-placement="top"
-                              title="Send message"
-                            >
-                              <i class="bi bi-chat-left-text"></i>
-                            </button>
-                            <button
-                              class="btn btn-sm btn-danger"
-                              data-bs-toggle="tooltip"
-                              data-bs-placement="top"
-                              title="Remove friend"
-                            >
-                              <i class="bi bi-person-x"></i>
-                            </button>
-                          </div>
-                        </div>
-                        <!-- Friends item END -->
-                      </div>
-
-                      <div class="col-6">
-                        <!-- Friends item START -->
-                        <div class="card shadow-none text-center h-100">
-                          <!-- Card body -->
-                          <div class="card-body p-2 pb-0">
-                            <div class="avatar avatar-xl">
-                              <a href='{% static "#!" %}'
-                                ><img
-                                  class="avatar-img rounded-circle"
-                                  src='{% static "assets/images/avatar/04.jpg" %}'
-                                  alt=""
-                              /></a>
-                            </div>
-                            <h6 class="card-title mb-1 mt-3">
-                              <a href='{% static "#" %}'> Bryan Knight </a>
-                            </h6>
-                            <p class="mb-0 small lh-sm">1 mutual connection</p>
-                          </div>
-                          <!-- Card footer -->
-                          <div class="card-footer p-2 border-0">
-                            <button
-                              class="btn btn-sm btn-primary"
-                              data-bs-toggle="tooltip"
-                              data-bs-placement="top"
-                              title="Send message"
-                            >
-                              <i class="bi bi-chat-left-text"></i>
-                            </button>
-                            <button
-                              class="btn btn-sm btn-danger"
-                              data-bs-toggle="tooltip"
-                              data-bs-placement="top"
-                              title="Remove friend"
-                            >
-                              <i class="bi bi-person-x"></i>
-                            </button>
-                          </div>
-                        </div>
-                        <!-- Friends item END -->
-                      </div>
-
-                      <div class="col-6">
-                        <!-- Friends item START -->
-                        <div class="card shadow-none text-center h-100">
-                          <!-- Card body -->
-                          <div class="card-body p-2 pb-0">
-                            <div class="avatar avatar-xl">
-                              <a href='{% static "#!" %}'
-                                ><img
-                                  class="avatar-img rounded-circle"
-                                  src='{% static "assets/images/avatar/05.jpg" %}'
-                                  alt=""
-                              /></a>
-                            </div>
-                            <h6 class="card-title mb-1 mt-3">
-                              <a href='{% static "#!" %}'> Amanda Reed </a>
-                            </h6>
-                            <p class="mb-0 small lh-sm">
-                              15 mutual connections
-                            </p>
-                          </div>
-                          <!-- Card footer -->
-                          <div class="card-footer p-2 border-0">
-                            <button
-                              class="btn btn-sm btn-primary"
-                              data-bs-toggle="tooltip"
-                              data-bs-placement="top"
-                              title="Send message"
-                            >
-                              <i class="bi bi-chat-left-text"></i>
-                            </button>
-                            <button
-                              class="btn btn-sm btn-danger"
-                              data-bs-toggle="tooltip"
-                              data-bs-placement="top"
-                              title="Remove friend"
-                            >
-                              <i class="bi bi-person-x"></i>
-                            </button>
-                          </div>
-                        </div>
-                        <!-- Friends item END -->
-                      </div>
+                      {% endfor %}
                     </div>
                   </div>
                   <!-- Card body END -->
@@ -1414,17 +537,108 @@ Header END -->
       <!-- Container END -->
     </main>
     <!-- **************** MAIN CONTENT END **************** -->
+    <!-- Modal create Feed video START -->
+    <div
+      class="modal fade"
+      id="feedActionVideo"
+      tabindex="-1"
+      aria-labelledby="feedActionVideoLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal feed header START -->
+          <div class="modal-header">
+            <h5 class="modal-title" id="feedActionVideoLabel">
+              Add post video
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <!-- Modal feed header END -->
 
+          <!-- Modal feed body START -->
+          <div class="modal-body">
+            <!-- Add Feed -->
+            <div class="d-flex mb-3">
+              <!-- Avatar -->
+              <div class="avatar avatar-xs me-2">
+                <img
+                  class="avatar-img rounded-circle"
+                  src='{{ user.profile.image.url }}'
+                  alt=""
+                />
+              </div>
+              <!-- Feed box  -->
+              <form class="w-100">
+                <textarea
+                  class="form-control pe-4 fs-3 lh-1 border-0"
+                  rows="2"
+                  placeholder="Share your thoughts..."
+                  id="postuploadtextvid1"
+                ></textarea>
+              </form>
+            </div>
+
+            <!-- Dropzone photo START -->
+            <div>
+              <label class="form-label">Upload attachment</label>
+              <form
+                class="dropzone dropzone-default card shadow-none"
+                data-dropzone='{"maxFiles":1, "url":"/{{user.username}}/", "acceptedFiles":"video/*", "paramName":"video", "uploadMultiple": false}'
+                method="post"
+                id="viduploadform"
+                action="/dudegfa/"
+              >
+                {% csrf_token %}
+                <input type="hidden" name="text" value="" id="postuploadtextvid2">
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <div class="dz-message">
+                  <i class="bi bi-camera-reels display-3"></i>
+                  <p>Drag here or click to upload video.</p>
+                </div>
+                <!-- <input type="file" id="upload_video" name="video" accept="video/*"> -->
+              </form>
+            </div>
+            <!-- Dropzone photo END -->
+          </div>
+          <!-- Modal feed body END -->
+
+          <!-- Modal feed footer -->
+          <div class="modal-footer">
+            <!-- Button -->
+            <button
+              type="button"
+              class="btn btn-danger-soft me-2"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button id="vidpresubmitbtn" class="btn btn-success-soft" onclick="vidSubmit()">Post</button>
+            <button class="hiddenbtn" type="hidden" id="vidsubmitbtn"></button>
+          </div>
+          <!-- Modal feed footer -->
+        </div>
+      </div>
+    </div>
+    <!-- Modal create Feed video END -->
     <!-- =======================
 JS libraries, plugins and custom scripts -->
 
-    <!-- Bootstrap JS -->
     <script src='{% static "assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js" %}'></script>
-
+    <script src="{% static 'assets/vendor/iziToast/iziToast.min.js' %}"></script>
     <!-- Vendors -->
+    <script src='{% static "assets/vendor/tiny-slider/dist/tiny-slider.js" %}'></script>
+    <script src='{% static "assets/vendor/OverlayScrollbars-master/js/OverlayScrollbars.min.js" %}'></script>
+    <script src='{% static "assets/vendor/choices.js/public/assets/scripts/choices.min.js" %}'></script>
     <script src='{% static "assets/vendor/glightbox-master/dist/js/glightbox.min.js" %}'></script>
-
-    <!-- Template Functions -->
+    <script src='{% static "assets/vendor/flatpickr/dist/flatpickr.min.js" %}'></script>
+    <script src='{% static "assets/vendor/plyr/plyr.js" %}'></script>
+    <script src='{% static "assets/vendor/dropzone/dist/min/dropzone.min.js" %}'></script>
     <script src='{% static "assets/js/functions.js" %}'></script>
   </body>
 </html>

@@ -1,5 +1,8 @@
 from django import template
 register = template.Library()
+from django.contrib.auth.models import User
+from django.db.models import Q
+from userprofile.models import Profile
 
 @register.filter
 def index(indexable, i):
@@ -23,3 +26,18 @@ def reply_query_set_slice(reply_query_set):
     if reply_query_set.count() > 5:
         return reply_query_set[:5]
     return reply_query_set
+
+
+@register.filter
+def get_shared_contacts(user, contact):
+    return user.profile.contacts.all() & contact.profile.contacts.all()
+
+@register.filter
+def get_shared_contacts_summary(user, contact):
+    shared_contacts = user.profile.contacts.all() & contact.profile.contacts.all()
+    if shared_contacts.count() > 2:
+        adjusted_count = str(shared_contacts.count() - 2)
+        return shared_contacts[0].username + ', ' + shared_contacts[1].username + ' and ' + adjusted_count + ' other shared contacts'
+    elif shared_contacts.count() > 1:
+        return shared_contacts[0].username + ' and 1 other shared contacts'
+    return 'No shared Contact'

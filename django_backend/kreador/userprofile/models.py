@@ -26,7 +26,7 @@ class Profile(models.Model):
 class Post(models.Model):
     """Post object"""
     text = models.TextField()
-    video = models.FileField(upload_to='post_videos',null=True,
+    video = models.FileField(upload_to='post_videos',null=True,blank=True,
                                      validators=[FileExtensionValidator(allowed_extensions=['MOV','avi','mp4','webm','mkv'])])
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL,

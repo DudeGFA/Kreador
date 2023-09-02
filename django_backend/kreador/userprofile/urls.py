@@ -11,7 +11,7 @@ urlpatterns = [
     path('videos/', views.VideoView.as_view()),
     path('media/', views.MediaView.as_view()),
     path('about/', views.AboutView.as_view()),
-    path('connections/', views.ConnectionsView.as_view()),
+    path('contacts/', views.ContactsView.as_view()),
     path('events/', views.EventsView.as_view()),
     path('activity/', views.ActivityView.as_view()),
     path('post/<int:pk>/delete',
