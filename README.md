@@ -17,6 +17,7 @@ Backend code for Kreador web application
 <br />
 
 ### FEATURES IMPLEMENTED
+- REST API
 - New user account creation/user registration
 - Creation and edit of user's profile
 - User sign-in with persistent session option (Remember me)
@@ -34,11 +35,18 @@ Backend code for Kreador web application
 - Reply to Comment
 - Like Reply
 - Load more Comments
+- Photo Gallery
 - Add users to your business contact list
 - Remove users from your business contact list
 - Get added to other user's contact list
 - Get contact suggestions
 - User sign-out
+
+### FEATURES CURRENTLY IN DEVELOPMENT
+- Business account creation
+- Creation of Experience objects
+- Business chat
+- Search functionality
 
 ### Prerequisites
 
@@ -59,4 +67,4 @@ py django_backend/kreador/manage.py runserver
 
 ### Contact
 
-If you want to contact us you can reach us at [Twitter](https://www.twitter.com/dudegfa).
+If you want to contact me you can reach us at [Twitter](https://www.twitter.com/dudegfa).
