@@ -64,12 +64,12 @@ Before you begin, ensure you have met the following requirements:
 To run **Kreador App** locally, run this command on your CLI:
 
 ```bash
-git clone https://github.com/DudeGFA/Kreador-backend.git
-cd Kreador-backend
+git clone https://github.com/DudeGFA/Kreador.git
+cd Kreador
 pip install django_backend/requirements.txt
 py django_backend/kreador/manage.py runserver
 ```
 
 ### Contact
 
-If you want to contact me you can reach us at [Twitter](https://www.twitter.com/dudegfa).
+If you want to contact me you can reach me on [Twitter](https://www.twitter.com/dudegfa) or send an email to favouridowuagida5@gmail.com.
