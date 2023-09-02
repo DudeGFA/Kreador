@@ -7,7 +7,8 @@ Backend code for Kreador web application
   <h2 align="center">Kreador App</h2>
 
  Kreador is a Social network web app built specifically for members of the work force. Users have a profile that includes work experience, occupation, employment status and more., Technologies used include `HTML`, `CSS`, `Bootstrap`, `JavaScript`, `Django`, `Django-rest-framework`, `Izitoast`, `plyr`, `dropzone.js`. `flatpickr`, `glightbox` <br/>
- Responsive for all devices.
+ I walked on the backend of this app and made some modifications to the frontend. The frontend templates were obtained from different sources on the net
+ Kreador is Responsive for all devices.
 
   <a href="https://youtu.be/ZyHqjTJoNNY"><strong>➥ Recorded Demo (NOT UP TO DATE) </strong></a>
 
