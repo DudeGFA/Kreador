@@ -22,7 +22,7 @@ Backend code for Kreador web application
 - Creation and edit of user's profile
 - User sign-in with persistent session option (Remember me)
 - Post Creation <br/>
-    posts can be: <br/>
+    **posts can be:**
     
       - Just text
   
