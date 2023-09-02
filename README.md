@@ -21,6 +21,7 @@ Backend code for Kreador web application
 - New user account creation/user registration
 - Creation and edit of user's profile
 - User sign-in with persistent session option (Remember me)
+- Password recovery (forgot your password?)
 - Post Creation <br/>
     **posts can be:**
     
