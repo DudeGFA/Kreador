@@ -16,6 +16,30 @@ Backend code for Kreador web application
 
 <br />
 
+### FEATURES IMPLEMENTED
+- New user account creation/user registration
+- Creation and edit of user's profile
+- User sign-in with persistent session option (Remember me)
+- Post Creation
+      posts can be:
+      - Just text
+      - Text plus single image
+      - Text plus multiple images
+      - Text plus video
+      - Poll
+- Post deletion
+- Like Post
+- Comment on post
+- Like Comment
+- Reply to Comment
+- Like Reply
+- Load more Comments
+- Add users to your business contact list
+- Remove users from your business contact list
+- Get added to other user's contact list
+- Get contact suggestions
+- User sign-out
+
 ### Prerequisites
 
 Before you begin, ensure you have met the following requirements:
