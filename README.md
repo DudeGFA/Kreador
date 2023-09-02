@@ -22,11 +22,15 @@ Backend code for Kreador web application
 - Creation and edit of user's profile
 - User sign-in with persistent session option (Remember me)
 - Post Creation <br/>
-      posts can be: <br/>
+    posts can be: <br/>
       - Just text
+  
       - Text plus single image
+  
       - Text plus multiple images
+  
       - Text plus video
+  
       - Poll
 - Post deletion
 - Like Post
