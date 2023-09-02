@@ -23,6 +23,7 @@ Backend code for Kreador web application
 - User sign-in with persistent session option (Remember me)
 - Post Creation <br/>
     posts can be: <br/>
+    
       - Just text
   
       - Text plus single image
