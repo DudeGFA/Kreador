@@ -21,8 +21,8 @@ Backend code for Kreador web application
 - New user account creation/user registration
 - Creation and edit of user's profile
 - User sign-in with persistent session option (Remember me)
-- Post Creation
-      posts can be:
+- Post Creation <br/>
+      posts can be: <br/>
       - Just text
       - Text plus single image
       - Text plus multiple images
