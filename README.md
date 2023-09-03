@@ -11,7 +11,7 @@ Backend code for Kreador web application
  Kreador is Responsive for all devices.
 
   <a href="https://youtu.be/ZyHqjTJoNNY"><strong>➥ Recorded Demo (NOT UP TO DATE) </strong></a>
-  <a href="https://kreador.pythonanywhere.com/"><strong>Live Demo</strong></a>
+  <a href="https://kreador.pythonanywhere.com/"><strong> Live Demo </strong></a>
 </div>
 
 <br />
