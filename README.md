@@ -10,7 +10,7 @@ Backend code for Kreador web application
  I walked on the backend of this app and made some modifications to the frontend. The frontend templates were obtained from different sources on the net<br/>
  Kreador is Responsive for all devices.
 
-  <a href="https://youtu.be/ZyHqjTJoNNY"><strong>➥ Recorded Demo (NOT UP TO DATE) </strong></a>
+  <a href="https://youtu.be/ZyHqjTJoNNY"><strong>➥ Recorded Demo (NOT UP TO DATE) </strong></a> <br/>
   <a href="https://kreador.pythonanywhere.com/"><strong> Live Demo </strong></a>
 </div>
 
