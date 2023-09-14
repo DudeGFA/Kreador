@@ -141,13 +141,13 @@ Header START -->
                       />
                     </div>
                     <div>
-                      <a class="h6 stretched-link" href='{% static "#" %}'>{{user.get_full_name}}</a>
+                      <a class="h6 stretched-link">{{user.get_full_name}}</a>
                       <p class="small m-0">{{user.profile.occupation}}</p>
                     </div>
                   </div>
                   <a
                     class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center"
-                    href='{% static "my-profile.html" %}'
+                    href='/{{user.username}}'
                     >View profile</a
                   >
                 </li>
@@ -273,15 +273,15 @@ Header END -->
                   class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0"
                 >
                   <li class="nav-item">
-                    <a class="nav-link" href='/{{ user.username }}/'> Posts </a>
+                    <a class="nav-link" href='/{{ profile_owner.username }}/'> Posts </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href='{{ user.username }}/about'>
+                    <a class="nav-link" href='/{{ profile_owner.username }}/about'>
                       About
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href='/{{ user.username }}/contacts'>
+                    <a class="nav-link" href='/{{ profile_owner.username }}/contacts'>
                       Contacts
                       <span
                         class="badge bg-success bg-opacity-10 text-success small contacts-count"
@@ -291,7 +291,7 @@ Header END -->
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link active" href='/{{ user.username }}/media'> Media</a>
+                    <a class="nav-link active" href='/{{ profile_owner.username }}/media'> Media</a>
                   </li>
                 </ul>
               </div>
@@ -306,6 +306,7 @@ Header END -->
               >
                 <h5 class="card-title">Photos</h5>
                 <!-- Button modal -->
+                {% if user == profile_owner %}
                 <a
                   class="btn btn-sm btn-primary-soft"
                   data-bs-toggle="modal"
@@ -313,9 +314,11 @@ Header END -->
                 >
                   <i class="fa-solid fa-plus pe-1"></i> Create album</a
                 >
+                {% endif %}
               </div>
               <!-- Card header END -->
               <!-- Card body START -->
+              {% if user == profile_owner %}
               <div class="card-body">
                 <!-- Photos of you tab START -->
                 <div class="row g-3">
@@ -413,6 +416,7 @@ Header END -->
                 </div>
                 <!-- Photos of you tab END -->
               </div>
+              {% endif %}
               <!-- Card body END -->
             </div>
             <!-- media END -->
@@ -546,17 +550,19 @@ Header END -->
                             </h6>
                           </div>
                           <!-- Card footer -->
+                          {% if user == profile_owner %}
                           <div class="card-footer p-2 border-0">
                             <button
                               class="btn btn-sm btn-danger"
                               data-bs-toggle="tooltip"
                               data-bs-placement="top"
                               title="Remove from contacts"
-                              onclick="removeFromContacts('{{user.username}}', '{{contact.id}}')"
+                              onclick="removeFromContacts('{{profile_owner.username}}', '{{contact.id}}')"
                             >
                               <i class="bi bi-person-x"></i>
                             </button>
                           </div>
+                          {% endif %}
                         </div>
                         <!-- Friends item END -->
                       </div>
@@ -633,7 +639,7 @@ Header END -->
                 method="post"
                 id="picuploadform"
                 action="/{{user.username}}/"
-                data-dropzone='{"url":"/{{user.username}}/", "acceptedFiles":"image/*", "maxFiles":3}'
+                data-dropzone='{"url":"/{{profile_owner.username}}/", "acceptedFiles":"image/*", "maxFiles":3}'
               >
                 {% csrf_token %}
                 <input type="hidden" name="text" value="" id="postuploadtext2">

@@ -1,12 +1,22 @@
 from django import forms
 
-from .models import Post, Comment, Reply, Profile, PostImage
+from .models import Post, Comment, Reply, Profile, PostImage, Poll, PollOption
 from django.contrib.auth.models import User
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('text','video')
+
+class PollForm(forms.ModelForm):
+    class Meta:
+        model = Poll
+        fields = ('question',)
+
+class PollOptionForm(forms.ModelForm):
+    class Meta:
+        model = PollOption
+        fields = ('text','index')
 
 class PostImageForm(forms.ModelForm):
     class Meta:

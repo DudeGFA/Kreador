@@ -2,22 +2,29 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import generics
-from .serializers import CommentSerializer, ReplySerializer, CommentLikeSerializer, ReplyLikeSerializer
-from userprofile.models import Comment, Reply, CommentLike, ReplyLike
+from .serializers import CommentSerializer, ReplySerializer, CommentLikeSerializer, ReplyLikeSerializer, GetUserSerializer, UserProfileSerializer
+from .serializers import PostSerializer, PollSerializer
+from userprofile.models import Comment, Reply, CommentLike, ReplyLike, Profile, Post, Poll
 from django.db.models import F
-from rest_framework import permissions
+from rest_framework import permissions, viewsets
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.mixins import CreateModelMixin, DestroyModelMixin
 from django.http import Http404
+from django.contrib.auth.models import User
 
 class CommentListView(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get(self, request, *args, **kwargs):
-      if request.GET.get("postid"):
-        self.queryset = Comment.objects.filter(post__id=request.GET.get("postid")).order_by("-created_at")
-      return self.list(request, *args, **kwargs)
+        try:
+            if request.GET.get("postid"):
+                self.queryset = self.queryset.filter(post__id=request.GET.get("postid")).order_by("-created_at")
+            if request.GET.get("owner"):
+                self.queryset = self.queryset.filter(owner__id=request.GET.get("owner")).order_by("-created_at")
+            return self.list(request, *args, **kwargs)
+        except ValueError:
+            self.queryset = Comment.objects.all()
     
     def post(self, request, format=None):
         serializer = CommentSerializer(data=request.data)
@@ -116,3 +123,60 @@ class ReplyLikeView(generics.GenericAPIView):
         serializer = ReplyLikeSerializer(reply_like)
         reply_like.delete()
         return Response(serializer.data)
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset automatically provides list and retrieve user objects.
+    """
+    queryset = User.objects.all()
+    serializer_class = GetUserSerializer
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides list, create, retrieve,
+    update and destroy user profile objects.
+    """
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly]
+    queryset = Profile.objects.all()
+    serializer_class = UserProfileSerializer
+
+class PostViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides list, create, retrieve,
+    update and destroy post objects.
+    """
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly]
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        try:
+            if self.request.GET.get("owner"):
+                self.queryset = self.queryset.filter(owner__id=self.request.GET.get("owner")).order_by("-created_at")
+            if self.request.GET.get("text"):
+                self.queryset = self.queryset.filter(owner__id=self.request.GET.get("text")).order_by("-created_at")
+        except ValueError:
+            return Post.objects.all()
+        return self.queryset
+
+class PollViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides list, create, retrieve,
+    update and destroy poll objects.
+    """
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly]
+    queryset = Poll.objects.all()
+    serializer_class = PollSerializer
+
+    def get_queryset(self):
+        try:
+            if self.request.GET.get("owner"):
+                self.queryset = self.queryset.filter(owner__id=self.request.GET.get("owner")).order_by("-created_at")
+            if self.request.GET.get("question"):
+                self.queryset = self.queryset.filter(question=self.request.GET.get("question")).order_by("-created_at")
+        except ValueError:
+            Poll.objects.all()
+        return self.queryset

@@ -108,7 +108,22 @@ Header START -->
               <span></span>
             </span>
           </button>
-
+          <!-- Main navbar START -->
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+              <!-- Nav item 4 Mega menu -->
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="postMenu"
+                  class="nav-link"
+                  href='/home'
+                  >My Feed</a
+                >
+              </li>
+            </ul>
+          </div>
+          <!-- Main navbar END -->
           <!-- Nav right START -->
           <ul class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
             <!-- Notification dropdown END -->
@@ -116,7 +131,6 @@ Header START -->
             <li class="nav-item ms-2 dropdown">
               <a
                 class="nav-link btn icon-md p-0"
-                href='{% static "#" %}'
                 id="profileDropdown"
                 role="button"
                 data-bs-auto-close="outside"
@@ -157,11 +171,6 @@ Header START -->
                   >
                 </li>
                 <!-- Links -->
-                <li>
-                  <a class="dropdown-item" href='https://github.com/DudeGFA/Kreador'
-                    ><i class="bi bi-gear fa-fw me-2"></i>Settings & Privacy</a
-                  >
-                </li>
                 <li>
                   <a
                     class="dropdown-item"
@@ -254,11 +263,13 @@ Header END -->
                     <p><span class="contacts-count">{{ profile_owner.profile.contacts.count }}</span> contacts | Added to {{ profile_owner.contacted_by.count }} contact lists</p>
                   </div>
                   <!-- Button -->
+                  {% if user == profile_owner%}
                   <div class="d-flex mt-3 justify-content-center ms-sm-auto">
                     <a class="btn btn-danger-soft me-2" type="button" href="edit">
                       <i class="bi bi-pencil-fill pe-1"></i> Edit profile
                     </a>
                   </div>
+                  {% endif %}
                 </div>
                 <!-- List profile -->
                 <ul
@@ -584,7 +595,7 @@ Header END -->
               <div class="card-body pt-0">
                 <ul class="nav nav-stack py-3 small">
                   <li class="nav-item">
-                    <a class="nav-link mb-0 active" href='javascript:;' onclick="likePost('{{post.id}}');return false;">
+                    <a class="nav-link mb-0 active" href='javascript:;' onclick="likePost('{{user.username}}','{{post.id}}');return false;">
                     {% if user in post.likes.all %}
                       <i class="bi bi-heart-fill pe-1" id="{{post.id}}likebtn"></i>Liked (<span id="{{post.id}}likecnt">{{ post.likes.count }}</span>)</a
                     >
@@ -598,57 +609,6 @@ Header END -->
                       <i class="bi bi-chat-fill pe-1"></i>Comments ({{ post.comment_set.count }})</a
                     >
                   </li>
-                  <!-- Card share action START -->
-                  <li class="nav-item dropdown ms-sm-auto">
-                    <a
-                      class="nav-link mb-0"
-                      href='{% static "#" %}'
-                      id="cardShareAction9"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-reply-fill flip-horizontal ps-1"></i>Share
-                      (3)
-                    </a>
-                    <!-- Card share action dropdown menu -->
-                    <ul
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="cardShareAction9"
-                    >
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-envelope fa-fw pe-2"></i>Send via
-                          Direct Message</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-bookmark-check fa-fw pe-2"></i
-                          >Bookmark
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-link fa-fw pe-2"></i>Copy link to
-                          post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-share fa-fw pe-2"></i>Share post via
-                          …</a
-                        >
-                      </li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to
-                          News Feed</a
-                        >
-                      </li>
-                    </ul>
-                  </li>
-                  <!-- Card share action END -->
                 </ul>
                 <!-- Feed react END -->
 
@@ -777,7 +737,7 @@ Header END -->
                 <!-- Feed react START -->
                 <ul class="nav nav-stack py-3 small">
                   <li class="nav-item">
-                    <a class="nav-link active" href='javascript:;' id="postlike" onclick="likePost('{{post.id}}');return false;">
+                    <a class="nav-link active" href='javascript:;' id="postlike" onclick="likePost('{{user.username}}','{{post.id}}');return false;">
                     {% if user in post.likes.all %}
                       <i class="bi bi-hand-thumbs-up-fill pe-1" id="{{post.id}}likebtn"></i>Liked
                       (<span id="{{post.id}}likecnt">{{ post.likes.count }}</span>)</a
@@ -1027,7 +987,7 @@ Header END -->
                   class="nav nav-pills nav-pills-light nav-fill nav-stack small border-top border-bottom py-1 mb-3"
                 >
                   <li class="nav-item">
-                    <a class="nav-link mb-0 active" href='javascript:;' onclick="likePost('{{post.id}}');return false;">
+                    <a class="nav-link mb-0 active" href='javascript:;' onclick="likePost('{{user.username}}','{{post.id}}');return false;">
                     {% if user in post.likes.all %}
                       <i class="bi bi-heart-fill pe-1" id="{{post.id}}likebtn"></i>Liked (<span id="{{post.id}}likecnt">{{ post.likes.count }}</span>)</a
                     >
@@ -1035,57 +995,6 @@ Header END -->
                       <i class="bi bi-heart pe-1" id="{{post.id}}likebtn"></i>Liked (<span id="{{post.id}}likecnt">{{ post.likes.count }}</span>)</a
                     >
                     {% endif %}
-                  </li>
-                  <!-- Card share action menu START -->
-                  <li class="nav-item dropdown">
-                    <a
-                      href='{% static "#" %}'
-                      class="nav-link mb-0"
-                      id="cardShareAction4"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-reply-fill flip-horizontal ps-1"></i>Share
-                    </a>
-                    <!-- Card share action dropdown menu -->
-                    <ul
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="cardShareAction4"
-                    >
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-envelope fa-fw pe-2"></i>Send via
-                          Direct Message</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-bookmark-check fa-fw pe-2"></i
-                          >Bookmark
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-link fa-fw pe-2"></i>Copy link to
-                          post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-share fa-fw pe-2"></i>Share post via
-                          …</a
-                        >
-                      </li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to
-                          News Feed</a
-                        >
-                      </li>
-                    </ul>
-                  </li>
-                  <!-- Card share action menu END -->
                   <li class="nav-item">
                     <a class="nav-link mb-0" href='javascript:;' onclick="displayComments('{{post.id}}')">
                       <i class="bi bi-chat-fill pe-1"></i>Comments ({{post.comment_set.count}})</a
@@ -1281,6 +1190,7 @@ Header END -->
                             </h6>
                           </div>
                           <!-- Card footer -->
+                          {% if user == profile_owner%}
                           <div class="card-footer p-2 border-0">
                             <button
                               class="btn btn-sm btn-danger"
@@ -1292,6 +1202,7 @@ Header END -->
                               <i class="bi bi-person-x"></i>
                             </button>
                           </div>
+                          {% endif %}
                         </div>
                         <!-- Friends item END -->
                       </div>
@@ -1851,7 +1762,7 @@ Header END -->
                   type="text"
                   class="form-control"
                   placeholder="Enter the poll's question"
-                  name="pollquestion"
+                  name="question"
                 />
               </div>
               <!-- first option -->
@@ -2095,7 +2006,7 @@ Header END -->
                 <small class="ms-2" id="reply-template-creationdate"></small>
               </div>
               <p class="small mb-0" id="reply-template-text">
-                 reply.text 
+                 reply.text
               </p>
             </div>
             <!-- Comment react -->

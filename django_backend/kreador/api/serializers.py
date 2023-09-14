@@ -1,4 +1,4 @@
-from userprofile.models import Comment, Reply, CommentLike, ReplyLike
+from userprofile.models import Comment, Reply, CommentLike, ReplyLike, Post, Poll
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from userprofile.models import Profile
@@ -22,7 +22,17 @@ class UserIdSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id']
 
-class CommentSerializer(serializers.ModelSerializer):
+class GetUserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Profile
+        fields = '__all__'
+
+class CommentSerializer(serializers.HyperlinkedModelSerializer):
     owner = UserSerializer(required=False)
     reply_count = serializers.IntegerField(
     source='reply_set.count', 
@@ -47,7 +57,7 @@ class CommentSerializer(serializers.ModelSerializer):
             pass
         return False
 
-class CommentLikeSerializer(serializers.ModelSerializer):
+class CommentLikeSerializer(serializers.HyperlinkedModelSerializer):
     user = UserIdSerializer(required=False, read_only=True)
     like_count = serializers.IntegerField(
     source='comment.commentlike_set.count', 
@@ -57,7 +67,7 @@ class CommentLikeSerializer(serializers.ModelSerializer):
         model = CommentLike
         fields = ['id', 'user', 'comment', 'like_count']
 
-class ReplySerializer(serializers.ModelSerializer):
+class ReplySerializer(serializers.HyperlinkedModelSerializer):
     owner = UserSerializer(required=False)
     like_count = serializers.IntegerField(
     source='replylike_set.count', 
@@ -81,7 +91,7 @@ class ReplySerializer(serializers.ModelSerializer):
         model = Reply
         fields = ['id', 'text', 'comment', 'owner', 'created_at', 'like_count', 'liked']
 
-class ReplyLikeSerializer(serializers.ModelSerializer):
+class ReplyLikeSerializer(serializers.HyperlinkedModelSerializer):
     user = UserIdSerializer(required=False, read_only=True)
     like_count = serializers.IntegerField(
     source='reply.replylike_set.count', 
@@ -90,3 +100,13 @@ class ReplyLikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReplyLike
         fields = ['id', 'user', 'reply', 'like_count']
+
+class PostSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Post
+        fields = '__all__'
+
+class PollSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Poll
+        fields = '__all__'

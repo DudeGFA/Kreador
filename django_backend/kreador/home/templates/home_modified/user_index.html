@@ -134,6 +134,44 @@ Header START -->
             </span>
           </button>
 
+          <!-- Main navbar START -->
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+              <!-- Nav item 4 Mega menu -->
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href='{% static "#" %}'
+                  id="postMenu"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  class="nav-link"
+                  href='/{{user.username}}'
+                  >My Profile</a
+                >
+                <ul class="dropdown-menu" aria-labelledby="postMenu">
+                  <li>
+                    <a class="dropdown-item" href='/{{user.username}}/'
+                      >Posts</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href='/{{user.username}}/about'>About</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href='/{{user.username}}/contacts'>Contacts</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href='/{{user.username}}/media'>
+                      Media</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <!-- Main navbar END -->
           <!-- Nav right START -->
           <ul class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
             <!-- Notification dropdown END -->
@@ -363,7 +401,7 @@ Header END -->
                         <li class="nav-item">
                           <a
                             class="nav-link"
-                            href='/{{ user.username }}/connections/'
+                            href='/{{ user.username }}/contacts/'
                           >
                             <img
                               class="me-2 h-20px fa-fw"
@@ -400,7 +438,7 @@ Header END -->
                   <!-- Helper link START -->
                   <ul class="nav small mt-4 justify-content-center lh-1">
                     <li class="nav-item">
-                      <a class="nav-link" href='{% static "my-profile-about.html" %}'>About</a>
+                      <a class="nav-link" href='https://github.com/DudeGFA/Kreador'>About</a>
                     </li>
                     <li class="nav-item">
                       <a
@@ -512,7 +550,7 @@ Header END -->
               <!-- Share feed toolbar END -->
             </div>
             <!-- Share feed END -->
-            
+
             <!-- Card feed item START -->
             {% for post in feed %}
             {% if post.question %}
@@ -545,7 +583,6 @@ Header END -->
                   </div>
                   <!-- Card share action menu -->
                   <a
-                    href='{% static "#" %}'
                     class="text-secondary btn btn-secondary-soft-hover py-1 px-2"
                     id="cardShareAction7"
                     data-bs-toggle="dropdown"
@@ -732,7 +769,7 @@ Header END -->
               <div class="card-body pt-0">
                 <ul class="nav nav-stack py-3 small">
                   <li class="nav-item">
-                    <a class="nav-link mb-0 active" href='javascript:;' onclick="likePost('{{post.id}}');return false;">
+                    <a class="nav-link mb-0 active" href='javascript:;' onclick="likePost('{{user.username}}','{{post.id}}');return false;">
                     {% if user in post.likes.all %}
                       <i class="bi bi-heart-fill pe-1" id="{{post.id}}likebtn"></i>Liked (<span id="{{post.id}}likecnt">{{ post.likes.count }}</span>)</a
                     >
@@ -880,7 +917,7 @@ Header END -->
                 <!-- Feed react START -->
                 <ul class="nav nav-stack py-3 small">
                   <li class="nav-item">
-                    <a class="nav-link active" href='javascript:;' id="postlike" onclick="likePost('{{post.id}}');return false;">
+                    <a class="nav-link active" href='javascript:;' id="postlike" onclick="likePost('{{user.username}}','{{post.id}}');return false;">
                     {% if user in post.likes.all %}
                       <i class="bi bi-hand-thumbs-up-fill pe-1" id="{{post.id}}likebtn"></i>Liked
                       (<span id="{{post.id}}likecnt">{{ post.likes.count }}</span>)</a
@@ -1085,7 +1122,7 @@ Header END -->
                   class="nav nav-pills nav-pills-light nav-fill nav-stack small border-top border-bottom py-1 mb-3"
                 >
                   <li class="nav-item">
-                    <a class="nav-link mb-0 active" href='javascript:;' onclick="likePost('{{post.id}}');return false;">
+                    <a class="nav-link mb-0 active" href='javascript:;' onclick="likePost('{{user.username}}','{{post.id}}');return false;">
                     {% if user in post.likes.all %}
                       <i class="bi bi-heart-fill pe-1" id="{{post.id}}likebtn"></i>Liked (<span id="{{post.id}}likecnt">{{ post.likes.count }}</span>)</a
                     >
@@ -1501,7 +1538,7 @@ Header END -->
                   type="text"
                   class="form-control"
                   placeholder="Enter the poll's question"
-                  name="pollquestion"
+                  name="question"
                 />
               </div>
               <!-- first option -->
@@ -1642,7 +1679,7 @@ Header END -->
               <small class="ms-2" id="reply-template-creationdate"></small>
             </div>
             <p class="small mb-0" id="reply-template-text">
-               reply.text 
+               reply.text
             </p>
           </div>
           <!-- Comment react -->

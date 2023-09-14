@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'landing.apps.LandingConfig',
     'userprofile.apps.UserprofileConfig',
     'business.apps.BusinessConfig',
-    'post.apps.PostConfig',
     'api.apps.ApiConfig',
     'rest_framework',
 ]

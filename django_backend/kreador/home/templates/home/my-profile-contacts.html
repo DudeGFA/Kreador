@@ -123,7 +123,7 @@ Header START -->
               >
                 <img
                   class="avatar-img rounded-2"
-                  src='{{ profile_owner.profile.image.url }}'
+                  src='{{ user.profile.image.url }}'
                   alt=""
                 />
               </a>
@@ -245,11 +245,13 @@ Header END -->
                     <p>{{ profile_owner.profile.contacts.count }} contacts | Added to {{ profile_owner.contacted_by.count }} contact lists</p>
                   </div>
                   <!-- Button -->
+                  {% if user == profile_owner %}
                   <div class="d-flex mt-3 justify-content-center ms-sm-auto">
                     <a class="btn btn-danger-soft me-2" type="button" href="/{{profile_owner.username}}/edit">
                       <i class="bi bi-pencil-fill pe-1"></i> Edit profile
                     </a>
                   </div>
+                  {% endif %}
                 </div>
                 <!-- List profile -->
                 <ul
@@ -273,15 +275,15 @@ Header END -->
                   class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0"
                 >
                   <li class="nav-item">
-                    <a class="nav-link" href='/{{ user.username }}/'> Posts </a>
+                    <a class="nav-link" href='/{{ profile_owner.username }}/'> Posts </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href='/{{ user.username }}/about'> About </a>
+                    <a class="nav-link" href='/{{ profile_owner.username }}/about'> About </a>
                   </li>
                   <li class="nav-item">
                     <a
                       class="nav-link active"
-                      href='/{{ user.username }}/contacts'
+                      href='/{{ profile_owner.username }}/contacts'
                     >
                       Contacts
                       <span
@@ -292,7 +294,7 @@ Header END -->
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href='/{{ user.username }}/media'> Media</a>
+                    <a class="nav-link" href='/{{ profile_owner.username }}/media'> Media</a>
                   </li>
                 </ul>
               </div>
@@ -349,11 +351,13 @@ Header END -->
                     <!-- Connections END -->
                   </div>
                   <!-- Button -->
+                  {% if user == profile_owner %}
                   <div class="ms-md-auto d-flex">
-                    <button class="btn btn-danger-soft btn-sm mb-0 me-2" onclick="removeFromContacts('{{user.username}}', '{{contact.id}}')">
+                    <button class="btn btn-danger-soft btn-sm mb-0 me-2" onclick="removeFromContacts('{{profile_owner.username}}', '{{contact.id}}')">
                       Remove
                     </button>
                   </div>
+                  {% endif %}
                 </div>
                 {% endfor %}
               </div>
@@ -490,17 +494,19 @@ Header END -->
                             </h6>
                           </div>
                           <!-- Card footer -->
+                          {% if user == profile_owner%}
                           <div class="card-footer p-2 border-0">
                             <button
                               class="btn btn-sm btn-danger"
                               data-bs-toggle="tooltip"
                               data-bs-placement="top"
                               title="Remove from contacts"
-                              onclick="removeFromContacts('{{user.username}}', '{{contact.id}}')"
+                              onclick="removeFromContacts('{{profile_owner.username}}', '{{contact.id}}')"
                             >
                               <i class="bi bi-person-x"></i>
                             </button>
                           </div>
+                          {% endif %}
                         </div>
                         <!-- Friends item END -->
                       </div>

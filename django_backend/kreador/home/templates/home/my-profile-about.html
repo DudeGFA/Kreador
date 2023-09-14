@@ -228,6 +228,7 @@ Header END -->
                     <p><span class="contacts-count">{{ profile_owner.profile.contacts.count }}</span> contacts | Added to {{ profile_owner.contacted_by.count }} contact lists</p>
                   </div>
                   <!-- Button -->
+                  {% if user == profile_owner %}
                   <div class="d-flex mt-3 justify-content-center ms-sm-auto">
                     <a class="btn btn-danger-soft me-2" type="button" href="/{{profile_owner.username}}/edit">
                       <i class="bi bi-pencil-fill pe-1"></i> Edit profile
@@ -235,6 +236,7 @@ Header END -->
                     <div class="dropdown">
                     </div>
                   </div>
+                  {% endif %}
                 </div>
                 <!-- List profile -->
                 <ul
@@ -258,15 +260,15 @@ Header END -->
                   class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0"
                 >
                   <li class="nav-item">
-                    <a class="nav-link" href='/{{ user.username }}/'> Posts </a>
+                    <a class="nav-link" href='/{{ profile_owner.username }}/'> Posts </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link active" href='/{{ user.username }}/about'>
+                    <a class="nav-link active" href='/{{ profile_owner.username }}/about'>
                       About
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href='/{{ user.username }}/contacts'>
+                    <a class="nav-link" href='/{{ profile_owner.username }}/contacts'>
                       Contacts
                       <span
                         class="badge bg-success bg-opacity-10 text-success small contacts-count"
@@ -276,7 +278,7 @@ Header END -->
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href='/{{ user.username }}/media'> Media</a>
+                    <a class="nav-link" href='/{{ profile_owner.username }}/media'> Media</a>
                   </li>
                   </li>
                 </ul>
@@ -298,6 +300,7 @@ Header END -->
                     class="d-flex align-items-center justify-content-between"
                   >
                     <h6>Overview</h6>
+                    {% if user == profile_owner %}
                     <div class="dropdown ms-auto">
                       <!-- Card share action menu -->
                       <a
@@ -322,9 +325,10 @@ Header END -->
                         </li>
                       </ul>
                     </div>
+                    {% endif %}
                   </div>
                   <p>
-                    {{ user.profile.about }}
+                    {{ profile_owner.profile.about }}
                   </p>
                 </div>
                 <div class="row g-4">
@@ -336,8 +340,9 @@ Header END -->
                       <!-- Date -->
                       <p class="mb-0">
                         <i class="bi bi-calendar-date fa-fw me-2"></i> Born:
-                        <strong> {{ user.profile.dob }} </strong>
+                        <strong> {{ profile_owner.profile.dob }} </strong>
                       </p>
+                      {% if user == profile_owner %}
                       <div class="dropdown ms-auto">
                         <!-- Card share action menu -->
                         <a
@@ -362,6 +367,7 @@ Header END -->
                           </li>
                         </ul>
                       </div>
+                      {% endif %}
                     </div>
                     <!-- Birthday END -->
                   </div>
@@ -375,11 +381,11 @@ Header END -->
                         <i class="bi bi-heart fa-fw me-2"></i> Status:
                         <strong> {{profile_owner.profile.status}} </strong>
                       </p>
+                      {% if user == profile_owner %}
                       <div class="dropdown ms-auto">
                         <!-- Card share action menu -->
                         <a
                           class="nav-link text-secondary mb-0"
-                          href='{% static "#" %}'
                           id="aboutAction3"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
@@ -399,6 +405,7 @@ Header END -->
                           </li>
                         </ul>
                       </div>
+                      {% endif %}
                     </div>
                     <!-- Status END -->
                   </div>
@@ -412,6 +419,7 @@ Header END -->
                         <i class="bi bi-briefcase fa-fw me-2"></i>
                         <strong> {{ profile_owner.profile.occupation }} </strong>
                       </p>
+                      {% if user == profile_owner %}
                       <div class="dropdown ms-auto">
                         <!-- Card share action menu -->
                         <a
@@ -436,6 +444,7 @@ Header END -->
                           </li>
                         </ul>
                       </div>
+                      {% endif %}
                     </div>
                     <!-- Designation END -->
                   </div>
@@ -449,6 +458,7 @@ Header END -->
                         <i class="bi bi-geo-alt fa-fw me-2"></i> Lives in:
                         <strong> {{ profile_owner.profile.city }}, {{ profile_owner.profile.country }} </strong>
                       </p>
+                      {% if user == profile_owner %}
                       <div class="dropdown ms-auto">
                         <!-- Card share action menu -->
                         <a
@@ -473,6 +483,7 @@ Header END -->
                           </li>
                         </ul>
                       </div>
+                      {% endif %}
                     </div>
                     <!-- Lives END -->
                   </div>
@@ -486,6 +497,7 @@ Header END -->
                         <i class="bi bi-geo-alt fa-fw me-2"></i> Joined
                         <strong> {{ month_joined }}</strong>
                       </p>
+                      {% if user == profile_owner %}
                       <div class="dropdown ms-auto">
                         <!-- Card share action menu -->
                         <a
@@ -510,6 +522,7 @@ Header END -->
                           </li>
                         </ul>
                       </div>
+                      {% endif %}
                     </div>
                     <!-- Joined on END -->
                   </div>
@@ -523,6 +536,7 @@ Header END -->
                         <i class="bi bi-envelope fa-fw me-2"></i> Email:
                         <strong> {{ profile_owner.email }} </strong>
                       </p>
+                      {% if user == profile_owner %}
                       <div class="dropdown ms-auto">
                         <!-- Card share action menu -->
                         <a
@@ -547,6 +561,7 @@ Header END -->
                           </li>
                         </ul>
                       </div>
+                      {% endif %}
                     </div>
                     <!-- Joined on END -->
                   </div>
@@ -571,13 +586,13 @@ Header END -->
                   <!-- Card body START -->
                   <div class="card-body position-relative pt-0">
                     <p>
-                      {{ user.profile.about }}
+                      {{ profile_owner.profile.about }}
                     </p>
                     <!-- Date time -->
                     <ul class="list-unstyled mt-3 mb-0">
                       <li class="mb-2">
                         <i class="bi bi-calendar-date fa-fw pe-1"></i> Born:
-                        <strong> {{ user.profile.dob }} </strong>
+                        <strong> {{ profile_owner.profile.dob }} </strong>
                       </li>
                       <li class="mb-2">
                         <i class="bi bi-heart fa-fw pe-1"></i> Status:
@@ -685,17 +700,19 @@ Header END -->
                             </h6>
                           </div>
                           <!-- Card footer -->
+                          {% if user == profile_owner %}
                           <div class="card-footer p-2 border-0">
                             <button
                               class="btn btn-sm btn-danger"
                               data-bs-toggle="tooltip"
                               data-bs-placement="top"
                               title="Remove from contacts"
-                              onclick="removeFromContacts('{{user.username}}', '{{contact.id}}')"
+                              onclick="removeFromContacts('{{profile_owner.username}}', '{{contact.id}}')"
                             >
                               <i class="bi bi-person-x"></i>
                             </button>
                           </div>
+                          {% endif %}
                         </div>
                         <!-- Friends item END -->
                       </div>

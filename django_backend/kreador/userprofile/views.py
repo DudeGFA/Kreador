@@ -16,8 +16,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Post, Comment, UserContact, PostImage, PostLike, Poll, PollOption, Voter, Profile
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from .forms import PostForm, CommentForm, ReplyForm, UpdateProfileForm, UpdateUserForm, UpdateProfileBackgroundPhotoForm, UpdateProfileImageForm, PostImageForm
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http404
+from .forms import PostForm, CommentForm, ReplyForm, UpdateProfileForm, UpdateUserForm
+from .forms import UpdateProfileBackgroundPhotoForm, UpdateProfileImageForm, PostImageForm, PollForm, PollOptionForm
 from django.urls import reverse_lazy, reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -27,6 +28,7 @@ from django.core.files.images import ImageFile
 from copy import copy
 from landing.forms import NewUserForm
 import time
+from itertools import chain
 # Create your views here.
 class ProfileView(LoginRequiredMixin, View):
     def get(self, request, username):
@@ -42,9 +44,11 @@ class ProfileView(LoginRequiredMixin, View):
             return HttpResponse('User does not exist')
         month_joined = user.date_joined.strftime('%b, %Y')
         post_list = Post.objects.filter(owner=user).order_by('-updated_at')
-        album = PostImage.objects.filter(post__owner=user)[:5]
+        polls = Poll.objects.filter(owner=user).order_by('-created_at')
+        feed = sorted(chain(post_list, polls), key=lambda feedobj: feedobj.created_at, reverse=True)
+        album = PostImage.objects.filter(post__owner=user)
         #print('album:', album)
-        ctx = {'month_joined': month_joined, 'post_list': post_list, 'profile_owner': user, 'album': album}
+        ctx = {'month_joined': month_joined, 'post_list': feed, 'profile_owner': user, 'album': album}
         #print(post_list[1].comment_set.all())
         return render(request, 'home_modified/user_profile.html', ctx)
 
@@ -73,7 +77,7 @@ class ProfileView(LoginRequiredMixin, View):
         # new_post = Post.objects.create(text=request.POST.get('text'), owner=user)
         # new_post.save()
         # if request.FILES.getlist('video'):
-        #     # saves video file    
+        #     # saves video file
         #     new_post.video = request.FILES.getlist('video')[0]
         #     new_post.save()
         if request.FILES.getlist('picture[0]'):
@@ -90,7 +94,7 @@ class ProfileView(LoginRequiredMixin, View):
                     else:
                         print(post_img_form.errors)
         #post_form = PostForm(request.POST, request.FILES or None)
-    
+
         #if not post_form.is_valid():
         #    return HttpResponse('Invalid form')
 
@@ -117,6 +121,7 @@ class PollView(LoginRequiredMixin, View):
             return HttpResponse('User does not exist')
         if request.user != user:
             return HttpResponse('User not authorized')
+        next = request.POST.get('next', '/home')
         polloptions = [request.POST.get('firstoption'), request.POST.get('secondoption'), request.POST.get('thirdoption'), request.POST.get('fourthoption')]
         validpolloptions = []
         for polloption in polloptions:
@@ -124,12 +129,22 @@ class PollView(LoginRequiredMixin, View):
                 validpolloptions.append(polloption)
         if len(validpolloptions) < 2:
             return HttpResponse('Invalid Poll')
-        new_poll = Poll.objects.create(question=request.POST.get('pollquestion'), owner=user)
-        new_poll.save()
+        new_poll_form = PollForm(request.POST)
+        if new_poll_form.is_valid():
+            new_poll = new_poll_form.save(commit=False)
+            new_poll.owner = request.user
+            new_poll.save()
+        else:
+            return HttpResponse('Invalid Poll')
         for i in range(len(validpolloptions)):
-            newpolloption = PollOption.objects.create(text=validpolloptions[i], poll=new_poll, index=i + 1)
-            newpolloption.save()
-        next = request.POST.get('next', '/home')
+            index = i + 1
+            newpolloptionform = PollOptionForm({'text':validpolloptions[i], 'index': index})
+            if newpolloptionform.is_valid():
+                newpolloption = newpolloptionform.save(commit=False)
+                newpolloption.poll = new_poll
+                newpolloption.save()
+            else:
+                return HttpResponse('Poll option ' + index + ' is invalid')
         #redirects to the value of next form attribute
         return HttpResponseRedirect(next)
 
@@ -157,7 +172,7 @@ class PollVoteView(LoginRequiredMixin, View):
         response['totalvotes'] = totalvotes
         print(JsonResponse(response, safe=False))
         return JsonResponse(response, safe=False)
-        
+
 class PostDeleteView(LoginRequiredMixin, View):
     """
         Deletes a post
@@ -224,7 +239,7 @@ class PostCommentView(LoginRequiredMixin, View):
         """
         print(request.POST)
         comment_form = CommentForm(request.POST)
-    
+
         if not comment_form.is_valid():
             return HttpResponse('Invalid comment form')
 
@@ -249,7 +264,7 @@ class PostReplyView(LoginRequiredMixin, View):
         """
         #print(request.POST)
         reply_form = ReplyForm(request.POST)
-    
+
         if not reply_form.is_valid():
             return HttpResponse('Invalid reply form')
 
@@ -263,23 +278,23 @@ class PostReplyView(LoginRequiredMixin, View):
         return HttpResponseRedirect(next)
         #return redirect('/' + username)
 
-class VideoView(LoginRequiredMixin, View):
-    def get(self, request, username):
-        try:
-            user = User.objects.get(username=username)            
-        except ObjectDoesNotExist:
-            return HttpResponse('User does not exist')
-        month_joined = user.date_joined.strftime('%b, %Y')
-        album = PostImage.objects.filter(post__owner=user).order_by("-post__created_at")
-        post_with_videos = user.post_set.exclude(video__isnull=True).exclude(video__exact='')
-        print(post_with_videos)
-        ctx = {'month_joined': month_joined, 'profile_owner': user, 'album': album, 'post_with_vid': post_with_videos}
-        return render(request, 'home/my-profile-videos.html', ctx)
+# class VideoView(LoginRequiredMixin, View):
+#     def get(self, request, username):
+#         try:
+#             user = User.objects.get(username=username)
+#         except ObjectDoesNotExist:
+#             return HttpResponse('User does not exist')
+#         month_joined = user.date_joined.strftime('%b, %Y')
+#         album = PostImage.objects.filter(post__owner=user).order_by("-post__created_at")
+#         post_with_videos = user.post_set.exclude(video__isnull=True).exclude(video__exact='')
+#         print(post_with_videos)
+#         ctx = {'month_joined': month_joined, 'profile_owner': user, 'album': album, 'post_with_vid': post_with_videos}
+#         return render(request, 'home/my-profile-videos.html', ctx)
 
 class MediaView(LoginRequiredMixin, View):
     def get(self, request, username):
         try:
-            user = User.objects.get(username=username)            
+            user = User.objects.get(username=username)
         except ObjectDoesNotExist:
             return HttpResponse('User does not exist')
         month_joined = user.date_joined.strftime('%b, %Y')
@@ -290,32 +305,32 @@ class MediaView(LoginRequiredMixin, View):
 class AboutView(LoginRequiredMixin, View):
     def get(self, request, username):
         try:
-            user = User.objects.get(username=username)            
+            user = User.objects.get(username=username)
         except ObjectDoesNotExist:
             return HttpResponse('User does not exist')
         month_joined = user.date_joined.strftime('%b, %Y')
-        album = PostImage.objects.filter(post__owner=user)[:5]
+        album = PostImage.objects.filter(post__owner=user).order_by("-post__created_at")
         ctx = {'month_joined': month_joined, 'profile_owner': user, 'album': album}
         return render(request, 'home/my-profile-about.html', ctx)
 
 class ContactsView(LoginRequiredMixin, View):
     def get(self, request, username):
         try:
-            user = User.objects.get(username=username)            
+            user = User.objects.get(username=username)
         except ObjectDoesNotExist:
             return HttpResponse('User does not exist')
         month_joined = user.date_joined.strftime('%b, %Y')
-        album = PostImage.objects.filter(post__owner=user)[:5]
+        album = PostImage.objects.filter(post__owner=user).order_by("-post__created_at")
         ctx = {'month_joined': month_joined, 'profile_owner': user, 'album': album}
         return render(request, 'home/my-profile-contacts.html', ctx)
 
-class EventsView(View):
-    def get(self, request, username):
-        return render(request, 'home/my-profile-events.html')
+# class EventsView(View):
+#     def get(self, request, username):
+#         return render(request, 'home/my-profile-events.html')
 
-class ActivityView(View):
-    def get(self, request, username):
-        return render(request, 'home/my-profile-activity.html')
+# class ActivityView(View):
+#     def get(self, request, username):
+#         return render(request, 'home/my-profile-activity.html')
 
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -331,7 +346,7 @@ class AddContactView(LoginRequiredMixin, View):
         """Creates a new UserContact Object
         """
         if request.user.username != username:
-            return HttpResponse('403 FOrbidden')
+            return HttpResponse('403 Forbidden')
 
         new_contact = get_object_or_404(User, id=pk)
         usercontact = UserContact(profile=request.user.profile, contact=new_contact)
@@ -340,7 +355,7 @@ class AddContactView(LoginRequiredMixin, View):
         except IntegrityError as e:
             pass
         return JsonResponse({"text": new_contact.get_full_name() + ' has been added to your contacts'})
- 
+
 @method_decorator(csrf_exempt, name='dispatch')
 class DeleteContactView(LoginRequiredMixin, View):
     """
@@ -375,7 +390,7 @@ class EditProfileView(LoginRequiredMixin, View):
         if request.user != user:
             return HttpResponse('User not authorized')
         return render(request, 'home_modified/edit_profile.html')
-    
+
     def post(self, request, username):
         """
             Updates user profile
@@ -387,38 +402,19 @@ class EditProfileView(LoginRequiredMixin, View):
         if request.user != user:
             return HttpResponse('User not authorized')
         user_profile = user.profile
-        # print(user_profile)
-        # profile_pic = request.FILES.get('profile_pic')
-        # print(request.FILES)
-        # if profile_pic:
-        #     # profile_pic = ImageFile(request.POST.get('profile_pic'))
-        #     # filename = request.user.username + ' profile pic'
-        #     user_profile.image.save(profile_pic.name,profile_pic, True)
-        #     # user_profile.save()
-        # profile_data = copy(request.POST)
-        # profile_data['user'] = user
-        # profile_form = ProfileForm(data=profile_data, instance=user_profile)
-        # if profile_form.is_valid():
-        #     profile_form.save()
-        # else:
-        #     print(profile_form.errors)
         if (request.FILES.get("image")):
-            print("image")
             image_form = UpdateProfileImageForm(request.POST, request.FILES, instance=request.user.profile)
             if image_form.is_valid():
                 image_form.save()
-                return HttpResponseRedirect('/' + user.username)
+                return render(request, 'home_modified/edit_profile.html')
             else:
-                print(image_form.errors)
                 return render(request, 'home_modified/edit_profile.html', {'img_error': image_form.errors})
         elif (request.FILES.get("background_photo")):
-            print("bg_photo")
             background_photo_form = UpdateProfileBackgroundPhotoForm(request.POST, request.FILES, instance=request.user.profile)
             if background_photo_form.is_valid():
                 background_photo_form.save()
-                return HttpResponseRedirect('/' + user.username)
+                return render(request, 'home_modified/edit_profile.html')
             else:
-                print(image_form.errors)
                 return render(request, 'home_modified/edit_profile.html', {'img_error': image_form.errors})
         elif(request.POST.get("username")):
             user_form = UpdateUserForm(request.POST, instance=request.user)
@@ -427,12 +423,10 @@ class EditProfileView(LoginRequiredMixin, View):
             if user_form.is_valid():
                 user_form.save()
             else:
-                print(user_form.errors)
                 return render(request, 'home_modified/edit_profile.html', {'form_error': user_form.errors})
             if profile_form.is_valid():
                 profile_form.save()
             else:
-                print(profile_form.errors)
                 return render(request, 'home_modified/edit_profile.html', {'form_error': profile_form.errors})
-            return HttpResponseRedirect('/' + request.POST.get("username"))
+            return HttpResponseRedirect('/' + request.POST.get("username") + '/edit')
         return render(request, 'home_modified/edit_profile.html')
