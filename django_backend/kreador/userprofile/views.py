@@ -170,7 +170,7 @@ class PollVoteView(LoginRequiredMixin, View):
             votepercentage = (option.voters.count() / totalvotes) * 100
             response[option.id] = str(votepercentage)
         response['totalvotes'] = totalvotes
-        print(JsonResponse(response, safe=False))
+        # print(JsonResponse(response, safe=False))
         return JsonResponse(response, safe=False)
 
 class PostDeleteView(LoginRequiredMixin, View):

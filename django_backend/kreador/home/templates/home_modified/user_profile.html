@@ -447,56 +447,94 @@ Header END -->
               <!-- Card body START -->
               <div class="card-body pb-0">
                 <p>{{ post.question }}</p>
-                <div class="vstack gap-2" id="{{post.id}}-options">
-                  <!-- Feed poll item -->
-                  {% for option in post.polloption_set.all %}
-                  <div>
-                    <input
-                      type="radio"
-                      class="btn-check"
-                      name="poll"
-                      id="{{option.id}}"
-                    />
-                    <label class="btn btn-outline-primary w-100" for="{{option.id}}"
-                      onclick="submitVote('{{post.id}}','{{option.id}}', '{{user.username}}')">{{option.text}}</label
-                    >
-                    <script onload="submitVote('{{post.id}}','{{option.id}}', '{{user.username}}')"></script>
-                  </div>
-                  {% endfor %}
-                </div>
-                <!-- Results -->
-                <div id="{{post.id}}-results" class="vstack gap-4 gap-sm-3 mt-3 hidden-poll-option">
-                  {% for option in post.polloption_set.all %}
-                  <!-- Option 1 result START -->
-                  <div
-                    class="d-flex align-items-center justify-content-between"
-                  >
-                    <!-- Progress bar -->
-                    <div class="overflow-hidden w-100 me-3">
-                      <div
-                        class="progress bg-primary bg-opacity-10 position-relative"
-                        style="height: 30px"
+                {% if not post|check_voter:user %}
+                  <div class="vstack gap-2" id="{{post.id}}-options">
+                    <!-- Feed poll item -->
+                    {% for option in post.polloption_set.all %}
+                    <div>
+                      <input
+                        type="radio"
+                        class="btn-check"
+                        name="poll"
+                        id="{{option.id}}"
+                      />
+                      <label class="btn btn-outline-primary w-100" for="{{option.id}}"
+                        onclick="submitVote('{{post.id}}','{{option.id}}', '{{user.username}}')">{{option.text}}</label
                       >
-                        <div
-                          id="{{option.id}}-resultbar"
-                          class="progress-bar bg-primary bg-opacity-25"
-                          role="progressbar"
-                          style="width: 0%"
-                          aria-valuenow="0"
-                          aria-valuemin="0"
-                          aria-valuemax="100"
-                        ></div>
-                        <span
-                          class="position-absolute pt-1 ps-3 fs-6 fw-normal text-truncate w-100"
-                          >{{ option.text }}
-                        </span>
-                      </div>
+                      <script onload="submitVote('{{post.id}}','{{option.id}}', '{{user.username}}')"></script>
                     </div>
-                    <div id="{{option.id}}-result" class="flex-shrink-0">0%</div>
+                    {% endfor %}
                   </div>
-                  <!-- Option 1 result END -->
-                  {% endfor %}
-                </div>
+                  <!-- Results -->
+                  <div id="{{post.id}}-results" class="vstack gap-4 gap-sm-3 mt-3 hidden-poll-option">
+                    {% for option in post.polloption_set.all %}
+                    <!-- Option 1 result START -->
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <!-- Progress bar -->
+                      <div class="overflow-hidden w-100 me-3">
+                        <div
+                          class="progress bg-primary bg-opacity-10 position-relative"
+                          style="height: 30px"
+                        >
+                          <div
+                            id="{{option.id}}-resultbar"
+                            class="progress-bar bg-primary bg-opacity-25"
+                            role="progressbar"
+                            style="width: 0%"
+                            aria-valuenow="0"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          ></div>
+                          <span
+                            class="position-absolute pt-1 ps-3 fs-6 fw-normal text-truncate w-100"
+                            >{{ option.text }}
+                          </span>
+                        </div>
+                      </div>
+                      <div id="{{option.id}}-result" class="flex-shrink-0">0%</div>
+                    </div>
+                    <!-- Option 1 result END -->
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  <!-- Results -->
+                  <div id="{{post.id}}-results" class="vstack gap-4 gap-sm-3 mt-3">
+                    {% for option in post.polloption_set.all %}
+                    <!-- Option 1 result START -->
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <!-- Progress bar -->
+                      <div class="overflow-hidden w-100 me-3">
+                        <div
+                          class="progress bg-primary bg-opacity-10 position-relative"
+                          style="height: 30px"
+                        >
+                          {% with vote_percentage=option|calc_vote_percentage %}
+                          <div
+                              id="{{ option.id }}-resultbar"
+                              class="progress-bar bg-primary bg-opacity-25"
+                              role="progressbar"
+                              style="width: {{ vote_percentage }}%"
+                              aria-valuenow="{{ vote_percentage }}"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                          ></div>
+                          {% endwith %}                        
+                          <span
+                            class="position-absolute pt-1 ps-3 fs-6 fw-normal text-truncate w-100"
+                            >{{ option.text }}
+                          </span>
+                        </div>
+                      </div>
+                      <div id="{{option.id}}-result" class="flex-shrink-0">{{ option|calc_vote_percentage }}%</div>
+                    </div>
+                    <!-- Option 1 result END -->
+                    {% endfor %}
+                  </div>
+                {% endif %}
                 <!-- Feed poll votes START -->
                 <ul class="nav nav-divider mt-2 mb-0">
                   <li class="nav-item">
@@ -753,57 +791,6 @@ Header END -->
                       <i class="bi bi-chat-fill pe-1"></i>Comments ({{ post.comment_set.count }})</a
                     >
                   </li>
-                  <!-- Card share action START -->
-                  <li class="nav-item dropdown ms-sm-auto">
-                    <a
-                      class="nav-link mb-0"
-                      href='{% static "#" %}'
-                      id="cardShareAction"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-reply-fill flip-horizontal ps-1"></i>Share
-                      (3)
-                    </a>
-                    <!-- Card share action dropdown menu -->
-                    <ul
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="cardShareAction"
-                    >
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-envelope fa-fw pe-2"></i>Send via
-                          Direct Message</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-bookmark-check fa-fw pe-2"></i
-                          >Bookmark
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-link fa-fw pe-2"></i>Copy link to
-                          post</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-share fa-fw pe-2"></i>Share post via
-                          …</a
-                        >
-                      </li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li>
-                        <a class="dropdown-item" href='{% static "#" %}'>
-                          <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to
-                          News Feed</a
-                        >
-                      </li>
-                    </ul>
-                  </li>
-                  <!-- Card share action END -->
                 </ul>
                 <!-- Feed react END -->
 

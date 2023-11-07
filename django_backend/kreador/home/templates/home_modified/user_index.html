@@ -141,7 +141,6 @@ Header START -->
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
-                  href='{% static "#" %}'
                   id="postMenu"
                   data-bs-toggle="dropdown"
                   aria-haspopup="true"
@@ -615,56 +614,95 @@ Header END -->
               <!-- Card body START -->
               <div class="card-body pb-0">
                 <p>{{ post.question }}</p>
-                <div class="vstack gap-2" id="{{post.id}}-options">
-                  <!-- Feed poll item -->
-                  {% for option in post.polloption_set.all %}
-                  <div>
-                    <input
-                      type="radio"
-                      class="btn-check"
-                      name="poll"
-                      id="{{option.id}}"
-                    />
-                    <label class="btn btn-outline-primary w-100" for="{{option.id}}"
-                      onclick="submitVote('{{post.id}}','{{option.id}}', '{{user.username}}')">{{option.text}}</label
-                    >
-                    <script onload="submitVote('{{post.id}}','{{option.id}}', '{{user.username}}')"></script>
-                  </div>
-                  {% endfor %}
-                </div>
-                <!-- Results -->
-                <div id="{{post.id}}-results" class="vstack gap-4 gap-sm-3 mt-3 hidden-poll-option">
-                  {% for option in post.polloption_set.all %}
-                  <!-- Option 1 result START -->
-                  <div
-                    class="d-flex align-items-center justify-content-between"
-                  >
-                    <!-- Progress bar -->
-                    <div class="overflow-hidden w-100 me-3">
-                      <div
-                        class="progress bg-primary bg-opacity-10 position-relative"
-                        style="height: 30px"
+                {% if not post|check_voter:user %}
+                  <div class="vstack gap-2" id="{{post.id}}-options">
+                    <!-- Feed poll item -->
+                    {% for option in post.polloption_set.all %}
+                    <div>
+                      <input
+                        type="radio"
+                        class="btn-check"
+                        name="poll"
+                        id="{{option.id}}"
+                      />
+                      <label class="btn btn-outline-primary w-100" for="{{option.id}}"
+                        onclick="submitVote('{{post.id}}','{{option.id}}', '{{user.username}}')">{{option.text}}</label
                       >
-                        <div
-                          id="{{option.id}}-resultbar"
-                          class="progress-bar bg-primary bg-opacity-25"
-                          role="progressbar"
-                          style="width: 0%"
-                          aria-valuenow="0"
-                          aria-valuemin="0"
-                          aria-valuemax="100"
-                        ></div>
-                        <span
-                          class="position-absolute pt-1 ps-3 fs-6 fw-normal text-truncate w-100"
-                          >{{ option.text }}
-                        </span>
-                      </div>
+                      <script onload="submitVote('{{post.id}}','{{option.id}}', '{{user.username}}')"></script>
                     </div>
-                    <div id="{{option.id}}-result" class="flex-shrink-0">0%</div>
+                    {% endfor %}
                   </div>
-                  <!-- Option 1 result END -->
-                  {% endfor %}
-                </div>
+                  <!-- Results -->
+                  <div id="{{post.id}}-results" class="vstack gap-4 gap-sm-3 mt-3 hidden-poll-option">
+                    {% for option in post.polloption_set.all %}
+                    <!-- Option 1 result START -->
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <!-- Progress bar -->
+                      <div class="overflow-hidden w-100 me-3">
+                        <div
+                          class="progress bg-primary bg-opacity-10 position-relative"
+                          style="height: 30px"
+                        >
+                          <div
+                            id="{{option.id}}-resultbar"
+                            class="progress-bar bg-primary bg-opacity-25"
+                            role="progressbar"
+                            style="width: 0%"
+                            aria-valuenow="0"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          ></div>
+                          <span
+                            class="position-absolute pt-1 ps-3 fs-6 fw-normal text-truncate w-100"
+                            >{{ option.text }}
+                          </span>
+                        </div>
+                      </div>
+                      <div id="{{option.id}}-result" class="flex-shrink-0">0%</div>
+                    </div>
+                    <!-- Option 1 result END -->
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  <!-- Results -->
+                  <div id="{{post.id}}-results" class="vstack gap-4 gap-sm-3 mt-3">
+                    {% for option in post.polloption_set.all %}
+                    <!-- Option 1 result START -->
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <!-- Progress bar -->
+                      <div class="overflow-hidden w-100 me-3">
+                        <div
+                          class="progress bg-primary bg-opacity-10 position-relative"
+                          style="height: 30px"
+                        >
+                          {% with vote_percentage=option|calc_vote_percentage %}
+                          <div
+                              id="{{ option.id }}-resultbar"
+                              class="progress-bar bg-primary bg-opacity-25"
+                              role="progressbar"
+                              style="width: {{ vote_percentage }}%"
+                              aria-valuenow="{{ vote_percentage }}"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                          ></div>
+                          {% endwith %}
+                          <span
+                            class="position-absolute pt-1 ps-3 fs-6 fw-normal text-truncate w-100"
+                            >{{ option.text }}
+                          </span>
+                        </div>
+                      </div>
+                      <div id="{{option.id}}-result" class="flex-shrink-0">{{ option|calc_vote_percentage }}%</div>
+                    </div>
+                    <!-- Option 1 result END -->
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
                 <!-- Feed poll votes START -->
                 <ul class="nav nav-divider mt-2 mb-0">
                   <li class="nav-item">

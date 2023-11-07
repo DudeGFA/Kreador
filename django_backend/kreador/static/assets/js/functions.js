@@ -286,7 +286,7 @@ var e = {
 							var sliderHoverPause = slider1.getAttribute('data-hoverpause') === 'true'; //option: true or false
 							if (e.isVariableDefined(e.select('.custom-thumb'))) {
 								var sliderNavContainer = e.select('.custom-thumb');
-							} 
+							}
 							var sliderLoop = slider1.getAttribute('data-loop') !== 'false'; //option: true or false
 							var sliderRewind = slider1.getAttribute('data-rewind') === 'true'; //option: true or false
 							var sliderAutoHeight = slider1.getAttribute('data-autoheight') === 'true'; //option: true or false
@@ -352,7 +352,7 @@ var e = {
 											}
 									}
 							});
-					}); 
+					});
 				}
 		},
 		// END: Tiny Slider
@@ -377,7 +377,7 @@ var e = {
 				})
 		},
 		// END: Popover
-    
+
     // START: 06 Video player
     videoPlyr: function () {
       var vdp = e.select('.player-wrapper');
@@ -389,7 +389,7 @@ var e = {
         // Vimeo
         const playerVimeo = Plyr.setup('.player-vimeo', {});
         window.player = playerVimeo;
-        
+
         // HTML video
         const playerHtmlvideo = Plyr.setup('.player-html', {
           captions: {active: true}
@@ -441,7 +441,7 @@ var e = {
 				} else {
 						style.setAttribute('href', '/static/assets/css/style.css');
 				}
-				
+
 				localStorage.setItem("data-theme", 'light') // save theme to local storage
 			}
 
@@ -474,8 +474,8 @@ var e = {
 				var mode = document.getElementsByTagName("BODY")[0];
 				sb.addEventListener("click", function(){
 						mode.classList.toggle("sidebar-start-enabled");
-				}); 
-		}        
+				});
+		}
 	},
 	// END: Sidebar Toggle
 
@@ -487,8 +487,8 @@ var e = {
 				var mode = document.getElementsByTagName("BODY")[0];
 				sb.addEventListener("click", function(){
 						mode.classList.toggle("sidebar-end-enabled");
-				}); 
-		}        
+				});
+		}
 	},
 	// END: Sidebar Toggle end
 
@@ -563,16 +563,17 @@ var e = {
 											myDropzone.processQueue();
 											if (IziCount == 0) {
 												iziToast.success({
-													title: 'Post successfully Uploaded',
+													title: 'Uploading post, please wait',
+													message: 'Refresh to see changes'
 												});
 												IziCount += 1
 											} else {
 												IziCount = 0
 											}
-											
+
 										});
 								}
-								
+
 								let em = document.getElementById("vidsubmitbtn")
 								if (em) {
 									em.addEventListener("click", function(e) {
@@ -584,7 +585,8 @@ var e = {
 											myDropzone.processQueue();
 											if (IziCount == 0) {
 												iziToast.success({
-													title: 'Post successfully Uploaded',
+													title: 'Uploading post, please wait',
+													message: 'Refresh to see changes'
 												});
 												IziCount += 1
 											} else {
@@ -592,7 +594,7 @@ var e = {
 											}
 										});
 								}
-								
+
 								this.on('error', function(file, errorMessage) {
 									iziToast.error({
 										title: 'Error',
@@ -614,7 +616,7 @@ var e = {
 						new Dropzone(e, c);
 					}));
 			}
-	
+
 			// 2. Custom cover and list previews Dropzone Initialization
 			if (e.isVariableDefined(e.select(".dropzone-custom"))) {
 				e.selectAll(".dropzone-custom").forEach((d => {
@@ -649,7 +651,7 @@ var e = {
 		}
 	},
 	// END: Drop Zone
-  
+
 
 	// START: 14 Flat picker
 	flatPicker: function () {
@@ -678,11 +680,11 @@ var e = {
 	// START: 15 Avatar Image
 	avatarImg: function () {
 		if (e.isVariableDefined(e.select('#avatarUpload'))) {
-		
+
 			var avtInput = e.select('#avatarUpload'),
 			avtReset = e.select("#avatar-reset-img"),
 			avtPreview = e.select('#avatar-preview');
-		
+
 			// Avatar upload and replace
 			avtInput.addEventListener('change', readURL, true);
 			function readURL(){
@@ -690,21 +692,21 @@ var e = {
 					const files = avtInput.files;
 					const reader = new FileReader();
 					reader.onloadend = function(){
-							avtPreview.src = reader.result; 
+							avtPreview.src = reader.result;
 					}
-		
+
 					if(file && files){
 							reader.readAsDataURL(file);
 					} else { }
-		
+
 					avtInput.value = '';
 			}
-		
+
 			// Avatar remove functionality
 			avtReset.addEventListener("click", function(){
 				avtPreview.src = "/static/assets/images/avatar/placeholder.jpg";
 			});
-		}			
+		}
 	},
 	// END: Avatar Image
 
@@ -726,7 +728,7 @@ var e = {
 				});
 			});
 		}
-	
+
 		if (e.isVariableDefined(e.select(".custom-scrollbar-y"))) {
 			document.addEventListener("DOMContentLoaded", function() {
 				var instances = OverlayScrollbars(e.selectAll('.custom-scrollbar-y'), {
@@ -741,7 +743,7 @@ var e = {
 					}
 				});
 			});
-		}	
+		}
 	},
 	// END: Custom Scrollbar
 
@@ -793,7 +795,7 @@ var e = {
 		if (e.isVariableDefined(e.select('.fakepassword'))) {
 			var password = e.select('.fakepassword');
 			var toggler = e.select('.fakepasswordicon');
-		
+
 			var showHidePassword = () => {
 				if (password.type == 'password') {
 					password.setAttribute('type', 'text');
@@ -803,11 +805,11 @@ var e = {
 					password.setAttribute('type', 'password');
 				}
 			};
-		
+
 			toggler.addEventListener('click', showHidePassword);
 		}
 	}
   // END: Fake Password
- 
+
 };
 e.init();

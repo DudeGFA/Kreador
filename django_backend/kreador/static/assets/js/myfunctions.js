@@ -108,8 +108,8 @@ function postAlbum() {
 		}
 	
 	}
-	
-	
+
+
 	function removeFromContacts(usname, id) {
 		url = '/' + usname + '/contacts/delete/' + id
 		fetch(url, {method: "POST"}).then(response => response.json()).then( response => {
@@ -121,6 +121,9 @@ function postAlbum() {
 		  })
 		  if (document.getElementById(id+"-contactcard")) {
 	// 		console.log("present sir")
+			document.getElementById(id+"-contactcard").remove()
+		  }
+		  if (document.getElementById(id+"-contactcard")) {
 			document.getElementById(id+"-contactcard").remove()
 		  }
 		  iziToast.success({

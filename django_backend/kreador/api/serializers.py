@@ -23,23 +23,26 @@ class UserIdSerializer(serializers.ModelSerializer):
         fields = ['id']
 
 class GetUserSerializer(serializers.HyperlinkedModelSerializer):
+    serializer_related_field = serializers.PrimaryKeyRelatedField
     class Meta:
         model = User
         fields = '__all__'
 
 class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
+    serializer_related_field = serializers.PrimaryKeyRelatedField
     class Meta:
         model = Profile
         fields = '__all__'
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
+    serializer_related_field = serializers.PrimaryKeyRelatedField
     owner = UserSerializer(required=False)
     reply_count = serializers.IntegerField(
-    source='reply_set.count', 
+    source='reply_set.count',
     read_only=True
 )
     like_count = serializers.IntegerField(
-    source='commentlike_set.count', 
+    source='commentlike_set.count',
     read_only=True
 )
     liked = serializers.SerializerMethodField()
@@ -47,20 +50,21 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
         fields = ['id', 'text', 'post', 'owner', 'created_at', 'like_count', 'reply_count', 'liked']
-    
+
     def get_liked(self, obj):
         try:
             #print(self.context["request"].user)
             if CommentLike.objects.filter(user=self.context["request"].user, comment=obj).exists():
                 return True
         except Exception as e:
-            pass
+            print(e)
         return False
 
 class CommentLikeSerializer(serializers.HyperlinkedModelSerializer):
+    serializer_related_field = serializers.PrimaryKeyRelatedField
     user = UserIdSerializer(required=False, read_only=True)
     like_count = serializers.IntegerField(
-    source='comment.commentlike_set.count', 
+    source='comment.commentlike_set.count',
     read_only=True
 )
     class Meta:
@@ -68,13 +72,14 @@ class CommentLikeSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['id', 'user', 'comment', 'like_count']
 
 class ReplySerializer(serializers.HyperlinkedModelSerializer):
+    serializer_related_field = serializers.PrimaryKeyRelatedField
     owner = UserSerializer(required=False)
     like_count = serializers.IntegerField(
-    source='replylike_set.count', 
+    source='replylike_set.count',
     read_only=True
 )
     like_count = serializers.IntegerField(
-    source='replylike_set.count', 
+    source='replylike_set.count',
     read_only=True
 )
     liked = serializers.SerializerMethodField()
@@ -84,7 +89,7 @@ class ReplySerializer(serializers.HyperlinkedModelSerializer):
             if ReplyLike.objects.filter(user=self.context["request"].user, reply=obj).exists():
                 return True
         except Exception as e:
-            pass
+            print(e)
         return False
 
     class Meta:
@@ -92,9 +97,10 @@ class ReplySerializer(serializers.HyperlinkedModelSerializer):
         fields = ['id', 'text', 'comment', 'owner', 'created_at', 'like_count', 'liked']
 
 class ReplyLikeSerializer(serializers.HyperlinkedModelSerializer):
+    serializer_related_field = serializers.PrimaryKeyRelatedField
     user = UserIdSerializer(required=False, read_only=True)
     like_count = serializers.IntegerField(
-    source='reply.replylike_set.count', 
+    source='reply.replylike_set.count',
     read_only=True
 )
     class Meta:
@@ -102,11 +108,13 @@ class ReplyLikeSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['id', 'user', 'reply', 'like_count']
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
+    serializer_related_field = serializers.PrimaryKeyRelatedField
     class Meta:
         model = Post
         fields = '__all__'
 
 class PollSerializer(serializers.HyperlinkedModelSerializer):
+    serializer_related_field = serializers.PrimaryKeyRelatedField
     class Meta:
         model = Poll
         fields = '__all__'

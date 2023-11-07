@@ -9,11 +9,26 @@ def index(indexable, i):
     return indexable[i].image.url
 
 @register.filter
+def check_voter(post, user):
+    for option in post.polloption_set.all():
+        if user in option.voters.all():
+            return True
+    return False
+
+@register.filter
 def calc_total_votes(pollobject):
     total_votes = 0
     for polloption in pollobject.polloption_set.all():
         total_votes += polloption.voters.count()
     return total_votes
+
+@register.filter
+def calc_vote_percentage(option):
+    total_votes = 0
+    for polloption in option.poll.polloption_set.all():
+        total_votes += polloption.voters.count()
+    vote_percentage = (option.voters.count() / total_votes) * 100
+    return vote_percentage
 
 @register.filter
 def comment_query_set_slice(comment_query_set):
